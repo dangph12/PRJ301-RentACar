@@ -40,8 +40,8 @@
                                 </form>
                             </div>
                             <div class="col-sm-4">
-                                <a href="#addUserModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a>
-                                <a href="#deleteUserModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>						
+                                <button type="button" href="#addUserModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New User</span></button>
+                                <button type="button" href="#deleteUserModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></button>						
                             </div>
                         </div>
                     </div>
@@ -75,8 +75,10 @@
                                     <td>${user.email}</td>
                                     <td>${user.address}</td>
                                     <td>
-                                        <a href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                        <a href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>    
+                                        <button type="button" href="#editUserModal" class="btn btn-mini edit" data-toggle="modal" data-whatever="${user.userUID}"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></button>
+                                        <button type="button" href="#deleteUserModal" class="btn btn-mini delete" data-toggle="modal" data-whatever="${user.userUID}">
+                                            <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                                        </button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -176,8 +178,10 @@
                             <h4 class="modal-title">Delete User</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                        <div class="modal-body">	
-                            <input type="text" name="" id="">				
+                        <div class="modal-body">
+                            
+                            <input type="text" name="userUID" readonly="readonly" />
+                            
                             <p>Are you sure you want to delete these Records?</p>
                             <p class="text-warning"><small>This action cannot be undone.</small></p>
                         </div>

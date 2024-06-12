@@ -19,7 +19,7 @@ public class UserDAO {
     public ResultSet getUsersCount() throws SQLException {
 
         String query = """
-                       SELECT count(*) FROM [Rent_A_Car].[dbo].[user-auth]
+                       SELECT count(*) FROM [Rent_A_Car].[dbo].[users]
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
         return executeQuery(pstmt);
@@ -30,12 +30,12 @@ public class UserDAO {
         int usersCountPerPage = 7;
 
         String query = """
-                       SELECT * FROM [Rent_A_Car].[dbo].[user-auth]
+                       SELECT * FROM [Rent_A_Car].[dbo].[users]
                        ORDER BY user_uid
                        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
-        pstmt.setInt(1, (index - 1) * 7);
+        pstmt.setInt(1, (index - 1) * usersCountPerPage);
         pstmt.setInt(2, usersCountPerPage);
         return executeQuery(pstmt);
     }
@@ -46,15 +46,15 @@ public class UserDAO {
      * @param user The User object to insert.
      */
     public void insertUser(User user) {
-        String query = "INSERT INTO [dbo].[UserLogin]"
-                + "([user_uid], [username], [email], [password]) "
-                + "VALUES (?,?,?,?)";
+        String query = "INSERT INTO [Rent_A_Car].[dbo].[users]"
+                + "([user_uid], [full_name], [phone], [email], [address]) "
+                + "VALUES (?,?,?,?,?)";
         try (PreparedStatement pstmt = createPreparedStatement(query)) {
             pstmt.setString(1, user.getUserUID());
-            pstmt.setString(2, user.getUsername());
-            pstmt.setString(3, user.getEmail());
-            pstmt.setString(4, user.getPassword());
-
+            pstmt.setString(2, user.getFullName());
+            pstmt.setString(3, user.getPhone());
+            pstmt.setString(4, user.getEmail());
+            pstmt.setString(5, user.getAddress());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             //TODO: handle exception
@@ -91,7 +91,7 @@ public class UserDAO {
                        SELECT [user_uid]
                              ,[username]
                              ,[email]
-                         FROM [Rent_A_Car].[dbo].[user-auth]""";
+                         FROM [Rent_A_Car].[dbo].[users]""";
         PreparedStatement pstmt = createPreparedStatement(query);
         return executeQuery(pstmt);
     }

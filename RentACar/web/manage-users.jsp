@@ -35,7 +35,7 @@
                                 <form action="search" method="GET">
                                     <div class="search-box">
                                         <i class="material-icons">&#xE8B6;</i>
-                                        <input type="text" name="username" class="form-control" placeholder="Search&hellip;">
+                                        <input type="text" name="searchName" class="form-control" placeholder="Search&hellip;" value="${request.getParameter("searchName")}">
                                     </div>
                                 </form>
                             </div>
@@ -48,33 +48,35 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>
+                                <th scope="col">
                                     <span class="custom-checkbox">
                                         <input type="checkbox" id="selectAll">
                                         <label for="selectAll"></label>
                                     </span>
                                 </th>
-                                <th>UserUID</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Actions</th>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Address</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
-                        <tbody class="list">
+                        <tbody>
                             <c:forEach items="${requestScope.pagingUsers}" var="user">
-                                <tr class="item">
+                                <tr>
                                     <td>
                                         <span class="custom-checkbox">
-                                            <input type="checkbox" c name="options[]" value="1">
-                                            <label for="checkbox1"></label>
+                                            <input type="checkbox" name="options[]" value="${user.userUID}">
+                                            <label for="checkbox"></label>
                                         </span>
                                     </td>
-                                    <td>${user.userUID}</td>
-                                    <td>${user.username}</td>
+                                    <td>${user.fullName}</td>
+                                    <td>${user.phone}</td>
                                     <td>${user.email}</td>
+                                    <td>${user.address}</td>
                                     <td>
                                         <a href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                        <a href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                        <a href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>    
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -83,9 +85,6 @@
 
                     <div class="clearfix">
                         <div class="hint-text">Showing <b>${pagingUsersCount}</b> out of <b>${allUsersCount}</b> entries</div>
-                        
-                        <div id="pager" value=""></div>
-                        
                         <ul class="pagination">
                             <c:forEach begin="1" end="${(allUsersCount / 7) + 1}" var="i">
                                 <li class="page-item">
@@ -108,17 +107,22 @@
                         </div>
                         <div class="modal-body">					
                             <div class="form-group">
-                                <label>UserUID</label>
-                                <input type="text" class="form-control" required>
+                                <label>Full Name</label>
+                                <input type="text" class="form-control" name="fullname" required>
                             </div>
                             <div class="form-group">
-                                <label>Username</label>
-                                <input type="text" class="form-control" required>
+                                <label>Phone</label>
+                                <input type="text" class="form-control" name="phone" required>
                             </div>	
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" class="form-control" required>
+                                <input type="email" class="form-control" name="email" required>
                             </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" class="form-control" name="address" required>
+                            </div>
+                            
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -172,11 +176,13 @@
                             <h4 class="modal-title">Delete User</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                        <div class="modal-body">					
+                        <div class="modal-body">	
+                            <input type="text" name="" id="">				
                             <p>Are you sure you want to delete these Records?</p>
                             <p class="text-warning"><small>This action cannot be undone.</small></p>
                         </div>
                         <div class="modal-footer">
+                            
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                             <input type="submit" class="btn btn-danger" value="Delete">
                         </div>
@@ -185,5 +191,4 @@
             </div>
         </div>
         <script src="js/script.js"></script>
-        <<script src="js/index_script.js"></script>
 </html>

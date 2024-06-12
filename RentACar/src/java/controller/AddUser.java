@@ -5,12 +5,15 @@
 
 package controller;
 
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.User;
+import util.Util;
 
 /**
  *
@@ -29,16 +32,18 @@ public class AddUser extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AddUser</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AddUser at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
+            Util util = new Util();
+            String userUID = util.generateUserUID();
+            String fullName = request.getParameter("fullname");
+            String phone = request.getParameter("phone");
+            String email = request.getParameter("email");
+            String address = request.getParameter("address");
+            User user = new User(userUID, fullName, phone, email, address);
+            
+            UserDAO userDAO = new UserDAO();
+            userDAO.insertUser(user);
+            response.sendRedirect("manage");
         }
     } 
 

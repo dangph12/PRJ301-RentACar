@@ -38,9 +38,11 @@ public class User {
              ResultSet rs = userDAO.pagingUsersResultSet(index);
              while (rs.next()) {                
                 String userUID = rs.getString("user_uid");
-                String username = rs.getString("username");
+                String fullName = rs.getString("full_name");
+                String phone = rs.getString("phone");
                 String email = rs.getString("email");
-                User user = new User(userUID, username, email);
+                String address = rs.getString("address");
+                User user = new User(userUID, fullName, phone, email, address);
                 allUsers.add(user);
             }
         } catch (SQLException e) {
@@ -48,26 +50,6 @@ public class User {
         }
         return allUsers;
     }
-    
-    public ArrayList<User> getAllUsers() {
-        ArrayList<User> allUsers = new ArrayList<>();
-        UserDAO userDAO = new UserDAO();
-        
-        try {
-             ResultSet rs = userDAO.getAllUsersExceptPassword();
-             while (rs.next()) {                
-                String userUID = rs.getString("user_uid");
-                String username = rs.getString("username");
-                String email = rs.getString("email");
-                User user = new User(userUID, username, email);
-                allUsers.add(user);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return allUsers;
-    }
-    
     
     private String userUID;
 
@@ -89,27 +71,47 @@ public class User {
         this.userUID = userUID;
     }
 
-    private String username;
+    private String fullName;
 
     /**
-     * Get the value of username
+     * Get the value of fullName
      *
-     * @return the value of username
+     * @return the value of fullName
      */
-    public String getUsername() {
-        return username;
+    public String getFullName() {
+        return fullName;
     }
 
     /**
-     * Set the value of username
+     * Set the value of fullName
      *
-     * @param username new value of username
+     * @param fullName new value of fullName
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
-    
-        private String email;
+
+    private String phone;
+
+    /**
+     * Get the value of phone
+     *
+     * @return the value of phone
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * Set the value of phone
+     *
+     * @param phone new value of phone
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    private String email;
 
     /**
      * Get the value of email
@@ -129,41 +131,40 @@ public class User {
         this.email = email;
     }
 
-
-    private String password;
-
-    /**
-     * Get the value of password
-     *
-     * @return the value of password
-     */
-    public String getPassword() {
-        return password;
-    }
+    private String address;
 
     /**
-     * Set the value of password
+     * Get the value of address
      *
-     * @param password new value of password
+     * @return the value of address
      */
-    public void setPassword(String password) {
-        this.password = password;
+    public String getAddress() {
+        return address;
     }
 
-    public User(String userUID, String username, String email, String password) {
-        this.userUID = userUID;
-        this.username = username;
-        this.email = email;
-        this.password = password;
+    /**
+     * Set the value of address
+     *
+     * @param address new value of address
+     */
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public User(String userUID, String username, String email) {
+    public User(String userUID, String fullName, String phone, String email, String address) {
         this.userUID = userUID;
-        this.username = username;
+        this.fullName = fullName;
+        this.phone = phone;
         this.email = email;
+        this.address = address;
     }
 
     public User() {
     }
 
+    public static void main(String[] args) {
+                    User user = new User();
+            ArrayList<User> pagingUsers = user.pagingUsers(1);
+            int allUsersCount = user.getUsersCount();
+    }
 }

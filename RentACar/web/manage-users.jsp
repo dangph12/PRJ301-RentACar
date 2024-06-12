@@ -75,10 +75,12 @@
                                     <td>${user.email}</td>
                                     <td>${user.address}</td>
                                     <td>
-                                        <button type="button" href="#editUserModal" class="btn btn-mini edit" data-toggle="modal" data-whatever="${user.userUID}"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></button>
-                                        <button type="button" href="#deleteUserModal" class="btn btn-mini delete" data-toggle="modal" data-whatever="${user.userUID}">
-                                            <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
-                                        </button>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" href="#editUserModal" class="btn btn-mini edit" data-toggle="modal" data-useruid="${user.userUID}" data-fullname="${user.fullName}" data-phone="${user.phone}" data-email="${user.email}" data-address="${user.address}"><i class="material-icons text-warning" data-toggle="tooltip" title="Edit">&#xE254;</i></button>
+                                            <button type="button" href="#deleteUserModal" class="btn btn-mini delete" data-toggle="modal" data-useruid="${user.userUID}">
+                                                <i class="material-icons text-danger" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -122,9 +124,9 @@
                             </div>
                             <div class="form-group">
                                 <label>Address</label>
-                                <input type="text" class="form-control" name="address" required>
+                                <textarea name="address" class="form-control" required></textarea>
                             </div>
-                            
+
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -143,23 +145,26 @@
                             <h4 class="modal-title">Edit User</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                        <div class="modal-body">					
+                        <div class="modal-body">
                             <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" class="form-control" required>
+                                <input type="hidden" name="userUID"/>
                             </div>
                             <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Address</label>
-                                <textarea class="form-control" required></textarea>
+                                <label>Full Name</label>
+                                <input type="text" name="fullname" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label>Phone</label>
-                                <input type="text" class="form-control" required>
-                            </div>					
+                                <input type="text" name="phone" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea name="address" class="form-control" required></textarea>
+                            </div>				
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -179,14 +184,14 @@
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">
-                            
-                            <input type="text" name="userUID" readonly="readonly" />
-                            
+                            <div class="form-group">
+                                <input type="hidden" name="userUID"/>
+                            </div>
                             <p>Are you sure you want to delete these Records?</p>
                             <p class="text-warning"><small>This action cannot be undone.</small></p>
                         </div>
                         <div class="modal-footer">
-                            
+
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                             <input type="submit" class="btn btn-danger" value="Delete">
                         </div>

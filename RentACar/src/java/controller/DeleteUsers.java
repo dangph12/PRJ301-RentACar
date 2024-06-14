@@ -29,13 +29,11 @@ public class DeleteUsers extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
 
-            String userUID = request.getParameter("useruid");
-            
-                UserDAO.getInstance().deleteUserByUserUID(userUID);
-            
+            String userUID = request.getParameter("userUID");
+            UserDAO.getInstance().deleteUserByUserUID(userUID);
             response.sendRedirect("manage");
         } catch (Exception e) {
             System.out.println(e.getMessage());

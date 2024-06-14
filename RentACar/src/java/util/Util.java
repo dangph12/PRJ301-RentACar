@@ -11,6 +11,15 @@ import java.util.UUID;
  * @author admin
  */
 public class Util {
+    private static Util instance;
+    
+    public static Util getInstance() {
+        if (instance == null) {
+            instance = new Util();
+        }
+        return instance;
+    }
+    
     public String generateUserUID() {
         UUID uuid = UUID.randomUUID();
         String userUID = uuid.toString();

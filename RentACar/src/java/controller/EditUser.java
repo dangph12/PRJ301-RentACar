@@ -5,12 +5,14 @@
 
 package controller;
 
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.User;
 
 /**
  *
@@ -29,16 +31,16 @@ public class EditUser extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet EditUser</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet EditUser at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
+            String userUID = request.getParameter("userUID");
+            String fullName = request.getParameter("fullname");
+            String phone = request.getParameter("phone");
+            String email = request.getParameter("email");
+            String address = request.getParameter("address");
+            
+            User user = new User(userUID, fullName, phone, email, address);
+            UserDAO.getInstance().editUserByUserUID(user);
+            response.sendRedirect("manage");
         }
     } 
 

@@ -15,6 +15,15 @@ import model.User;
  * @author admin
  */
 public class UserDAO {
+    
+    private static UserDAO instance;
+    
+    public static UserDAO getInstance() {
+        if (instance == null) {
+            instance = new UserDAO();
+        }
+        return instance;
+    }
 
     public ResultSet getUsersCount() throws SQLException {
 
@@ -63,15 +72,15 @@ public class UserDAO {
     }
 
     /**
-     * Deletes a user from the database by username.
+     * Deletes a user from the database by userUID.
      *
-     * @param username The username of the user to delete.
+     * @param userUID The userUID of the user to delete.
      */
-    public void deleteUserByUsername(String username) {
-        String query = "DELETE FROM [dbo].[UserLogin] WHERE [username] = ?";
+    public void deleteUserByUserUID(String userUID) {
+        String query = "DELETE FROM [Rent_A_Car].[dbo].[users] WHERE [user_uid] = ?";
 
         try (PreparedStatement pstmt = createPreparedStatement(query)) {
-            pstmt.setString(1, username);
+            pstmt.setString(1, userUID);
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -202,4 +211,25 @@ public class UserDAO {
     public UserDAO() {
     }
 
+    public void editUserByUserUID(User user) {
+        String query = """
+                         UPDATE [Rent_A_Car].[dbo].[users]
+                         SET [full_name] = ?, [phone] = ?, [email] = ?, [address] = ?
+                         WHERE [user_uid] = ?
+                       """;        
+        try (PreparedStatement pstmt = createPreparedStatement(query)) {
+            
+            pstmt.setString(1, user.getFullName());
+            pstmt.setString(2, user.getPhone());
+            pstmt.setString(3, user.getEmail());
+            pstmt.setString(4, user.getAddress());
+            pstmt.setString(5, user.getUserUID());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            //TODO: handle exception
+            System.out.println("ERROR: " + e.getMessage());
+        }
+        
+        
+    }
 }

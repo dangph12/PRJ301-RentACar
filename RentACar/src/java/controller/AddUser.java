@@ -33,16 +33,14 @@ public class AddUser extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            Util util = new Util();
-            String userUID = util.generateUserUID();
+            String userUID = Util.getInstance().generateUserUID();
             String fullName = request.getParameter("fullname");
             String phone = request.getParameter("phone");
             String email = request.getParameter("email");
             String address = request.getParameter("address");
             User user = new User(userUID, fullName, phone, email, address);
             
-            UserDAO userDAO = new UserDAO();
-            userDAO.insertUser(user);
+            UserDAO.getInstance().insertUser(user);
             response.sendRedirect("manage");
         }
     } 

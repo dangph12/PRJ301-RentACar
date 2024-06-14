@@ -47,6 +47,8 @@ public class ManageUsers extends HttpServlet {
             request.setAttribute("pagingUsersCount", pagingUsers.size());
             request.setAttribute("allUsersCount", allUsersCount);
             request.getRequestDispatcher("manage-users.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 

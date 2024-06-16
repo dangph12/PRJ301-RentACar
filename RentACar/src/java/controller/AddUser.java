@@ -41,7 +41,7 @@ public class AddUser extends HttpServlet {
             User user = new User(userUID, fullName, phone, email, address);
             
             UserDAO.getInstance().insertUser(user);
-            response.sendRedirect("manage");
+            response.sendRedirect("manage-users");
         }
     } 
 

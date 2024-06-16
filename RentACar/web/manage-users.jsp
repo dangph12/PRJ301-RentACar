@@ -32,11 +32,9 @@
                                 <h2>Manage <b>Users</b></h2>
                             </div>
                             <div class="col-sm-4">
-                                <form action="search" method="GET">
                                 <form action="manage-users" method="GET">
                                     <div class="search-box">
                                         <i class="material-icons">&#xE8B6;</i>
-                                        <input type="text" name="searchName" class="form-control" placeholder="Search&hellip;" value="${request.getParameter("searchName")}">
                                         <input type="text" name="name" class="form-control" placeholder="Search&hellip;" value="${requestScope.name}">
                                     </div>
                                 </form>
@@ -68,7 +66,6 @@
                                 <tr>
                                     <td>
                                         <span class="custom-checkbox">
-                                            <input type="checkbox" name="options[]" value="${user.userUID}">
                                             <input type="checkbox" class="check" name="options[]" value="${user.userUID}">
                                             <label for="checkbox"></label>
                                         </span>
@@ -93,9 +90,9 @@
                     <div class="clearfix">
                         <div class="hint-text">Showing <b>${pagingUsersCount}</b> out of <b>${allUsersCount}</b> entries</div>
                         <ul class="pagination">
-                            <c:forEach begin="1" end="${(allUsersCount / 7) + 1}" var="i">
+                            <c:forEach begin="1" end="${endPage}" var="i">
                                 <li class="page-item">
-                                    <a href="?page=${i}" class="page-link">${i}</a>
+                                    
                                     <c:choose>
                                         <c:when test="${requestScope.name == null}">
                                             <a href="?page=${i}" class="page-link">${i}</a>

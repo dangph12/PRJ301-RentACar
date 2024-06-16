@@ -32,20 +32,38 @@ public class ManageUsers extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
+            ArrayList<User> pagingUsers = null;
+            int allUsersCount = 0;
+            User user = new User();
 
             String page = request.getParameter("page");
             if (page == null) {
                 page = "1";
             }
             int index = Integer.parseInt(page);
-
-            User user = new User();
-            ArrayList<User> pagingUsers = user.pagingUsers(index);
-            int allUsersCount = user.getUsersCount();
-
+            
+            String name = request.getParameter("name");
+            if (name == null) {
+                pagingUsers = user.pagingUsers(index);
+                allUsersCount = user.getUsersCount();
+            } else {
+                pagingUsers = user.pagingUsersWithName(index, name);
+                allUsersCount = user.getUsersCountWithName(name);
+            }
+            
+            int endPage = 0;
+            if (allUsersCount % 7 == 0) {
+                endPage = allUsersCount / 7;
+            } else {
+                endPage = (allUsersCount / 7) + 1;
+            }
+            
             request.setAttribute("pagingUsers", pagingUsers);
             request.setAttribute("pagingUsersCount", pagingUsers.size());
             request.setAttribute("allUsersCount", allUsersCount);
+            request.setAttribute("name", name);
+            request.setAttribute("endPage", endPage);
             request.getRequestDispatcher("manage-users.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -90,5 +108,7 @@ public class ManageUsers extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    
 
 }

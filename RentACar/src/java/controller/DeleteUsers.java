@@ -33,8 +33,11 @@ public class DeleteUsers extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
 
             String userUID = request.getParameter("userUID");
-            UserDAO.getInstance().deleteUserByUserUID(userUID);
-            response.sendRedirect("manage");
+            String[] userUIDs = userUID.split(",");
+            for (String string : userUIDs) {
+                UserDAO.getInstance().deleteUserByUserUID(string);
+            }
+            response.sendRedirect("manage-users");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

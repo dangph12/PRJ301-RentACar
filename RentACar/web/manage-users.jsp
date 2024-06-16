@@ -69,6 +69,7 @@
                                     <td>
                                         <span class="custom-checkbox">
                                             <input type="checkbox" name="options[]" value="${user.userUID}">
+                                            <input type="checkbox" class="check" name="options[]" value="${user.userUID}">
                                             <label for="checkbox"></label>
                                         </span>
                                     </td>

@@ -24,6 +24,38 @@ public class UserDAO {
         }
         return instance;
     }
+    
+    public ResultSet getUsersCountWithName(String name) throws SQLException {
+        
+        String full_name = "%" + name + "%";
+
+        String query = """
+                       SELECT count(*) FROM [Rent_A_Car].[dbo].[users]
+                       WHERE full_name LIKE ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+        pstmt.setString(1, full_name);
+        return executeQuery(pstmt);
+    }
+    
+    public ResultSet pagingUsersWithNameResultSet(int index, String name) throws SQLException {
+
+        int usersCountPerPage = 7;
+        String full_name = "%" + name + "%";
+        
+        String query = """
+                       SELECT * FROM [Rent_A_Car].[dbo].[users]
+                       WHERE full_name LIKE ?
+                       ORDER BY user_uid
+                       OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+                       """;
+        
+        PreparedStatement pstmt = createPreparedStatement(query);
+        pstmt.setString(1, full_name);
+        pstmt.setInt(2, (index - 1) * usersCountPerPage);
+        pstmt.setInt(3, usersCountPerPage);
+        return executeQuery(pstmt);
+    }
 
     public ResultSet getUsersCount() throws SQLException {
 

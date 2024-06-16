@@ -11,6 +11,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import model.User;
 
 /**
  *
@@ -30,7 +32,20 @@ public class SearchUsers extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            response.sendRedirect("manage");
+            String page = request.getParameter("page");
+            if (page == null) {
+                page = "1";
+            }
+            int index = Integer.parseInt(page);
+
+            User user = new User();
+            ArrayList<User> pagingUsers = user.pagingUsers(index);
+            int allUsersCount = user.getUsersCount();
+
+            request.setAttribute("pagingUsers", pagingUsers);
+            request.setAttribute("pagingUsersCount", pagingUsers.size());
+            request.setAttribute("allUsersCount", allUsersCount);
+            request.getRequestDispatcher("manage-users.jsp").forward(request, response);
         }
     } 
 

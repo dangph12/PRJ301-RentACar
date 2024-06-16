@@ -33,9 +33,11 @@
                             </div>
                             <div class="col-sm-4">
                                 <form action="search" method="GET">
+                                <form action="manage-users" method="GET">
                                     <div class="search-box">
                                         <i class="material-icons">&#xE8B6;</i>
                                         <input type="text" name="searchName" class="form-control" placeholder="Search&hellip;" value="${request.getParameter("searchName")}">
+                                        <input type="text" name="name" class="form-control" placeholder="Search&hellip;" value="${requestScope.name}">
                                     </div>
                                 </form>
                             </div>
@@ -93,6 +95,14 @@
                             <c:forEach begin="1" end="${(allUsersCount / 7) + 1}" var="i">
                                 <li class="page-item">
                                     <a href="?page=${i}" class="page-link">${i}</a>
+                                    <c:choose>
+                                        <c:when test="${requestScope.name == null}">
+                                            <a href="?page=${i}" class="page-link">${i}</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="?page=${i}&name=${requestScope.name}" class="page-link">${i}</a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </li>
                             </c:forEach>
                         </ul>

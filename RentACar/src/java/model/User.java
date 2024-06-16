@@ -15,6 +15,42 @@ import java.util.ArrayList;
  */
 public class User {
     
+    public int getUsersCountWithName(String name) {
+        
+        UserDAO userDAO = new UserDAO();
+        int count = 0;
+        try {
+            ResultSet rs = userDAO.getUsersCountWithName(name);
+            while (rs.next()) {                
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return count;
+    }
+    
+    public ArrayList<User> pagingUsersWithName(int index, String name) {
+        ArrayList<User> allUsers = new ArrayList<>();
+        UserDAO userDAO = new UserDAO();
+        
+        try {
+             ResultSet rs = userDAO.pagingUsersWithNameResultSet(index, name);
+             while (rs.next()) {                
+                String userUID = rs.getString("user_uid");
+                String fullName = rs.getString("full_name");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                User user = new User(userUID, fullName, phone, email, address);
+                allUsers.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allUsers;
+    }
+    
     public int getUsersCount() {
         
         UserDAO userDAO = new UserDAO();
@@ -163,8 +199,8 @@ public class User {
     }
 
     public static void main(String[] args) {
-                    User user = new User();
-            ArrayList<User> pagingUsers = user.pagingUsers(1);
-            int allUsersCount = user.getUsersCount();
+        User user = new User();
+            ArrayList<User> pagingUsers = user.pagingUsersWithName(1, "23");
+            int allUsersCount = user.getUsersCountWithName("23");
     }
 }

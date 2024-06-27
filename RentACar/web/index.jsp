@@ -6,7 +6,6 @@
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%! int i = 1; %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -37,11 +36,11 @@
     </head>
     <body>
         <div class="container">
+            <c:set var="i" value="0"/>
             <c:forEach var="category" items="${requestScope.categories}">
-                <c:if test="${i % 3 == 0}">
-                    <div class="row"> <%=i%> </div>
-                </c:if>
-                
+                <c:if test="${i%3 == 0}">
+                    <div class="row">
+                    </c:if>
                     <div class="col-lg-4">
                         <form action="checkout" method="POST">
                             <div class="item">
@@ -60,8 +59,11 @@
                                 </div>
                             </div>
                         </form>
-                    </div>         
-                <%i++;%>
+                    </div>  
+                    <c:if test="${i%3 == 2}">
+                    </div>
+                </c:if>
+                <c:set var="i" value="${i+1}"/>
             </c:forEach>
         </div>
         <ul class="listPage"></ul>

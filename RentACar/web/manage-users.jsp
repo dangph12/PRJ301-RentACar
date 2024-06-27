@@ -112,7 +112,7 @@
         <div id="addUserModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="add" method="POST">
+                    <form action="add-user" method="POST">
                         <div class="modal-header">						
                             <h4 class="modal-title">Add User</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -153,7 +153,7 @@
                             <h4 class="modal-title">Edit User</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                    <form action="edit" method="POST">
+                    <form action="edit-user" method="POST">
                         <div class="modal-body">
                             <div class="form-group">
                                 <input type="hidden" name="userUID"/>
@@ -187,7 +187,7 @@
         <div id="deleteUserModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="delete" method="POST">
+                    <form action="delete-users" method="POST">
                         <div class="modal-header">						
                             <h4 class="modal-title">Delete User</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

@@ -3,10 +3,10 @@
     <servlet>
         <servlet-name>ManageUsers</servlet-name>
         <servlet-class>controller.ManageUsers</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SearchUsers</servlet-name>
-        <servlet-class>controller.SearchUsers</servlet-class>
+        <init-param>
+            <param-name>page</param-name>
+            <param-value>1</param-value>
+        </init-param>
     </servlet>
     <servlet>
         <servlet-name>DeleteUsers</servlet-name>
@@ -20,24 +20,28 @@
         <servlet-name>EditUser</servlet-name>
         <servlet-class>controller.EditUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Main</servlet-name>
+        <servlet-class>controller.Main</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ManageUsers</servlet-name>
         <url-pattern>/manage-users</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SearchUsers</servlet-name>
-        <url-pattern>/search</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>DeleteUsers</servlet-name>
-        <url-pattern>/delete</url-pattern>
+        <url-pattern>/delete-users</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddUser</servlet-name>
-        <url-pattern>/add</url-pattern>
+        <url-pattern>/add-user</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditUser</servlet-name>
-        <url-pattern>/edit</url-pattern>
+        <url-pattern>/edit-user</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Main</servlet-name>
+        <url-pattern>/main</url-pattern>
     </servlet-mapping>
 </web-app>

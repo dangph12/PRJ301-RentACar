@@ -45,6 +45,11 @@ body{
     letter-spacing: 3px;
     margin-bottom:10px;
 }
+.item .content .number-of-seats{
+    font-size: large;
+    letter-spacing: 3px;
+    margin-bottom:10px;
+}
 .item .content .add{
     background-color: #E76F51;
     padding:20px;
@@ -52,6 +57,7 @@ body{
     width:100%;
     border:none;
     border-radius: 30px;
+    font-size: x-large;
 }
 .item:hover img{
     transform: translate(0,-50px);

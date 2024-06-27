@@ -50,20 +50,3 @@ function changePage(i) {
   loadItem();
   window.scrollTo(0, 0);
 }
-
-// search content
-var search = document.getElementById("search");
-search.onkeyup = (e) => {
-  const text = e.target.value;
-  const items = document.querySelectorAll(".item");
-  for (let i = 0; i < items.length; i++) {
-    const matchText = items[i].querySelector(".title").innerText;
-    console.log(text);
-    console.log(matchText);
-    if (matchText && matchText.toLowerCase().indexOf(text.toLowerCase()) > -1) {
-      items[i].style.display = "block";
-    } else {
-      items[i].style.display = "none";
-    }
-  }
-};

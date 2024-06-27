@@ -32,7 +32,7 @@ public class ManageUsers extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+
             ArrayList<User> pagingUsers = null;
             int allUsersCount = 0;
             User user = new User();
@@ -42,7 +42,7 @@ public class ManageUsers extends HttpServlet {
                 page = "1";
             }
             int index = Integer.parseInt(page);
-            
+
             String name = request.getParameter("name");
             if (name == null) {
                 pagingUsers = user.pagingUsers(index);
@@ -51,14 +51,14 @@ public class ManageUsers extends HttpServlet {
                 pagingUsers = user.pagingUsersWithName(index, name);
                 allUsersCount = user.getUsersCountWithName(name);
             }
-            
+
             int endPage = 0;
             if (allUsersCount % 7 == 0) {
                 endPage = allUsersCount / 7;
             } else {
                 endPage = (allUsersCount / 7) + 1;
             }
-            
+
             request.setAttribute("pagingUsers", pagingUsers);
             request.setAttribute("pagingUsersCount", pagingUsers.size());
             request.setAttribute("allUsersCount", allUsersCount);
@@ -108,7 +108,5 @@ public class ManageUsers extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    
 
 }

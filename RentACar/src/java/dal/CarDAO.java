@@ -14,6 +14,21 @@ import java.sql.SQLException;
  * @author admin
  */
 public class CarDAO {
+    
+    public ResultSet getAvailableCarsEachCategory(String categoryUID, int carCount) throws SQLException {
+        String query = """
+                           SELECT TOP(?) [car_number_plate]
+                                    ,[status]
+                                    ,b.[category_uid]
+                           FROM categories a, cars b
+                           WHERE a.category_uid = b.category_uid AND b.status = 1
+                           AND a.category_uid = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+        pstmt.setInt(1, carCount);
+        pstmt.setString(2, categoryUID);
+        return executeQuery(pstmt);
+    }
 
     public ResultSet getAvailableCarsEachCategory(String categoryUID) throws SQLException {
         String query = """

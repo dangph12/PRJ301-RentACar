@@ -5,7 +5,6 @@
 
 package controller.dashboard.users;
 
-import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -33,14 +32,15 @@ public class AddUser extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            User userInstance = new User();
             String userUID = Util.getInstance().generateUserUID();
             String fullName = request.getParameter("fullname");
             String phone = request.getParameter("phone");
             String email = request.getParameter("email");
             String address = request.getParameter("address");
             User user = new User(userUID, fullName, phone, email, address);
+            userInstance.insertUserToDatabases(user);
             
-            UserDAO.getInstance().insertUser(user);
             response.sendRedirect("manage-users");
         }
     } 

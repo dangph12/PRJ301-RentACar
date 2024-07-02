@@ -35,7 +35,7 @@ public class Checkouts extends HttpServlet {
             String categoryUID = request.getParameter("category-uid");
             Category selectedCategory = category.getCategoryWithAvailableCars(categoryUID);
             
-            request.getSession().setAttribute(categoryUID, selectedCategory);
+            //request.getSession().setAttribute(categoryUID, selectedCategory);
             
             request.setAttribute("categoryUID", categoryUID);
             request.setAttribute("selectedCategory", selectedCategory);

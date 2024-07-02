@@ -4,12 +4,30 @@
  */
 package model;
 
+import dal.CarDAO;
+import java.sql.SQLException;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
  */
 public class Order {
-
+    
+    public ArrayList<Order> createOrders(Order order, String categoryUID, int carCount) {
+        ArrayList<Order> orders = new ArrayList<>();
+        try {
+            ResultSet cars = CarDAO.getInstance().getAvailableCarsEachCategory(categoryUID, carCount);
+            while (cars.next()) {                
+                
+            }
+        } catch (SQLException e) {
+        }
+        return orders;
+    }
+    
     private String orderUID;
 
     /**
@@ -90,14 +108,14 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    private String receivedDate;
+    private Date receivedDate;
 
     /**
      * Get the value of receivedDate
      *
      * @return the value of receivedDate
      */
-    public String getReceivedDate() {
+    public Date getReceivedDate() {
         return receivedDate;
     }
 
@@ -106,18 +124,18 @@ public class Order {
      *
      * @param receivedDate new value of receivedDate
      */
-    public void setReceivedDate(String receivedDate) {
+    public void setReceivedDate(Date receivedDate) {
         this.receivedDate = receivedDate;
     }
 
-    private String returnedDate;
+    private Date returnedDate;
 
     /**
      * Get the value of returnedDate
      *
      * @return the value of returnedDate
      */
-    public String getReturnedDate() {
+    public Date getReturnedDate() {
         return returnedDate;
     }
 
@@ -126,18 +144,18 @@ public class Order {
      *
      * @param returnedDate new value of returnedDate
      */
-    public void setReturnedDate(String returnedDate) {
+    public void setReturnedDate(Date returnedDate) {
         this.returnedDate = returnedDate;
     }
 
-    private String createdDate;
+    private Date createdDate;
 
     /**
      * Get the value of createdDate
      *
      * @return the value of createdDate
      */
-    public String getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
@@ -146,18 +164,26 @@ public class Order {
      *
      * @param createdDate new value of createdDate
      */
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
     public Order() {
     }
 
-    public Order(String orderUID, String userUID, String carNumberPlate, OrderStatus orderStatus, String receivedDate, String returnedDate, String createdDate) {
+    public Order(String orderUID, String userUID, String carNumberPlate, OrderStatus orderStatus, Date receivedDate, Date returnedDate, Date createdDate) {
         this.orderUID = orderUID;
         this.userUID = userUID;
         this.carNumberPlate = carNumberPlate;
         this.orderStatus = orderStatus;
+        this.receivedDate = receivedDate;
+        this.returnedDate = returnedDate;
+        this.createdDate = createdDate;
+    }
+
+    public Order(String orderUID, String userUID, Date receivedDate, Date returnedDate, Date createdDate) {
+        this.orderUID = orderUID;
+        this.userUID = userUID;
         this.receivedDate = receivedDate;
         this.returnedDate = returnedDate;
         this.createdDate = createdDate;

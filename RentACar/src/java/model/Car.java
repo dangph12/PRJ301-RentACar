@@ -73,7 +73,7 @@ public class Car {
     /**
      * Set the value of status
      *
-     * @param status new value of status
+     * @param carStatus new value of status
      */
     public void setCarStatus(CarStatus carStatus) {
         this.carStatus = carStatus;

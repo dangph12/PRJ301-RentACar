@@ -15,6 +15,10 @@ import java.util.ArrayList;
  */
 public class User {
     
+    public void insertUserToDatabases(User user) {
+        UserDAO.getInstance().insertUser(user);
+    }
+    
     public int getUsersCountWithName(String name) {
         
         UserDAO userDAO = new UserDAO();

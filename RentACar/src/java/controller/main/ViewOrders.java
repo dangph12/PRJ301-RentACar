@@ -11,8 +11,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Category;
-import java.sql.Date;
 
 /**
  *
@@ -31,21 +29,16 @@ public class ViewOrders extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String fullName = request.getParameter("fullname");
-            String phone = request.getParameter("phone");
-            String email = request.getParameter("email");
-            String address = request.getParameter("address");
-            
-            String count = request.getParameter("car-count");
-            String receivedDate = request.getParameter("received-at");
-            Date date = Date.valueOf(receivedDate);
-            String days = request.getParameter("days");
-            int carCount = Integer.parseInt(count);
-            
-            String categoryUID = request.getParameter("selected-category-uid");
-            Category selectedCategory = (Category) request.getSession().getAttribute(categoryUID);
-            
-            request.getRequestDispatcher("view-orders.jsp").forward(request, response);
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ViewOrders</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ViewOrders at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     } 
 

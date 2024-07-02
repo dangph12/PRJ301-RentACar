@@ -29,6 +29,10 @@
         <servlet-class>controller.main.Checkouts</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>FinishOrders</servlet-name>
+        <servlet-class>controller.main.FinishOrders</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ViewOrders</servlet-name>
         <servlet-class>controller.main.ViewOrders</servlet-class>
     </servlet>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>Checkouts</servlet-name>
         <url-pattern>/checkouts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FinishOrders</servlet-name>
+        <url-pattern>/finish-orders</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ViewOrders</servlet-name>

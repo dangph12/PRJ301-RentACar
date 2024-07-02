@@ -5,7 +5,6 @@
 package model;
 
 import dal.CategoryDAO;
-import jakarta.servlet.jsp.tagext.TryCatchFinally;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,8 +53,10 @@ public class Category {
 
         Car car = new Car();
         ArrayList<Car> availableCars = car.getAvailableCarsEachCategory(categoryUID);
-        category.setAvailableCars(availableCars);
-        
+        if (category != null) {
+            category.setCars(availableCars);
+        }
+
         return category;
     }
 
@@ -179,24 +180,24 @@ public class Category {
         this.image = image;
     }
 
-    private ArrayList<Car> availableCars;
+    private ArrayList<Car> cars;
 
     /**
-     * Get the value of availableCars
+     * Get the value of cars
      *
-     * @return the value of availableCars
+     * @return the value of cars
      */
-    public ArrayList<Car> getAvailableCars() {
-        return availableCars;
+    public ArrayList<Car> getCars() {
+        return cars;
     }
 
     /**
-     * Set the value of availableCars
+     * Set the value of cars
      *
-     * @param availableCars new value of availableCars
+     * @param cars new value of cars
      */
-    public void setAvailableCars(ArrayList<Car> availableCars) {
-        this.availableCars = availableCars;
+    public void setCars(ArrayList<Car> cars) {
+        this.cars = cars;
     }
 
     public Category() {

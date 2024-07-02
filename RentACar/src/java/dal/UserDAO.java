@@ -78,15 +78,30 @@ public class UserDAO {
      * @param user The User object to insert.
      */
     public void insertUser(User user) {
-        String query = "INSERT INTO [Rent_A_Car].[dbo].[users]"
-                + "([user_uid], [full_name], [phone], [email], [address]) "
-                + "VALUES (?,?,?,?,?)";
+        String query = """
+                       INSERT INTO [Rent_A_Car].[dbo].[users-information]
+                       ([user_uid], [full_name], [address])
+                       VALUES (?,?,?)
+                       """;
         try (PreparedStatement pstmt = createPreparedStatement(query)) {
             pstmt.setString(1, user.getUserUID());
             pstmt.setString(2, user.getFullName());
-            pstmt.setString(3, user.getPhone());
-            pstmt.setString(4, user.getEmail());
-            pstmt.setString(5, user.getAddress());
+            pstmt.setString(3, user.getAddress());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            //TODO: handle exception
+            System.out.println("ERROR: " + e.getMessage());
+        }
+        
+        query = """
+                       INSERT INTO [Rent_A_Car].[dbo].[users-auth]
+                       ([user_uid], [phone], [email])
+                       VALUES (?,?,?)
+                       """;
+        try (PreparedStatement pstmt = createPreparedStatement(query)) {
+            pstmt.setString(1, user.getUserUID());
+            pstmt.setString(2, user.getPhone());
+            pstmt.setString(3, user.getEmail());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             //TODO: handle exception

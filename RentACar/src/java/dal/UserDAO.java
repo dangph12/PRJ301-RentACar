@@ -15,18 +15,9 @@ import model.User;
  * @author admin
  */
 public class UserDAO {
-    
-    private static UserDAO instance;
-    
-    public static UserDAO getInstance() {
-        if (instance == null) {
-            instance = new UserDAO();
-        }
-        return instance;
-    }
-    
+
     public ResultSet getUsersCountWithName(String name) throws SQLException {
-        
+
         String full_name = "%" + name + "%";
 
         String query = """
@@ -37,19 +28,19 @@ public class UserDAO {
         pstmt.setString(1, full_name);
         return executeQuery(pstmt);
     }
-    
+
     public ResultSet pagingUsersWithNameResultSet(int index, String name) throws SQLException {
 
         int usersCountPerPage = 7;
         String full_name = "%" + name + "%";
-        
+
         String query = """
                        SELECT * FROM [Rent_A_Car].[dbo].[users]
                        WHERE full_name LIKE ?
                        ORDER BY user_uid
                        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                        """;
-        
+
         PreparedStatement pstmt = createPreparedStatement(query);
         pstmt.setString(1, full_name);
         pstmt.setInt(2, (index - 1) * usersCountPerPage);
@@ -213,6 +204,15 @@ public class UserDAO {
         return flag;
     }
 
+    private static UserDAO instance;
+
+    public static UserDAO getInstance() {
+        if (instance == null) {
+            instance = new UserDAO();
+        }
+        return instance;
+    }
+
     /**
      * Create instance for PreparedStatement class
      *
@@ -248,9 +248,9 @@ public class UserDAO {
                          UPDATE [Rent_A_Car].[dbo].[users]
                          SET [full_name] = ?, [phone] = ?, [email] = ?, [address] = ?
                          WHERE [user_uid] = ?
-                       """;        
+                       """;
         try (PreparedStatement pstmt = createPreparedStatement(query)) {
-            
+
             pstmt.setString(1, user.getFullName());
             pstmt.setString(2, user.getPhone());
             pstmt.setString(3, user.getEmail());
@@ -261,7 +261,6 @@ public class UserDAO {
             //TODO: handle exception
             System.out.println("ERROR: " + e.getMessage());
         }
-        
-        
+
     }
 }

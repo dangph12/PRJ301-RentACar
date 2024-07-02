@@ -1,23 +1,22 @@
-package controller;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+package controller.dashboard.users;
+
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import model.User;
 
 /**
  *
  * @author admin
  */
-public class ManageUsers extends HttpServlet {
+public class DeleteUsers extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,38 +32,12 @@ public class ManageUsers extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
 
-            ArrayList<User> pagingUsers = null;
-            int allUsersCount = 0;
-            User user = new User();
-
-            String page = request.getParameter("page");
-            if (page == null) {
-                page = "1";
+            String userUID = request.getParameter("userUID");
+            String[] userUIDs = userUID.split(",");
+            for (String string : userUIDs) {
+                UserDAO.getInstance().deleteUserByUserUID(string);
             }
-            int index = Integer.parseInt(page);
-
-            String name = request.getParameter("name");
-            if (name == null) {
-                pagingUsers = user.pagingUsers(index);
-                allUsersCount = user.getUsersCount();
-            } else {
-                pagingUsers = user.pagingUsersWithName(index, name);
-                allUsersCount = user.getUsersCountWithName(name);
-            }
-
-            int endPage = 0;
-            if (allUsersCount % 7 == 0) {
-                endPage = allUsersCount / 7;
-            } else {
-                endPage = (allUsersCount / 7) + 1;
-            }
-
-            request.setAttribute("pagingUsers", pagingUsers);
-            request.setAttribute("pagingUsersCount", pagingUsers.size());
-            request.setAttribute("allUsersCount", allUsersCount);
-            request.setAttribute("name", name);
-            request.setAttribute("endPage", endPage);
-            request.getRequestDispatcher("manage-users.jsp").forward(request, response);
+            response.sendRedirect("manage-users");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -13,41 +13,27 @@ import java.sql.SQLException;
  *
  * @author admin
  */
-public class CategoryDAO {
+public class CarDAO {
 
-    public ResultSet getAllCategories() throws SQLException {
+    public ResultSet getAvailableCarsEachCategory(String categoryUID) throws SQLException {
         String query = """
-                       SELECT [category_uid]
-                             ,[title]
-                             ,[description]
-                             ,[number_of_seats]
-                             ,[unit_price]
-                             ,[image]
-                         FROM [Rent_A_Car].[dbo].[categories]""";
-        PreparedStatement pstmt = createPreparedStatement(query);
-        return executeQuery(pstmt);
-    }
-
-    public ResultSet getCategoryByUID(String categoryUID) throws SQLException {
-        String query = """
-                       SELECT [category_uid]
-                             ,[title]
-                             ,[description]
-                             ,[number_of_seats]
-                             ,[unit_price]
-                             ,[image]
-                         FROM [Rent_A_Car].[dbo].[categories]
-                       WHERE [category_uid] = ?""";
+                           SELECT   [car_number_plate]
+                                    ,[status]
+                                    ,b.[category_uid]
+                           FROM categories a, cars b
+                           WHERE a.category_uid = b.category_uid AND b.status = 1
+                           AND a.category_uid = ?
+                       """;
         PreparedStatement pstmt = createPreparedStatement(query);
         pstmt.setString(1, categoryUID);
         return executeQuery(pstmt);
     }
 
-    private static CategoryDAO instance;
+    private static CarDAO instance;
 
-    public static CategoryDAO getInstance() {
+    public static CarDAO getInstance() {
         if (instance == null) {
-            instance = new CategoryDAO();
+            instance = new CarDAO();
         }
         return instance;
     }
@@ -79,7 +65,7 @@ public class CategoryDAO {
         return pstmt.executeQuery();
     }
 
-    public CategoryDAO() {
+    public CarDAO() {
     }
 
 }

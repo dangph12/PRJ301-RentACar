@@ -4,61 +4,70 @@
  */
 package model;
 
+import dal.CarDAO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
  */
 public class Car {
+
+    public ArrayList<Car> getAvailableCarsEachCategory(String categoryUID) {
+        ArrayList<Car> availableCars = new ArrayList<>();
+        try {
+            ResultSet availableCarsEachCategory = CarDAO.getInstance().getAvailableCarsEachCategory(categoryUID);
+            while (availableCarsEachCategory.next()) {
+                String carNumberPlate = availableCarsEachCategory.getString("car_number_plate");
+                CarStatus carStatus = CarStatus.AVAILABLE;
+                Car car = new Car(carNumberPlate, carStatus, categoryUID);
+                availableCars.add(car);
+            }
+        } catch (SQLException e) {
+        }
+        return availableCars;
+    }
     
-    private String carUID;
+    public CarStatus getStatusByKey(int key) {
+        for (CarStatus status: CarStatus.values()) {
+            if (status.getKey() == key) {
+                return status;
+            }
+        }
+        return CarStatus.INVALID;
+    }
+
+    private String carNumberPlate;
 
     /**
-     * Get the value of carUID
+     * Get the value of carNumberPlate
      *
-     * @return the value of carUID
+     * @return the value of carNumberPlate
      */
-    public String getCarUID() {
-        return carUID;
+    public String getCarNumberPlate() {
+        return carNumberPlate;
     }
 
     /**
-     * Set the value of carUID
+     * Set the value of carNumberPlate
      *
-     * @param carUID new value of carUID
+     * @param carNumberPlate new value of carNumberPlate
      */
-    public void setCarUID(String carUID) {
-        this.carUID = carUID;
+    public void setCarNumberPlate(String carNumberPlate) {
+        this.carNumberPlate = carNumberPlate;
     }
 
-    private String numberPlate;
-
-    /**
-     * Get the value of numberPlate
-     *
-     * @return the value of numberPlate
-     */
-    public String getNumberPlate() {
-        return numberPlate;
-    }
-
-    /**
-     * Set the value of numberPlate
-     *
-     * @param numberPlate new value of numberPlate
-     */
-    public void setNumberPlate(String numberPlate) {
-        this.numberPlate = numberPlate;
-    }
-
-    private Status status;
+    private CarStatus carStatus;
 
     /**
      * Get the value of status
      *
      * @return the value of status
      */
-    public Status getStatus() {
-        return status;
+    public CarStatus getCarStatus() {
+        return carStatus;
     }
 
     /**
@@ -66,8 +75,37 @@ public class Car {
      *
      * @param status new value of status
      */
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setCarStatus(CarStatus carStatus) {
+        this.carStatus = carStatus;
+    }
+
+    private String categoryUID;
+
+    /**
+     * Get the value of categoryUID
+     *
+     * @return the value of categoryUID
+     */
+    public String getCategoryUID() {
+        return categoryUID;
+    }
+
+    /**
+     * Set the value of categoryUID
+     *
+     * @param categoryUID new value of categoryUID
+     */
+    public void setCategoryUID(String categoryUID) {
+        this.categoryUID = categoryUID;
+    }
+
+    public Car() {
+    }
+
+    public Car(String carNumberPlate, CarStatus carStatus, String categoryUID) {
+        this.carNumberPlate = carNumberPlate;
+        this.carStatus = carStatus;
+        this.categoryUID = categoryUID;
     }
 
 }

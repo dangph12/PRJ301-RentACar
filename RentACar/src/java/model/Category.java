@@ -5,6 +5,7 @@
 package model;
 
 import dal.CategoryDAO;
+import jakarta.servlet.jsp.tagext.TryCatchFinally;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,14 +20,14 @@ public class Category {
         ArrayList<Category> allCategories = new ArrayList<>();
 
         try {
-            ResultSet rs = CategoryDAO.getInstance().getAllCategories();
-            while (rs.next()) {
-                String categoryUID = rs.getString("category_uid");
-                String title = rs.getString("title");
-                String description = rs.getNString("description");
-                int numberOfSeats = rs.getInt("number_of_seats");
-                int unitPrice = rs.getInt("unit_price");
-                String image = rs.getString("image");
+            ResultSet categoryResultSet = CategoryDAO.getInstance().getAllCategories();
+            while (categoryResultSet.next()) {
+                String categoryUID = categoryResultSet.getString("category_uid");
+                String title = categoryResultSet.getString("title");
+                String description = categoryResultSet.getNString("description");
+                int numberOfSeats = categoryResultSet.getInt("number_of_seats");
+                int unitPrice = categoryResultSet.getInt("unit_price");
+                String image = categoryResultSet.getString("image");
                 Category category = new Category(categoryUID, title, description, numberOfSeats, unitPrice, image);
                 allCategories.add(category);
             }
@@ -34,6 +35,28 @@ public class Category {
             System.out.println(e.getMessage());
         }
         return allCategories;
+    }
+
+    public Category getCategoryWithAvailableCars(String categoryUID) {
+        Category category = null;
+        try {
+            ResultSet categoryResultSet = CategoryDAO.getInstance().getCategoryByUID(categoryUID);
+            while (categoryResultSet.next()) {
+                String title = categoryResultSet.getString("title");
+                String description = categoryResultSet.getNString("description");
+                int numberOfSeats = categoryResultSet.getInt("number_of_seats");
+                int unitPrice = categoryResultSet.getInt("unit_price");
+                String image = categoryResultSet.getString("image");
+                category = new Category(categoryUID, title, description, numberOfSeats, unitPrice, image);
+            }
+        } catch (SQLException e) {
+        }
+
+        Car car = new Car();
+        ArrayList<Car> availableCars = car.getAvailableCarsEachCategory(categoryUID);
+        category.setAvailableCars(availableCars);
+        
+        return category;
     }
 
     private String categoryUID;
@@ -156,24 +179,24 @@ public class Category {
         this.image = image;
     }
 
-    private ArrayList<Car> activeCars;
+    private ArrayList<Car> availableCars;
 
     /**
-     * Get the value of activeCars
+     * Get the value of availableCars
      *
-     * @return the value of activeCars
+     * @return the value of availableCars
      */
-    public ArrayList<Car> getActiveCars() {
-        return activeCars;
+    public ArrayList<Car> getAvailableCars() {
+        return availableCars;
     }
 
     /**
-     * Set the value of activeCars
+     * Set the value of availableCars
      *
-     * @param activeCars new value of activeCars
+     * @param availableCars new value of availableCars
      */
-    public void setActiveCars(ArrayList<Car> activeCars) {
-        this.activeCars = activeCars;
+    public void setAvailableCars(ArrayList<Car> availableCars) {
+        this.availableCars = availableCars;
     }
 
     public Category() {

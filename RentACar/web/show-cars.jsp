@@ -42,7 +42,7 @@
                     <div class="row">
                     </c:if>
                     <div class="col-lg-4">
-                        <form action="checkout" method="POST">
+                        <form action="checkouts" method="POST">
                             <div class="item">
                                 <input type="hidden" name="category-uid" value="${category.categoryUID}" />
                                 <div class="img">
@@ -54,7 +54,7 @@
                                         ${category.description}  
                                     </div>
                                     <div class="number-of-seats">Số ghế: ${category.numberOfSeats}</div>
-                                    <div class="price">${category.unitPrice} VND</div>
+                                    <div class="price">${category.unitPrice} VND/xe/ngày</div>
                                     <button type="submit" class="add">Đặt xe ngay</button>
                                 </div>
                             </div>

@@ -2,7 +2,7 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
         <servlet-name>ManageUsers</servlet-name>
-        <servlet-class>controller.ManageUsers</servlet-class>
+        <servlet-class>controller.dashboard.users.ManageUsers</servlet-class>
         <init-param>
             <param-name>page</param-name>
             <param-value>1</param-value>
@@ -10,19 +10,27 @@
     </servlet>
     <servlet>
         <servlet-name>DeleteUsers</servlet-name>
-        <servlet-class>controller.DeleteUsers</servlet-class>
+        <servlet-class>controller.dashboard.users.DeleteUsers</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddUser</servlet-name>
-        <servlet-class>controller.AddUser</servlet-class>
+        <servlet-class>controller.dashboard.users.AddUser</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditUser</servlet-name>
-        <servlet-class>controller.EditUser</servlet-class>
+        <servlet-class>controller.dashboard.users.EditUser</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Main</servlet-name>
-        <servlet-class>controller.Main</servlet-class>
+        <servlet-name>ShowCars</servlet-name>
+        <servlet-class>controller.main.ShowCars</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Checkouts</servlet-name>
+        <servlet-class>controller.main.Checkouts</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewOrders</servlet-name>
+        <servlet-class>controller.main.ViewOrders</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ManageUsers</servlet-name>
@@ -41,7 +49,15 @@
         <url-pattern>/edit-user</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Main</servlet-name>
-        <url-pattern>/main</url-pattern>
+        <servlet-name>ShowCars</servlet-name>
+        <url-pattern>/show-cars</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Checkouts</servlet-name>
+        <url-pattern>/checkouts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewOrders</servlet-name>
+        <url-pattern>/view-orders</url-pattern>
     </servlet-mapping>
 </web-app>

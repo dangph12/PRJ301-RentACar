@@ -16,15 +16,13 @@ import java.util.ArrayList;
 public class User {
     
     public void insertUserToDatabases(User user) {
-        UserDAO.getInstance().insertUser(user);
+        UserDAO.getInstance().insertUserToDatabases(user);
     }
     
     public int getUsersCountWithName(String name) {
-        
-        UserDAO userDAO = new UserDAO();
         int count = 0;
         try {
-            ResultSet rs = userDAO.getUsersCountWithName(name);
+            ResultSet rs = UserDAO.getInstance().getUsersCountWithName(name);
             while (rs.next()) {                
                 count = rs.getInt(1);
             }
@@ -36,10 +34,9 @@ public class User {
     
     public ArrayList<User> pagingUsersWithName(int index, String name) {
         ArrayList<User> allUsers = new ArrayList<>();
-        UserDAO userDAO = new UserDAO();
         
         try {
-             ResultSet rs = userDAO.pagingUsersWithNameResultSet(index, name);
+             ResultSet rs = UserDAO.getInstance().pagingUsersWithName(index, name);
              while (rs.next()) {                
                 String userUID = rs.getString("user_uid");
                 String fullName = rs.getString("full_name");
@@ -57,10 +54,9 @@ public class User {
     
     public int getUsersCount() {
         
-        UserDAO userDAO = new UserDAO();
         int count = 0;
         try {
-            ResultSet rs = userDAO.getUsersCount();
+            ResultSet rs = UserDAO.getInstance().getUsersCount();
             while (rs.next()) {                
                 count = rs.getInt(1);
             }
@@ -72,10 +68,9 @@ public class User {
     
     public ArrayList<User> pagingUsers(int index) {
         ArrayList<User> allUsers = new ArrayList<>();
-        UserDAO userDAO = new UserDAO();
         
         try {
-             ResultSet rs = userDAO.pagingUsersResultSet(index);
+             ResultSet rs = UserDAO.getInstance().pagingUsers(index);
              while (rs.next()) {                
                 String userUID = rs.getString("user_uid");
                 String fullName = rs.getString("full_name");

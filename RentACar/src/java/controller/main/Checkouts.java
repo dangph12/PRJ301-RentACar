@@ -40,6 +40,8 @@ public class Checkouts extends HttpServlet {
             request.setAttribute("categoryUID", categoryUID);
             request.setAttribute("selectedCategory", selectedCategory);
             request.getRequestDispatcher("checkouts.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println("");
         }
     } 
 

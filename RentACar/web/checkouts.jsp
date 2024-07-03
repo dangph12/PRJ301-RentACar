@@ -47,9 +47,11 @@
                             <div class="form-group">
                                 <input type="hidden" name="selected-category-uid" value="${requestScope.categoryUID}">
                                 <div>${requestScope.selectedCategory.title}</div>
-                                <div>Car's count: <input type="number" name="car-count" min="1" max="${requestScope.selectedCategory.availableCars.size()}" value="1"/></div>
+                                <div>Car's count: <input type="number" name="car-count" min="1" max="30" value="1"/></div>
                                 <div>Received at: <input type="date" name="received-at" value="" /></div>
                                 <div>Number of days: <input type="number" name="rental-days" min="1" max="30" value="1" /></div>
+                                <input type="radio" name="payment-method" value="1" checked="checked" />
+                                <input type="text" name="total-amount" value="${requestScope.selectedCategory.unitPrice}" />
                             </div>
                         </div>
                         <div class="modal-footer">

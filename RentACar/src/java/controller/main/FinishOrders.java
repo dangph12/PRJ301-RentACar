@@ -39,12 +39,12 @@ public class FinishOrders extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
 
             User userInstance = new User();
-            String userUID = Util.getInstance().generateUserUID();
+            String userUID = Util.getInstance().generateUUID();
             User user = createNewUser(request, userUID);
             userInstance.insertUserToDatabases(user);
 
             Order orderInstance = new Order();
-            String orderUID = Util.getInstance().generateUserUID();
+            String orderUID = Util.getInstance().generateUUID();
             Order order = createNewOrder(request, orderUID, userUID);
             orderInstance.insertOrderToDatabases(order);
 

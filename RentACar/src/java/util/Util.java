@@ -20,7 +20,7 @@ public class Util {
         return instance;
     }
     
-    public String generateUserUID() {
+    public String generateUUID() {
         UUID uuid = UUID.randomUUID();
         String userUID = uuid.toString();
         return userUID;

@@ -33,7 +33,7 @@ public class AddUser extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             User userInstance = new User();
-            String userUID = Util.getInstance().generateUserUID();
+            String userUID = Util.getInstance().generateUUID();
             String fullName = request.getParameter("fullname");
             String phone = request.getParameter("phone");
             String email = request.getParameter("email");

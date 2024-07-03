@@ -6,6 +6,7 @@ package model;
 
 import dal.BillDAO;
 import java.sql.Date;
+import java.sql.SQLException;
 
 /**
  *
@@ -14,7 +15,10 @@ import java.sql.Date;
 public class Bill {
     
     public void insertBillToDatabases(Bill bill) {
-        BillDAO.getInstance().insertBill(bill);
+        try {
+            BillDAO.getInstance().insertBillToDatabases(bill);
+        } catch (SQLException e) {
+        }
     }
 
     private String orderUID;

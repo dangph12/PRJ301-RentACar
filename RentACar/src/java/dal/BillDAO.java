@@ -15,26 +15,25 @@ import model.Bill;
  * @author admin
  */
 public class BillDAO {
-    
-    public void insertBill(Bill bill) {
+
+    public void insertBillToDatabases(Bill bill) throws SQLException {
         String query = """
                        INSERT INTO [Rent_A_Car].[dbo].[bills]
                        ([order_uid],[total_amount],[payment_method],[is_paid],[created_at])
                        VALUES (?,?,?,?,?)
                        """;
-        try (PreparedStatement pstmt = createPreparedStatement(query)) {
-            pstmt.setString(1, bill.getOrderUID());
-            pstmt.setInt(2, bill.getTotalAmount());
-            pstmt.setInt(3, bill.getPaymentMethod());
-            pstmt.setBoolean(4, bill.isPaid());
-            pstmt.setDate(5, bill.getCreatedDate());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            //TODO: handle exception
-            System.out.println("ERROR: " + e.getMessage());
-        }
+        PreparedStatement pstmt = createPreparedStatement(query);
+        
+        pstmt.setString(1, bill.getOrderUID());
+        pstmt.setInt(2, bill.getTotalAmount());
+        pstmt.setInt(3, bill.getPaymentMethod());
+        pstmt.setBoolean(4, bill.isPaid());
+        pstmt.setDate(5, bill.getCreatedDate());
+        
+        pstmt.executeUpdate();
+
     }
-    
+
     private static BillDAO instance;
 
     public static BillDAO getInstance() {

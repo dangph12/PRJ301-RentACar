@@ -25,8 +25,10 @@ public class CarDAO {
                            AND a.category_uid = ?
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
+        
         pstmt.setInt(1, carCount);
         pstmt.setString(2, categoryUID);
+        
         return executeQuery(pstmt);
     }
 
@@ -40,7 +42,9 @@ public class CarDAO {
                            AND a.category_uid = ?
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
+        
         pstmt.setString(1, categoryUID);
+        
         return executeQuery(pstmt);
     }
 
@@ -81,6 +85,10 @@ public class CarDAO {
     }
 
     public CarDAO() {
+    }
+
+    public ResultSet getCarsEachOrder(String orderUID) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

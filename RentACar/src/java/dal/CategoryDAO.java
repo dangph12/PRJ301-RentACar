@@ -24,7 +24,9 @@ public class CategoryDAO {
                              ,[unit_price]
                              ,[image]
                          FROM [Rent_A_Car].[dbo].[categories]""";
+        
         PreparedStatement pstmt = createPreparedStatement(query);
+        
         return executeQuery(pstmt);
     }
 
@@ -39,7 +41,9 @@ public class CategoryDAO {
                          FROM [Rent_A_Car].[dbo].[categories]
                        WHERE [category_uid] = ?""";
         PreparedStatement pstmt = createPreparedStatement(query);
+        
         pstmt.setString(1, categoryUID);
+        
         return executeQuery(pstmt);
     }
 

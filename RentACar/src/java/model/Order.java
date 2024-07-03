@@ -4,7 +4,6 @@
  */
 package model;
 
-import dal.CarDAO;
 import dal.OrderDAO;
 import java.sql.SQLException;
 import java.sql.Date;
@@ -16,39 +15,54 @@ import java.util.ArrayList;
  * @author admin
  */
 public class Order {
-    
+
     public ArrayList<Order> getOrdersByUserUID(String userUID) {
+        Car carInstance = new Car();
         ArrayList<Order> orders = new ArrayList<>();
         try {
             ResultSet ordersByUserUID = OrderDAO.getInstance().getOrdersByUserUID(userUID);
             while (ordersByUserUID.next()) {
-                String orderUID = ;
-                ArrayList<Car> cars = Car
-                        // get car by orderuid
+
+                String orderUID = ordersByUserUID.getString("order_uid");
+                String categoryUID = ordersByUserUID.getString("category_uid");
+                int carCount = ordersByUserUID.getInt("car_count");
+                Date receivedDate = ordersByUserUID.getDate("received_at");
+                Date returnedDate = ordersByUserUID.getDate("returned_at");
+
+                int status = ordersByUserUID.getInt("status");
+                OrderStatus orderStatus = getOrderStatusByKey(status);
+
+                Date createdDate = ordersByUserUID.getDate("created_at");
+                ArrayList<Car> cars = carInstance.getCarsEachOrder(orderUID); // get car by orderuid;
+
+                Order order = new Order(orderUID, userUID, categoryUID, carCount, receivedDate, returnedDate, orderStatus, createdDate, cars);
+                orders.add(order);
+
             }
         } catch (SQLException e) {
         }
         return orders;
     }
-    
+
+    public OrderStatus getOrderStatusByKey(int key) {
+        return switch (key) {
+            case 0 -> OrderStatus.CANCELLED;
+            case 1 -> OrderStatus.OPENED;
+            case 2 -> OrderStatus.CLOSED;
+            default -> OrderStatus.INVALID;
+        };
+    }
+
     public void insertOrderToDatabases(Order order) {
-        OrderDAO.getInstance().insertOrder(order);
-        
-        Car carInstance = new Car();
-        ArrayList<Car> cars = carInstance.getAvailableCarsForOrder(categoryUID, carCount);
-        OrderDAO.getInstance().insertCarsEachOrder(order.orderUID, cars);
-    }
-
-    public ArrayList<Order> createOrders(Order order) {
-        ArrayList<Order> orders = new ArrayList<>();
         try {
-            ResultSet cars = CarDAO.getInstance().getAvailableCarsEachCategory(categoryUID, carCount);
-            while (cars.next()) {
+            OrderDAO.getInstance().insertOrder(order);
 
-            }
+            Car carInstance = new Car();
+            ArrayList<Car> cars = carInstance.getAvailableCarsForOrder(categoryUID, carCount);
+            OrderDAO.getInstance().insertCarsEachOrder(order.orderUID, cars);
+
         } catch (SQLException e) {
         }
-        return orders;
     }
 
     private String orderUID;
@@ -210,8 +224,8 @@ public class Order {
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
-    
-        private ArrayList<Car> cars;
+
+    private ArrayList<Car> cars;
 
     /**
      * Get the value of cars
@@ -231,7 +245,6 @@ public class Order {
         this.cars = cars;
     }
 
-
     public Order() {
     }
 
@@ -244,5 +257,17 @@ public class Order {
         this.returnedDate = returnedDate;
         this.orderStatus = orderStatus;
         this.createdDate = createdDate;
+    }
+
+    public Order(String orderUID, String userUID, String categoryUID, int carCount, Date receivedDate, Date returnedDate, OrderStatus orderStatus, Date createdDate, ArrayList<Car> cars) {
+        this.orderUID = orderUID;
+        this.userUID = userUID;
+        this.categoryUID = categoryUID;
+        this.carCount = carCount;
+        this.receivedDate = receivedDate;
+        this.returnedDate = returnedDate;
+        this.orderStatus = orderStatus;
+        this.createdDate = createdDate;
+        this.cars = cars;
     }
 }

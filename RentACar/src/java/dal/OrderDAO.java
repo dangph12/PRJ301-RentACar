@@ -17,49 +17,67 @@ import model.Order;
  * @author admin
  */
 public class OrderDAO {
-    
-    public void insertCarsEachOrder(String orderUID, ArrayList<Car> cars) {
+
+    public ResultSet getOrdersByUserUID(String userUID) throws SQLException {
+        String query = """
+                       SELECT [order_uid]
+                             ,[user_uid]
+                             ,[category_uid]
+                             ,[car_count]
+                             ,[received_at]
+                             ,[returned_at]
+                             ,[status]
+                             ,[created_at]
+                         FROM [Rent_A_Car].[dbo].[orders]
+                       WHERE [user_uid] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+        
+        pstmt.setString(1, userUID);
+        
+        return executeQuery(pstmt);
+
+    }
+
+    public void insertCarsEachOrder(String orderUID, ArrayList<Car> cars) throws SQLException {
         String query = """
                        INSERT INTO [Rent_A_Car].[dbo].[orders_detailed_cars]
                        ([order_uid],[car_number_plate])
                        VALUES (?,?)
                        """;
-        try {
-            for (Car car : cars) {
-                PreparedStatement pstmt = createPreparedStatement(query);
-                pstmt.setString(1, orderUID);
-                pstmt.setString(2, car.getCarNumberPlate());
-                pstmt.executeUpdate();
-            }
-        } catch (SQLException e) {
-            //TODO: handle exception
-            System.out.println("ERROR: " + e.getMessage());
+        for (Car car : cars) {
+            PreparedStatement pstmt = createPreparedStatement(query);
+            
+            pstmt.setString(1, orderUID);
+            pstmt.setString(2, car.getCarNumberPlate());
+            
+            pstmt.executeUpdate();
         }
+
     }
-    
-    public void insertOrder(Order order) {
+
+    public void insertOrder(Order order) throws SQLException {
         String query = """
                        INSERT INTO [Rent_A_Car].[dbo].[orders]
                        ([order_uid],[user_uid],[category_uid],[car_count],[received_at]
                              ,[returned_at],[status],[created_at])
                        VALUES (?,?,?,?,?,?,?,?)
                        """;
-        try (PreparedStatement pstmt = createPreparedStatement(query)) {
-            pstmt.setString(1, order.getOrderUID());
-            pstmt.setString(2, order.getUserUID());
-            pstmt.setString(3, order.getCategoryUID());
-            pstmt.setInt(4, order.getCarCount());
-            pstmt.setDate(5, order.getReceivedDate());
-            pstmt.setDate(6, order.getReturnedDate());
-            pstmt.setInt(7, order.getOrderStatus().getKey());
-            pstmt.setDate(8, order.getCreatedDate());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            //TODO: handle exception
-            System.out.println("ERROR: " + e.getMessage());
-        }
+        PreparedStatement pstmt = createPreparedStatement(query);
+        
+        pstmt.setString(1, order.getOrderUID());
+        pstmt.setString(2, order.getUserUID());
+        pstmt.setString(3, order.getCategoryUID());
+        pstmt.setInt(4, order.getCarCount());
+        pstmt.setDate(5, order.getReceivedDate());
+        pstmt.setDate(6, order.getReturnedDate());
+        pstmt.setInt(7, order.getOrderStatus().getKey());
+        pstmt.setDate(8, order.getCreatedDate());
+        
+        pstmt.executeUpdate();
+
     }
-    
+
     private static OrderDAO instance;
 
     public static OrderDAO getInstance() {

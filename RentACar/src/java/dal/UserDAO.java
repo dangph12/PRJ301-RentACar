@@ -79,7 +79,7 @@ public class UserDAO {
      */
     public void insertUser(User user) {
         String query = """
-                       INSERT INTO [Rent_A_Car].[dbo].[users-information]
+                       INSERT INTO [Rent_A_Car].[dbo].[users_information]
                        ([user_uid], [full_name], [address])
                        VALUES (?,?,?)
                        """;
@@ -94,7 +94,7 @@ public class UserDAO {
         }
         
         query = """
-                       INSERT INTO [Rent_A_Car].[dbo].[users-auth]
+                       INSERT INTO [Rent_A_Car].[dbo].[users_auth]
                        ([user_uid], [phone], [email])
                        VALUES (?,?,?)
                        """;

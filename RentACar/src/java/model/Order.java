@@ -5,6 +5,7 @@
 package model;
 
 import dal.CarDAO;
+import dal.OrderDAO;
 import java.sql.SQLException;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -16,18 +17,40 @@ import java.util.ArrayList;
  */
 public class Order {
     
-    public ArrayList<Order> createOrders(Order order, String categoryUID, int carCount) {
+    public ArrayList<Order> getOrdersByUserUID(String userUID) {
         ArrayList<Order> orders = new ArrayList<>();
         try {
-            ResultSet cars = CarDAO.getInstance().getAvailableCarsEachCategory(categoryUID, carCount);
-            while (cars.next()) {                
-                
+            ResultSet ordersByUserUID = OrderDAO.getInstance().getOrdersByUserUID(userUID);
+            while (ordersByUserUID.next()) {
+                String orderUID = ;
+                ArrayList<Car> cars = Car
+                        // get car by orderuid
             }
         } catch (SQLException e) {
         }
         return orders;
     }
     
+    public void insertOrderToDatabases(Order order) {
+        OrderDAO.getInstance().insertOrder(order);
+        
+        Car carInstance = new Car();
+        ArrayList<Car> cars = carInstance.getAvailableCarsForOrder(categoryUID, carCount);
+        OrderDAO.getInstance().insertCarsEachOrder(order.orderUID, cars);
+    }
+
+    public ArrayList<Order> createOrders(Order order) {
+        ArrayList<Order> orders = new ArrayList<>();
+        try {
+            ResultSet cars = CarDAO.getInstance().getAvailableCarsEachCategory(categoryUID, carCount);
+            while (cars.next()) {
+
+            }
+        } catch (SQLException e) {
+        }
+        return orders;
+    }
+
     private String orderUID;
 
     /**
@@ -68,44 +91,44 @@ public class Order {
         this.userUID = userUID;
     }
 
-    private String carNumberPlate;
+    private String categoryUID;
 
     /**
-     * Get the value of carNumberPlate
+     * Get the value of categoryUID
      *
-     * @return the value of carNumberPlate
+     * @return the value of categoryUID
      */
-    public String getCarNumberPlate() {
-        return carNumberPlate;
+    public String getCategoryUID() {
+        return categoryUID;
     }
 
     /**
-     * Set the value of carNumberPlate
+     * Set the value of categoryUID
      *
-     * @param carNumberPlate new value of carNumberPlate
+     * @param categoryUID new value of categoryUID
      */
-    public void setCarNumberPlate(String carNumberPlate) {
-        this.carNumberPlate = carNumberPlate;
+    public void setCategoryUID(String categoryUID) {
+        this.categoryUID = categoryUID;
     }
 
-    private OrderStatus orderStatus;
+    private int carCount;
 
     /**
-     * Get the value of orderStatus
+     * Get the value of carCount
      *
-     * @return the value of orderStatus
+     * @return the value of carCount
      */
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
+    public int getCarCount() {
+        return carCount;
     }
 
     /**
-     * Set the value of orderStatus
+     * Set the value of carCount
      *
-     * @param orderStatus new value of orderStatus
+     * @param carCount new value of carCount
      */
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setCarCount(int carCount) {
+        this.carCount = carCount;
     }
 
     private Date receivedDate;
@@ -148,6 +171,26 @@ public class Order {
         this.returnedDate = returnedDate;
     }
 
+    private OrderStatus orderStatus;
+
+    /**
+     * Get the value of orderStatus
+     *
+     * @return the value of orderStatus
+     */
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    /**
+     * Set the value of orderStatus
+     *
+     * @param orderStatus new value of orderStatus
+     */
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
     private Date createdDate;
 
     /**
@@ -167,25 +210,39 @@ public class Order {
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
+    
+        private ArrayList<Car> cars;
+
+    /**
+     * Get the value of cars
+     *
+     * @return the value of cars
+     */
+    public ArrayList<Car> getCars() {
+        return cars;
+    }
+
+    /**
+     * Set the value of cars
+     *
+     * @param cars new value of cars
+     */
+    public void setCars(ArrayList<Car> cars) {
+        this.cars = cars;
+    }
+
 
     public Order() {
     }
 
-    public Order(String orderUID, String userUID, String carNumberPlate, OrderStatus orderStatus, Date receivedDate, Date returnedDate, Date createdDate) {
+    public Order(String orderUID, String userUID, String categoryUID, int carCount, Date receivedDate, Date returnedDate, OrderStatus orderStatus, Date createdDate) {
         this.orderUID = orderUID;
         this.userUID = userUID;
-        this.carNumberPlate = carNumberPlate;
+        this.categoryUID = categoryUID;
+        this.carCount = carCount;
+        this.receivedDate = receivedDate;
+        this.returnedDate = returnedDate;
         this.orderStatus = orderStatus;
-        this.receivedDate = receivedDate;
-        this.returnedDate = returnedDate;
-        this.createdDate = createdDate;
-    }
-
-    public Order(String orderUID, String userUID, Date receivedDate, Date returnedDate, Date createdDate) {
-        this.orderUID = orderUID;
-        this.userUID = userUID;
-        this.receivedDate = receivedDate;
-        this.returnedDate = returnedDate;
         this.createdDate = createdDate;
     }
 }

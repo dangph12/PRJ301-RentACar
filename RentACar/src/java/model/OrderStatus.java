@@ -9,7 +9,7 @@ package model;
  * @author admin
  */
 public enum OrderStatus {
-    CANCELLED(0, "Cancelled"), OPEN(1, "Open"), CLOSED(2, "Closed");
+    CANCELLED(0, "Cancelled"), OPENED(1, "Open"), CLOSED(2, "Closed");
     private int key;
 
     /**

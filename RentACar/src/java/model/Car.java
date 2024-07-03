@@ -15,6 +15,21 @@ import java.util.ArrayList;
  */
 public class Car {
 
+    public ArrayList<Car> getAvailableCarsForOrder(String categoryUID, int carCount) {
+        ArrayList<Car> availableCars = new ArrayList<>();
+        try {
+            ResultSet availableCarsEachCategory = CarDAO.getInstance().getAvailableCarsEachCategory(categoryUID, carCount);
+            while (availableCarsEachCategory.next()) {
+                String carNumberPlate = availableCarsEachCategory.getString("car_number_plate");
+                CarStatus carStatus = CarStatus.AVAILABLE;
+                Car car = new Car(carNumberPlate, carStatus, categoryUID);
+                availableCars.add(car);
+            }
+        } catch (SQLException e) {
+        }
+        return availableCars;
+    }
+
     public ArrayList<Car> getAvailableCarsEachCategory(String categoryUID) {
         ArrayList<Car> availableCars = new ArrayList<>();
         try {
@@ -29,9 +44,9 @@ public class Car {
         }
         return availableCars;
     }
-    
+
     public CarStatus getStatusByKey(int key) {
-        for (CarStatus status: CarStatus.values()) {
+        for (CarStatus status : CarStatus.values()) {
             if (status.getKey() == key) {
                 return status;
             }
@@ -107,5 +122,4 @@ public class Car {
         this.carStatus = carStatus;
         this.categoryUID = categoryUID;
     }
-
 }

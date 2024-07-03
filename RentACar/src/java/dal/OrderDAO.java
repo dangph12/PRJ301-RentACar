@@ -8,17 +8,63 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import model.Car;
+import model.Order;
 
 /**
  *
  * @author admin
  */
 public class OrderDAO {
-    private static CategoryDAO instance;
+    
+    public void insertCarsEachOrder(String orderUID, ArrayList<Car> cars) {
+        String query = """
+                       INSERT INTO [Rent_A_Car].[dbo].[orders_detailed_cars]
+                       ([order_uid],[car_number_plate])
+                       VALUES (?,?)
+                       """;
+        try {
+            for (Car car : cars) {
+                PreparedStatement pstmt = createPreparedStatement(query);
+                pstmt.setString(1, orderUID);
+                pstmt.setString(2, car.getCarNumberPlate());
+                pstmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            //TODO: handle exception
+            System.out.println("ERROR: " + e.getMessage());
+        }
+    }
+    
+    public void insertOrder(Order order) {
+        String query = """
+                       INSERT INTO [Rent_A_Car].[dbo].[orders]
+                       ([order_uid],[user_uid],[category_uid],[car_count],[received_at]
+                             ,[returned_at],[status],[created_at])
+                       VALUES (?,?,?,?,?,?,?,?)
+                       """;
+        try (PreparedStatement pstmt = createPreparedStatement(query)) {
+            pstmt.setString(1, order.getOrderUID());
+            pstmt.setString(2, order.getUserUID());
+            pstmt.setString(3, order.getCategoryUID());
+            pstmt.setInt(4, order.getCarCount());
+            pstmt.setDate(5, order.getReceivedDate());
+            pstmt.setDate(6, order.getReturnedDate());
+            pstmt.setInt(7, order.getOrderStatus().getKey());
+            pstmt.setDate(8, order.getCreatedDate());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            //TODO: handle exception
+            System.out.println("ERROR: " + e.getMessage());
+        }
+    }
+    
+    private static OrderDAO instance;
 
-    public static CategoryDAO getInstance() {
+    public static OrderDAO getInstance() {
         if (instance == null) {
-            instance = new CategoryDAO();
+            instance = new OrderDAO();
         }
         return instance;
     }
@@ -52,4 +98,5 @@ public class OrderDAO {
 
     public OrderDAO() {
     }
+
 }

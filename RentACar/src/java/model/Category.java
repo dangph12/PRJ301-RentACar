@@ -36,7 +36,7 @@ public class Category {
         return allCategories;
     }
 
-    public Category getCategoryWithAvailableCars(String categoryUID) {
+    public Category getCategoryWithAvailableCarCount(String categoryUID) {
         Category category = null;
         try {
             ResultSet categoryResultSet = CategoryDAO.getInstance().getCategoryByUID(categoryUID);
@@ -51,12 +51,9 @@ public class Category {
         } catch (SQLException e) {
         }
 
-        Car car = new Car();
-        ArrayList<Car> availableCars = car.getAvailableCarsEachCategory(categoryUID);
-        if (category != null) {
-            category.setCars(availableCars);
-        }
-
+        Car carInstance = new Car();
+        int availableCarCount = carInstance.getAvailableCarCountEachCategory(categoryUID);
+        category.setCarCount(availableCarCount);
         return category;
     }
 
@@ -180,24 +177,14 @@ public class Category {
         this.image = image;
     }
 
-    private ArrayList<Car> cars;
+    private int carCount;
 
-    /**
-     * Get the value of cars
-     *
-     * @return the value of cars
-     */
-    public ArrayList<Car> getCars() {
-        return cars;
+    public int getCarCount() {
+        return carCount;
     }
 
-    /**
-     * Set the value of cars
-     *
-     * @param cars new value of cars
-     */
-    public void setCars(ArrayList<Car> cars) {
-        this.cars = cars;
+    public void setCarCount(int carCount) {
+        this.carCount = carCount;
     }
 
     public Category() {

@@ -33,11 +33,10 @@ public class Checkouts extends HttpServlet {
             Category category = new Category();
             
             String categoryUID = request.getParameter("category-uid");
-            Category selectedCategory = category.getCategoryWithAvailableCars(categoryUID);
+            Category selectedCategory = category.getCategoryWithAvailableCarCount(categoryUID);
             
             //request.getSession().setAttribute(categoryUID, selectedCategory);
-            
-            request.setAttribute("categoryUID", categoryUID);
+
             request.setAttribute("selectedCategory", selectedCategory);
             request.getRequestDispatcher("checkouts.jsp").forward(request, response);
         } catch (Exception e) {

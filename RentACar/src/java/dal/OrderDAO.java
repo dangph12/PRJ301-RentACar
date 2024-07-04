@@ -11,12 +11,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Car;
 import model.Order;
+import model.OrderStatus;
 
 /**
  *
  * @author admin
  */
 public class OrderDAO {
+
+    public void cancelOrderByOrderUID(String orderUID) throws SQLException {
+        String query = """
+                       UPDATE [Rent_A_Car].[dbo].[orders]
+                        SET [status] = ?
+                        WHERE [orderUID] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setInt(1, OrderStatus.CANCELLED.getKey());
+        pstmt.setString(2, orderUID);
+
+        pstmt.executeUpdate();
+    }
 
     public ResultSet getOrdersByUserUID(String userUID) throws SQLException {
         String query = """

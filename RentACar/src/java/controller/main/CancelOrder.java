@@ -10,6 +10,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import model.Car;
+import model.Order;
 
 /**
  *
@@ -30,9 +33,15 @@ public class CancelOrder extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            // get order uid
-            // set order status = 0
-            // set car status = order
+            String orderUID = request.getParameter("order-uid");
+            
+            Order orderInstance = new Order();
+            orderInstance.cancelOrderByOrderUID(orderUID);
+            
+            Car carInstance = new Car();
+            ArrayList<Car> cars = carInstance.getCarsByOrderUID(orderUID);
+            carInstance.setUnavailableCars(cars);
+
             request.getRequestDispatcher("view-orders").forward(request, response);
         }
     }

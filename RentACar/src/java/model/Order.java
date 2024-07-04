@@ -30,8 +30,6 @@ public class Order {
             while (ordersByUserUID.next()) {
 
                 String orderUID = ordersByUserUID.getString("order_uid");
-                String categoryUID = ordersByUserUID.getString("category_uid");
-                int carCount = ordersByUserUID.getInt("car_count");
                 Date receivedDate = ordersByUserUID.getDate("received_at");
                 Date returnedDate = ordersByUserUID.getDate("returned_at");
 
@@ -41,7 +39,7 @@ public class Order {
                 Date createdDate = ordersByUserUID.getDate("created_at");
                 ArrayList<Car> cars = carInstance.getCarsByOrderUID(orderUID); // get car by orderuid;
 
-                Order order = new Order(orderUID, userUID, categoryUID, carCount, receivedDate, returnedDate, orderStatus, createdDate, cars);
+                Order order = new Order(orderUID, userUID, receivedDate, returnedDate, orderStatus, createdDate, cars);
                 orders.add(order);
 
             }
@@ -109,46 +107,6 @@ public class Order {
      */
     public void setUserUID(String userUID) {
         this.userUID = userUID;
-    }
-
-    private String categoryUID;
-
-    /**
-     * Get the value of categoryUID
-     *
-     * @return the value of categoryUID
-     */
-    public String getCategoryUID() {
-        return categoryUID;
-    }
-
-    /**
-     * Set the value of categoryUID
-     *
-     * @param categoryUID new value of categoryUID
-     */
-    public void setCategoryUID(String categoryUID) {
-        this.categoryUID = categoryUID;
-    }
-
-    private int carCount;
-
-    /**
-     * Get the value of carCount
-     *
-     * @return the value of carCount
-     */
-    public int getCarCount() {
-        return carCount;
-    }
-
-    /**
-     * Set the value of carCount
-     *
-     * @param carCount new value of carCount
-     */
-    public void setCarCount(int carCount) {
-        this.carCount = carCount;
     }
 
     private Date receivedDate;
@@ -254,22 +212,18 @@ public class Order {
     public Order() {
     }
 
-    public Order(String orderUID, String userUID, String categoryUID, int carCount, Date receivedDate, Date returnedDate, OrderStatus orderStatus, Date createdDate) {
+    public Order(String orderUID, String userUID, Date receivedDate, Date returnedDate, OrderStatus orderStatus, Date createdDate) {
         this.orderUID = orderUID;
         this.userUID = userUID;
-        this.categoryUID = categoryUID;
-        this.carCount = carCount;
         this.receivedDate = receivedDate;
         this.returnedDate = returnedDate;
         this.orderStatus = orderStatus;
         this.createdDate = createdDate;
     }
 
-    public Order(String orderUID, String userUID, String categoryUID, int carCount, Date receivedDate, Date returnedDate, OrderStatus orderStatus, Date createdDate, ArrayList<Car> cars) {
+    public Order(String orderUID, String userUID, Date receivedDate, Date returnedDate, OrderStatus orderStatus, Date createdDate, ArrayList<Car> cars) {
         this.orderUID = orderUID;
         this.userUID = userUID;
-        this.categoryUID = categoryUID;
-        this.carCount = carCount;
         this.receivedDate = receivedDate;
         this.returnedDate = returnedDate;
         this.orderStatus = orderStatus;

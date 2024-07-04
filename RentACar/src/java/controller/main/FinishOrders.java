@@ -52,9 +52,13 @@ public class FinishOrders extends HttpServlet {
             orderInstance.insertOrderToDatabases(order);
             
             Car carInstance = new Car();
-            ArrayList<Car> cars = carInstance.getAvailableCarsForOrder(order.getCategoryUID(), order.getCarCount());
-            carInstance.setBookedCars(cars); //
-            carInstance.insertCarsByOrderUID(order.getOrderUID(), cars); // need to change name
+            // for a single category
+            String categoryUID = request.getParameter("selected-category-uid");
+            String count = request.getParameter("car-count");
+            int carCount = Integer.parseInt(count);
+            ArrayList<Car> cars = carInstance.getAvailableCarsForOrder(categoryUID, carCount);
+            carInstance.setBookedCars(cars);
+            carInstance.insertCarsByOrderUID(order.getOrderUID(), cars); 
             
 
             Bill billInstance = new Bill();
@@ -76,17 +80,16 @@ public class FinishOrders extends HttpServlet {
        String method = request.getParameter("payment-method");
        int paymentMethod = Integer.parseInt(method);
        boolean paid = false;
-       String date = request.getParameter("received-at");
-       Date receivedDate = Date.valueOf(date);
        
-       Bill bill = new Bill(orderUID, totalAmount, paymentMethod, paid, receivedDate);
+       int defaultDaysToCancelBill = 7;
+       Date cancelledDate = Date.valueOf(LocalDate.now().plusDays(defaultDaysToCancelBill));
+       
+       Bill bill = new Bill(orderUID, totalAmount, paymentMethod, paid, cancelledDate);
        return bill;
     }
     
     public Order createNewOrder(HttpServletRequest request, String orderUID, String userUID) {
-        String categoryUID = request.getParameter("selected-category-uid");
-        String count = request.getParameter("car-count");
-        int carCount = Integer.parseInt(count);
+        
         String date = request.getParameter("received-at");
         Date receivedDate = Date.valueOf(date);
         String days = request.getParameter("rental-days");
@@ -94,7 +97,7 @@ public class FinishOrders extends HttpServlet {
         Date returnedDate = Date.valueOf(receivedDate.toLocalDate().plusDays(rentalDays));
         Date createdDate = Date.valueOf(LocalDate.now());
 
-        Order order = new Order(orderUID, userUID, categoryUID, carCount, receivedDate, returnedDate, OrderStatus.OPENED, createdDate);
+        Order order = new Order(orderUID, userUID, receivedDate, returnedDate, OrderStatus.OPENED, createdDate);
 
         return order;
     }

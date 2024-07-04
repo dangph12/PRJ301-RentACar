@@ -55,20 +55,18 @@ public class OrderDAO {
     public void insertOrderToDatabases(Order order) throws SQLException {
         String query = """
                        INSERT INTO [Rent_A_Car].[dbo].[orders]
-                       ([order_uid],[user_uid],[category_uid],[car_count],[received_at]
+                       ([order_uid],[user_uid],[received_at]
                              ,[returned_at],[status],[created_at])
-                       VALUES (?,?,?,?,?,?,?,?)
+                       VALUES (?,?,?,?,?,?)
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
 
         pstmt.setString(1, order.getOrderUID());
         pstmt.setString(2, order.getUserUID());
-        pstmt.setString(3, order.getCategoryUID());
-        pstmt.setInt(4, order.getCarCount());
-        pstmt.setDate(5, order.getReceivedDate());
-        pstmt.setDate(6, order.getReturnedDate());
-        pstmt.setInt(7, order.getOrderStatus().getKey());
-        pstmt.setDate(8, order.getCreatedDate());
+        pstmt.setDate(3, order.getReceivedDate());
+        pstmt.setDate(4, order.getReturnedDate());
+        pstmt.setInt(5, order.getOrderStatus().getKey());
+        pstmt.setDate(6, order.getCreatedDate());
 
         pstmt.executeUpdate();
 

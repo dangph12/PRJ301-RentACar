@@ -14,10 +14,11 @@ import java.sql.SQLException;
  */
 public class Bill {
     
-    public void confirmPaymentByOrderUID(String orderUID) {
+    public void confirmPaymentByOrderUID(String orderUID) throws Exception {
         try {
             BillDAO.getInstance().confirmPaymentByOrderUID(orderUID);
         } catch (SQLException e) {
+            throw new Exception(e.getCause());
         }
     }
     
@@ -108,26 +109,6 @@ public class Bill {
         this.paid = paid;
     }
 
-    private Date createdDate;
-
-    /**
-     * Get the value of createdDate
-     *
-     * @return the value of createdDate
-     */
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    /**
-     * Set the value of createdDate
-     *
-     * @param createdDate new value of createdDate
-     */
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
     private Date cancelledDate;
 
     /**
@@ -151,11 +132,11 @@ public class Bill {
     public Bill() {
     }
 
-    public Bill(String orderUID, int totalAmount, int paymentMethod, boolean paid, Date createdDate) {
+    public Bill(String orderUID, int totalAmount, int paymentMethod, boolean paid, Date cancelledDate) {
         this.orderUID = orderUID;
         this.totalAmount = totalAmount;
         this.paymentMethod = paymentMethod;
         this.paid = paid;
-        this.createdDate = createdDate;
+        this.cancelledDate = cancelledDate;
     }
 }

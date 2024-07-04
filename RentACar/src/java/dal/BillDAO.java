@@ -35,7 +35,7 @@ public class BillDAO {
     public void insertBillToDatabases(Bill bill) throws SQLException {
         String query = """
                        INSERT INTO [Rent_A_Car].[dbo].[bills]
-                       ([order_uid],[total_amount],[payment_method],[is_paid],[created_at])
+                       ([order_uid],[total_amount],[payment_method],[is_paid],[cancelled_at])
                        VALUES (?,?,?,?,?)
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
@@ -44,7 +44,7 @@ public class BillDAO {
         pstmt.setInt(2, bill.getTotalAmount());
         pstmt.setInt(3, bill.getPaymentMethod());
         pstmt.setBoolean(4, bill.isPaid());
-        pstmt.setDate(5, bill.getCreatedDate());
+        pstmt.setDate(5, bill.getCancelledDate());
 
         pstmt.executeUpdate();
 

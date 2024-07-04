@@ -9,7 +9,7 @@ package model;
  * @author admin
  */
 public enum CarStatus {
-    NOT_AVAILABLE(0, "Not available"), AVAILABLE(1, "Avaiable"), RUNNING(2, "Running"), BOOKED(3, "Booked"),INVALID(-1, "Invalid status");
+    UNAVAILABLE(0, "Not available"), AVAILABLE(1, "Avaiable"), RUNNING(2, "Running"), BOOKED(3, "Booked"),INVALID(-1, "Invalid status");
     
     private int key;
 

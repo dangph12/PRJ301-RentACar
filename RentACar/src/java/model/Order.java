@@ -39,7 +39,7 @@ public class Order {
                 OrderStatus orderStatus = getOrderStatusByKey(status);
 
                 Date createdDate = ordersByUserUID.getDate("created_at");
-                ArrayList<Car> cars = carInstance.getCarsEachOrder(orderUID); // get car by orderuid;
+                ArrayList<Car> cars = carInstance.getCarsByOrderUID(orderUID); // get car by orderuid;
 
                 Order order = new Order(orderUID, userUID, categoryUID, carCount, receivedDate, returnedDate, orderStatus, createdDate, cars);
                 orders.add(order);
@@ -52,21 +52,20 @@ public class Order {
 
     public OrderStatus getOrderStatusByKey(int key) {
         return switch (key) {
-            case 0 -> OrderStatus.CANCELLED;
-            case 1 -> OrderStatus.OPENED;
-            case 2 -> OrderStatus.CLOSED;
-            default -> OrderStatus.INVALID;
+            case 0 ->
+                OrderStatus.CANCELLED;
+            case 1 ->
+                OrderStatus.OPENED;
+            case 2 ->
+                OrderStatus.CLOSED;
+            default ->
+                OrderStatus.INVALID;
         };
     }
 
     public void insertOrderToDatabases(Order order) {
         try {
-            OrderDAO.getInstance().insertOrder(order);
-
-            Car carInstance = new Car();
-            ArrayList<Car> cars = carInstance.getAvailableCarsForOrder(categoryUID, carCount);
-            OrderDAO.getInstance().insertCarsEachOrder(order.orderUID, cars);
-
+            OrderDAO.getInstance().insertOrderToDatabases(order);
         } catch (SQLException e) {
         }
     }

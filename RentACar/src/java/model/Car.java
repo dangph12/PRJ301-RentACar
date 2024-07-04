@@ -14,6 +14,61 @@ import java.util.ArrayList;
  * @author admin
  */
 public class Car {
+    
+    public void setUnavailableCars(ArrayList<Car> cars) {
+        try {
+            CarDAO.getInstance().setUnavailableCars(cars);
+        } catch (SQLException e) {
+        }
+    }
+    
+    public void setBookedCars(ArrayList<Car> cars) {
+        try {
+            CarDAO.getInstance().setBookedCars(cars);
+        } catch (SQLException e) {
+        }
+    }
+    
+    public void insertCarsByOrderUID(String orderUID, ArrayList<Car> cars) {
+        try {
+            CarDAO.getInstance().insertCarsByOrderUID(orderUID, cars);
+        } catch (SQLException e) {
+        }
+    }
+
+    public ArrayList<Car> getCarsByOrderUID(String orderUID) {
+        ArrayList<Car> cars = new ArrayList<>();
+        try {
+            ResultSet carsResultSet = CarDAO.getInstance().getCarsByOrderUID(orderUID);
+            while (carsResultSet.next()) {
+                String carNumberPlate = carsResultSet.getString("car_number_plate");
+
+                int status = carsResultSet.getInt("status");
+                CarStatus carStatus = getCarStatusByKey(status);
+
+                String categoryUID = carsResultSet.getString("category_uid");
+                Car car = new Car(carNumberPlate, carStatus, categoryUID);
+                cars.add(car);
+            }
+        } catch (SQLException e) {
+        }
+        return cars;
+    }
+
+    public CarStatus getCarStatusByKey(int key) {
+        return switch (key) {
+            case 0 ->
+                CarStatus.UNAVAILABLE;
+            case 1 ->
+                CarStatus.AVAILABLE;
+            case 2 ->
+                CarStatus.RUNNING;
+            case 3 ->
+                CarStatus.BOOKED;
+            default ->
+                CarStatus.INVALID;
+        };
+    }
 
     public ArrayList<Car> getAvailableCarsForOrder(String categoryUID, int carCount) {
         ArrayList<Car> availableCars = new ArrayList<>();
@@ -30,19 +85,16 @@ public class Car {
         return availableCars;
     }
 
-    public ArrayList<Car> getAvailableCarsEachCategory(String categoryUID) {
-        ArrayList<Car> availableCars = new ArrayList<>();
+    public int getAvailableCarCountEachCategory(String categoryUID) {
+        int availableCarCount = 0;
         try {
-            ResultSet availableCarsEachCategory = CarDAO.getInstance().getAvailableCarsEachCategory(categoryUID);
-            while (availableCarsEachCategory.next()) {
-                String carNumberPlate = availableCarsEachCategory.getString("car_number_plate");
-                CarStatus carStatus = CarStatus.AVAILABLE;
-                Car car = new Car(carNumberPlate, carStatus, categoryUID);
-                availableCars.add(car);
+            ResultSet availableCarCountEachCategory = CarDAO.getInstance().getAvailableCarCountEachCategory(categoryUID);
+            while (availableCarCountEachCategory.next()) {
+                availableCarCount = availableCarCountEachCategory.getInt("car_count");
             }
         } catch (SQLException e) {
         }
-        return availableCars;
+        return availableCarCount;
     }
 
     public CarStatus getStatusByKey(int key) {

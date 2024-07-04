@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import model.Bill;
+import model.Car;
 import model.Order;
 import model.OrderStatus;
 import model.User;
@@ -47,6 +49,12 @@ public class FinishOrders extends HttpServlet {
             String orderUID = Util.getInstance().generateUUID();
             Order order = createNewOrder(request, orderUID, userUID);
             orderInstance.insertOrderToDatabases(order);
+            
+            Car carInstance = new Car();
+            ArrayList<Car> cars = carInstance.getAvailableCarsForOrder(order.getCategoryUID(), order.getCarCount());
+            carInstance.setBookedCars(cars); //
+            carInstance.insertCarsByOrderUID(order.getOrderUID(), cars); // need to change name
+            
 
             Bill billInstance = new Bill();
             Bill bill = createNewBill(request, orderUID);

@@ -8,8 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import model.Car;
 import model.Order;
 import model.OrderStatus;
 
@@ -47,31 +45,14 @@ public class OrderDAO {
                        WHERE [user_uid] = ?
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
-        
+
         pstmt.setString(1, userUID);
-        
+
         return executeQuery(pstmt);
 
     }
 
-    public void insertCarsEachOrder(String orderUID, ArrayList<Car> cars) throws SQLException {
-        String query = """
-                       INSERT INTO [Rent_A_Car].[dbo].[orders_detailed_cars]
-                       ([order_uid],[car_number_plate])
-                       VALUES (?,?)
-                       """;
-        for (Car car : cars) {
-            PreparedStatement pstmt = createPreparedStatement(query);
-            
-            pstmt.setString(1, orderUID);
-            pstmt.setString(2, car.getCarNumberPlate());
-            
-            pstmt.executeUpdate();
-        }
-
-    }
-
-    public void insertOrder(Order order) throws SQLException {
+    public void insertOrderToDatabases(Order order) throws SQLException {
         String query = """
                        INSERT INTO [Rent_A_Car].[dbo].[orders]
                        ([order_uid],[user_uid],[category_uid],[car_count],[received_at]
@@ -79,7 +60,7 @@ public class OrderDAO {
                        VALUES (?,?,?,?,?,?,?,?)
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
-        
+
         pstmt.setString(1, order.getOrderUID());
         pstmt.setString(2, order.getUserUID());
         pstmt.setString(3, order.getCategoryUID());
@@ -88,7 +69,7 @@ public class OrderDAO {
         pstmt.setDate(6, order.getReturnedDate());
         pstmt.setInt(7, order.getOrderStatus().getKey());
         pstmt.setDate(8, order.getCreatedDate());
-        
+
         pstmt.executeUpdate();
 
     }
@@ -131,5 +112,4 @@ public class OrderDAO {
 
     public OrderDAO() {
     }
-
 }

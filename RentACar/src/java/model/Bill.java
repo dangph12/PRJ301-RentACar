@@ -14,11 +14,17 @@ import java.sql.SQLException;
  */
 public class Bill {
     
-    public void confirmPaymentByOrderUID(String orderUID) throws Exception {
+    public void cancelBillByOrderUID(String orderUID) {
+        try {
+            BillDAO.getInstance().cancelBillByOrderUID(orderUID);
+        } catch (SQLException e) {
+        }
+    }
+    
+    public void confirmPaymentByOrderUID(String orderUID) {
         try {
             BillDAO.getInstance().confirmPaymentByOrderUID(orderUID);
         } catch (SQLException e) {
-            throw new Exception(e.getCause());
         }
     }
     

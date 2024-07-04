@@ -15,21 +15,31 @@ import model.Bill;
  * @author admin
  */
 public class BillDAO {
+    
+    public void cancelBillByOrderUID(String orderUID) throws SQLException {
+        String query = """
+                       UPDATE [Rent_A_Car].[dbo].[bills]
+                       SET [cancelled_at] = GETDATE()
+                       WHERE [order_uid] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setString(1, orderUID);
+
+        pstmt.executeUpdate();
+    }
 
     public void confirmPaymentByOrderUID(String orderUID) throws SQLException {
         String query = """
                        UPDATE [Rent_A_Car].[dbo].[bills]
-                       SET [is_paid] = ?
+                       SET [is_paid] = 1, [cancelled_at] = NULL
                        WHERE [order_uid] = ?
                        """;
-        boolean isPaid = true;
         PreparedStatement pstmt = createPreparedStatement(query);
 
-        pstmt.setBoolean(1, isPaid);
-        pstmt.setString(2, orderUID);
+        pstmt.setString(1, orderUID);
 
         pstmt.executeUpdate();
-
     }
 
     public void insertBillToDatabases(Bill bill) throws SQLException {

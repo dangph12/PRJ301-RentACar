@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import model.Bill;
 import model.Car;
 import model.Order;
 
@@ -41,6 +42,9 @@ public class CancelOrder extends HttpServlet {
             Car carInstance = new Car();
             ArrayList<Car> cars = carInstance.getCarsByOrderUID(orderUID);
             carInstance.setAvailableCars(cars);
+            
+            Bill billInstance = new Bill();
+            billInstance.cancelBillByOrderUID(orderUID);
 
             response.sendRedirect("view-orders");
         } catch (Exception e) {

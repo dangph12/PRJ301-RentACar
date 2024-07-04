@@ -36,7 +36,7 @@ public class ConfirmPayment extends HttpServlet {
             Bill billInstance = new Bill();
             billInstance.confirmPaymentByOrderUID(orderUID);
             
-            request.getRequestDispatcher("view-orders").forward(request, response);
+            response.sendRedirect("view-orders");
         }
     }
 

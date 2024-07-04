@@ -45,7 +45,7 @@
                                 <textarea name="address" class="form-control" required></textarea>
                             </div>
                             <div class="form-group">
-                                <input type="hidden" name="selected-category-uid" value="${requestScope.categoryUID}">
+                                <input type="text" name="selected-category-uid" value="${requestScope.selectedCategory.categoryUID}">
                                 <div>${requestScope.selectedCategory.title}</div>
                                 <div>Car's count: <input type="number" name="car-count" min="1" max="30" value="1"/></div>
                                 <div>Received at: <input type="date" name="received-at" value="" /></div>

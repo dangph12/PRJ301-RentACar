@@ -67,6 +67,7 @@ public class Order {
         try {
             OrderDAO.getInstance().insertOrderToDatabases(order);
         } catch (SQLException e) {
+            System.out.println("");
         }
     }
 

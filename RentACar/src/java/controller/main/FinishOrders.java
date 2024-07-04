@@ -7,6 +7,7 @@ package controller.main;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -60,8 +61,12 @@ public class FinishOrders extends HttpServlet {
             Bill bill = createNewBill(request, orderUID);
             billInstance.insertBillToDatabases(bill);
 
-            request.setAttribute("userUID", userUID);
-            request.getRequestDispatcher("view-orders").forward(request, response);
+            Cookie ck = new Cookie("userUID", userUID);
+            response.addCookie(ck);
+            response.sendRedirect("view-orders");
+            
+        } catch (Exception e) {
+            System.out.println("");
         }
     }
     
@@ -84,7 +89,7 @@ public class FinishOrders extends HttpServlet {
         int carCount = Integer.parseInt(count);
         String date = request.getParameter("received-at");
         Date receivedDate = Date.valueOf(date);
-        String days = request.getParameter("rentaldays");
+        String days = request.getParameter("rental-days");
         int rentalDays = Integer.parseInt(days);
         Date returnedDate = Date.valueOf(receivedDate.toLocalDate().plusDays(rentalDays));
         Date createdDate = Date.valueOf(LocalDate.now());

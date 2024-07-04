@@ -8,6 +8,7 @@ package controller.main;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,13 +32,17 @@ public class ViewOrders extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String userUID = request.getParameter("userUID");
+            
+            Cookie ck[] = request.getCookies();
+            String userUID = ck[1].getValue();
             
             Order orderInstance = new Order();
             ArrayList<Order> orders = orderInstance.getOrdersByUserUID(userUID);
             
             request.setAttribute("orders", orders);
             request.getRequestDispatcher("view-orders.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println("");
         }
     } 
 

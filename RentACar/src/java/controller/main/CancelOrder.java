@@ -40,9 +40,11 @@ public class CancelOrder extends HttpServlet {
             
             Car carInstance = new Car();
             ArrayList<Car> cars = carInstance.getCarsByOrderUID(orderUID);
-            carInstance.setUnavailableCars(cars);
+            carInstance.setAvailableCars(cars);
 
-            request.getRequestDispatcher("view-orders").forward(request, response);
+            response.sendRedirect("view-orders");
+        } catch (Exception e) {
+            System.out.println("");
         }
     }
 

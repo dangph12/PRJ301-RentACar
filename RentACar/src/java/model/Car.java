@@ -15,9 +15,9 @@ import java.util.ArrayList;
  */
 public class Car {
     
-    public void setUnavailableCars(ArrayList<Car> cars) {
+    public void setAvailableCars(ArrayList<Car> cars) {
         try {
-            CarDAO.getInstance().setUnavailableCars(cars);
+            CarDAO.getInstance().setAvailableCars(cars);
         } catch (SQLException e) {
         }
     }

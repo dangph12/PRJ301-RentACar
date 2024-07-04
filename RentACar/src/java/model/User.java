@@ -16,7 +16,11 @@ import java.util.ArrayList;
 public class User {
     
     public void insertUserToDatabases(User user) {
-        UserDAO.getInstance().insertUserToDatabases(user);
+        try {
+            UserDAO.getInstance().insertUserToDatabases(user);
+        } catch (SQLException e) {
+            System.out.println("");
+        }
     }
     
     public int getUsersCountWithName(String name) {

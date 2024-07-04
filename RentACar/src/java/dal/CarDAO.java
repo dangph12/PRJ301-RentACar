@@ -18,7 +18,7 @@ import model.CarStatus;
  */
 public class CarDAO {
     
-    public void setUnavailableCars(ArrayList<Car> cars) throws SQLException {
+    public void setAvailableCars(ArrayList<Car> cars) throws SQLException {
         String query = """
                        UPDATE [Rent_A_Car].[dbo].[cars]
                        SET [status] = ?
@@ -27,7 +27,7 @@ public class CarDAO {
         for (Car car : cars) {
             PreparedStatement pstmt = createPreparedStatement(query);
 
-            pstmt.setInt(1, CarStatus.UNAVAILABLE.getKey());
+            pstmt.setInt(1, CarStatus.AVAILABLE.getKey());
             pstmt.setString(2, car.getCarNumberPlate());
 
             pstmt.executeUpdate();

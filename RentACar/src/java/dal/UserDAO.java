@@ -22,11 +22,11 @@ public class UserDAO {
                        SELECT count(*) FROM [Rent_A_Car].[dbo].[users]
                        WHERE full_name LIKE ?
                        """;
-        
+
         PreparedStatement pstmt = createPreparedStatement(query);
-        
+
         pstmt.setString(1, full_name);
-        
+
         return executeQuery(pstmt);
     }
 
@@ -42,11 +42,11 @@ public class UserDAO {
                        """;
 
         PreparedStatement pstmt = createPreparedStatement(query);
-        
+
         pstmt.setString(1, full_name);
         pstmt.setInt(2, (index - 1) * usersCountPerPage);
         pstmt.setInt(3, usersCountPerPage);
-        
+
         return executeQuery(pstmt);
     }
 
@@ -54,9 +54,9 @@ public class UserDAO {
         String query = """
                        SELECT count(*) FROM [Rent_A_Car].[dbo].[users]
                        """;
-        
+
         PreparedStatement pstmt = createPreparedStatement(query);
-        
+
         return executeQuery(pstmt);
     }
 
@@ -69,10 +69,10 @@ public class UserDAO {
                        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
-        
+
         pstmt.setInt(1, (index - 1) * usersCountPerPage);
         pstmt.setInt(2, usersCountPerPage);
-        
+
         return executeQuery(pstmt);
     }
 
@@ -81,36 +81,29 @@ public class UserDAO {
      *
      * @param user The User object to insert.
      */
-    public void insertUserToDatabases(User user) {
+    public void insertUserToDatabases(User user) throws SQLException {
         String query = """
                        INSERT INTO [Rent_A_Car].[dbo].[users_information]
                        ([user_uid], [full_name], [address])
                        VALUES (?,?,?)
                        """;
-        try (PreparedStatement pstmt = createPreparedStatement(query)) {
-            pstmt.setString(1, user.getUserUID());
-            pstmt.setString(2, user.getFullName());
-            pstmt.setString(3, user.getAddress());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            //TODO: handle exception
-            System.out.println("ERROR: " + e.getMessage());
-        }
-        
+        PreparedStatement pstmt = createPreparedStatement(query);
+        pstmt.setString(1, user.getUserUID());
+        pstmt.setString(2, user.getFullName());
+        pstmt.setString(3, user.getAddress());
+        pstmt.executeUpdate();
+
         query = """
                        INSERT INTO [Rent_A_Car].[dbo].[users_auth]
                        ([user_uid], [phone], [email])
                        VALUES (?,?,?)
                        """;
-        try (PreparedStatement pstmt = createPreparedStatement(query)) {
-            pstmt.setString(1, user.getUserUID());
-            pstmt.setString(2, user.getPhone());
-            pstmt.setString(3, user.getEmail());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            //TODO: handle exception
-            System.out.println("ERROR: " + e.getMessage());
-        }
+        pstmt = createPreparedStatement(query);
+        pstmt.setString(1, user.getUserUID());
+        pstmt.setString(2, user.getPhone());
+        pstmt.setString(3, user.getEmail());
+        pstmt.executeUpdate();
+
     }
 
     /**

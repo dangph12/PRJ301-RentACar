@@ -41,6 +41,8 @@ public class ShowCars extends HttpServlet {
             request.setAttribute("itemsPerRow", itemsPerRow);
             
             request.getRequestDispatcher("show-cars.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println("");
         }
     }
 

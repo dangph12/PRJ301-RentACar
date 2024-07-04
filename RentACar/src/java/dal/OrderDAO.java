@@ -21,7 +21,7 @@ public class OrderDAO {
         String query = """
                        UPDATE [Rent_A_Car].[dbo].[orders]
                         SET [status] = ?
-                        WHERE [orderUID] = ?
+                        WHERE [order_uid] = ?
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
 

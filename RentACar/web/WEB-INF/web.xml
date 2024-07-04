@@ -40,6 +40,10 @@
         <servlet-name>CancelOrder</servlet-name>
         <servlet-class>controller.main.CancelOrder</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ConfirmPayment</servlet-name>
+        <servlet-class>controller.main.ConfirmPayment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ManageUsers</servlet-name>
         <url-pattern>/manage-users</url-pattern>
@@ -75,5 +79,9 @@
     <servlet-mapping>
         <servlet-name>CancelOrder</servlet-name>
         <url-pattern>/cancel-order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmPayment</servlet-name>
+        <url-pattern>/confirm-payment</url-pattern>
     </servlet-mapping>
 </web-app>

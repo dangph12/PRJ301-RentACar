@@ -14,6 +14,13 @@ import java.sql.SQLException;
  */
 public class Bill {
     
+    public void confirmPaymentByOrderUID(String orderUID) {
+        try {
+            BillDAO.getInstance().confirmPaymentByOrderUID(orderUID);
+        } catch (SQLException e) {
+        }
+    }
+    
     public void insertBillToDatabases(Bill bill) {
         try {
             BillDAO.getInstance().insertBillToDatabases(bill);
@@ -151,5 +158,4 @@ public class Bill {
         this.paid = paid;
         this.createdDate = createdDate;
     }
-
 }

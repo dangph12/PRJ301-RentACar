@@ -16,6 +16,22 @@ import model.Bill;
  */
 public class BillDAO {
 
+    public void confirmPaymentByOrderUID(String orderUID) throws SQLException {
+        String query = """
+                       UPDATE [Rent_A_Car].[dbo].[bills]
+                       SET [is_paid] = ?
+                       WHERE [order_uid] = ?
+                       """;
+        boolean isPaid = true;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setBoolean(1, isPaid);
+        pstmt.setString(2, orderUID);
+
+        pstmt.executeUpdate();
+
+    }
+
     public void insertBillToDatabases(Bill bill) throws SQLException {
         String query = """
                        INSERT INTO [Rent_A_Car].[dbo].[bills]
@@ -23,13 +39,13 @@ public class BillDAO {
                        VALUES (?,?,?,?,?)
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
-        
+
         pstmt.setString(1, bill.getOrderUID());
         pstmt.setInt(2, bill.getTotalAmount());
         pstmt.setInt(3, bill.getPaymentMethod());
         pstmt.setBoolean(4, bill.isPaid());
         pstmt.setDate(5, bill.getCreatedDate());
-        
+
         pstmt.executeUpdate();
 
     }

@@ -15,6 +15,12 @@ import java.util.ArrayList;
  * @author admin
  */
 public class Order {
+    public void cancelOrderByOrderUID(String orderUID) {
+        try {
+            OrderDAO.getInstance().cancelOrderByOrderUID(orderUID);
+        } catch (SQLException e) {
+        }
+    }
 
     public ArrayList<Order> getOrdersByUserUID(String userUID) {
         Car carInstance = new Car();

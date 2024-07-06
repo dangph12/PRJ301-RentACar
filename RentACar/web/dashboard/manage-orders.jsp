@@ -68,7 +68,7 @@
                                 <tr>
                                     <td>
                                         <span class="custom-checkbox">
-                                            <input type="checkbox" class="check" name="options[]" value="${user.userUID}">
+                                            <input type="checkbox" class="check" name="options[]" value="${order.orderUID}">
                                             <label for="checkbox"></label>
                                         </span>
                                     </td>

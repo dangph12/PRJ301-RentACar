@@ -32,7 +32,7 @@
                                 <h2>Manage <b>Orders</b></h2>
                             </div>
                             <div class="col-sm-4">
-                                <form action="manage-orders" method="GET">
+                                <form action="manage-cars" method="GET">
                                     <div class="search-box">
                                         <i class="material-icons">&#xE8B6;</i>
                                         <input type="text" name="search" class="form-control" placeholder="Search&hellip;" value="${requestScope.search}">
@@ -54,30 +54,24 @@
                                         <label for="selectAll"></label>
                                     </span>
                                 </th>
-                                <th scope="col">Order ID</th>
-                                <th scope="col">Full Name</th>
-                                <th scope="col">Received At</th>
-                                <th scope="col">Returned At</th>
-                                <th scope="col">Order Status</th>
-                                <th scope="col">Payment Status</th>
+                                <th scope="col">Number</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Status</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items="${requestScope.pagingOrders}" var="order">
+                            <c:forEach items="${requestScope.pagingCars}" var="car">
                                 <tr>
                                     <td>
                                         <span class="custom-checkbox">
-                                            <input type="checkbox" class="check" name="options[]" value="${user.userUID}">
+                                            <input type="checkbox" class="check" name="options[]" value="${car.carNumberPlate}">
                                             <label for="checkbox"></label>
                                         </span>
                                     </td>
-                                    <td>${order.orderUID}</td>
-                                    <td>${order.fullName}</td>
-                                    <td>${order.receivedDate}</td>
-                                    <td>${order.returnedDate}</td>
-                                    <td>${order.orderStatus.description}</td>
-                                    <td>${order.paid}</td>
+                                    <td>${car.carNumberPlate}</td>
+                                    <td>${car.title}</td>
+                                    <td>${car.carStatus.description}</td>
                                     <td>
                                         <div class="btn-group" role="group">
                                             <button type="button" href="#editUserModal" class="btn btn-mini edit" data-toggle="modal" data-useruid="${user.userUID}" data-fullname="${user.fullName}" data-phone="${user.phone}" data-email="${user.email}" data-address="${user.address}"><i class="material-icons text-warning" data-toggle="tooltip" title="Edit">&#xE254;</i></button>
@@ -92,7 +86,7 @@
                     </table>
 
                     <div class="clearfix">
-                        <div class="hint-text">Showing <b>${pagingOrdersCount}</b> out of <b>${allOrdersCount}</b> entries</div>
+                        <div class="hint-text">Showing <b>${pagingCarsCount}</b> out of <b>${allCarsCount}</b> entries</div>
                         <ul class="pagination">
                             <c:forEach begin="1" end="${endPage}" var="i">
                                 <li class="page-item">

@@ -192,7 +192,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <input type="hidden" name="userUID"/>
+                                <input type="hidden" name="carNumberPlate"/>
                             </div>
                             <p>Are you sure you want to delete these Records?</p>
                             <p class="text-warning"><small>This action cannot be undone.</small></p>

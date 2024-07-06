@@ -60,6 +60,22 @@
             <param-value>1</param-value>
         </init-param>
     </servlet>
+    <servlet>
+        <servlet-name>ConfirmReceivedCars</servlet-name>
+        <servlet-class>controller.dashboard.orders.ConfirmReceivedCars</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfirmReturnedCars</servlet-name>
+        <servlet-class>controller.dashboard.orders.ConfirmReturnedCars</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SetAvailableCars</servlet-name>
+        <servlet-class>controller.dashboard.cars.SetAvailableCars</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SetUnavailableCars</servlet-name>
+        <servlet-class>controller.dashboard.cars.SetUnavailableCars</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ManageUsers</servlet-name>
         <url-pattern>/dashboard/manage-users</url-pattern>
@@ -107,5 +123,21 @@
     <servlet-mapping>
         <servlet-name>ManageCars</servlet-name>
         <url-pattern>/dashboard/manage-cars</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmReceivedCars</servlet-name>
+        <url-pattern>/dashboard/confirm-received-cars</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmReturnedCars</servlet-name>
+        <url-pattern>/dashboard/confirm-returned-cars</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SetAvailableCars</servlet-name>
+        <url-pattern>/dashboard/set-available-cars</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SetUnavailableCars</servlet-name>
+        <url-pattern>/dashboard/set-unavailable-cars</url-pattern>
     </servlet-mapping>
 </web-app>

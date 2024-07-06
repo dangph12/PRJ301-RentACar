@@ -104,23 +104,37 @@ public class Car {
         return cars;
     }
     
-    public void setAvailableCars(ArrayList<Car> cars) {
+    public void setUnavailableCar(String carNumberPlate) {
         try {
-            CarDAO.getInstance().setAvailableCars(cars);
+            CarDAO.getInstance().setUnavailableCar(carNumberPlate);
         } catch (SQLException e) {
         }
     }
     
-    public void setBookedCars(ArrayList<Car> cars) {
+    public void setRunningCar(String carNumberPlate) {
         try {
-            CarDAO.getInstance().setBookedCars(cars);
+            CarDAO.getInstance().setRunningCar(carNumberPlate);
         } catch (SQLException e) {
         }
     }
     
-    public void insertCarsByOrderUID(String orderUID, ArrayList<Car> cars) {
+    public void setAvailableCar(String carNumberPlate) {
         try {
-            CarDAO.getInstance().insertCarsByOrderUID(orderUID, cars);
+            CarDAO.getInstance().setAvailableCar(carNumberPlate);
+        } catch (SQLException e) {
+        }
+    }
+    
+    public void setBookedCar(String carNumberPlate) {
+        try {
+            CarDAO.getInstance().setBookedCar(carNumberPlate);
+        } catch (SQLException e) {
+        }
+    }
+    
+    public void insertCarByOrderUID(String orderUID, String carNumberPlate) {
+        try {
+            CarDAO.getInstance().insertCarByOrderUID(orderUID, carNumberPlate);
         } catch (SQLException e) {
         }
     }

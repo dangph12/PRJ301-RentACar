@@ -8,8 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import model.Car;
 import model.CarStatus;
 
 /**
@@ -17,7 +15,37 @@ import model.CarStatus;
  * @author admin
  */
 public class CarDAO {
-    
+
+    public void setRunningCar(String carNumberPlate) throws SQLException {
+        String query = """
+                       UPDATE [Rent_A_Car].[dbo].[cars]
+                       SET [status] = ?
+                       WHERE [car_number_plate] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setInt(1, CarStatus.RUNNING.getKey());
+        pstmt.setString(2, carNumberPlate);
+
+        pstmt.executeUpdate();
+
+    }
+
+    public void setUnavailableCar(String carNumberPlate) throws SQLException {
+        String query = """
+                       UPDATE [Rent_A_Car].[dbo].[cars]
+                       SET [status] = ?
+                       WHERE [car_number_plate] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setInt(1, CarStatus.UNAVAILABLE.getKey());
+        pstmt.setString(2, carNumberPlate);
+
+        pstmt.executeUpdate();
+
+    }
+
     public ResultSet getCarsCountWithTitle(String title) throws SQLException {
         String full_title = "%" + title + "%";
         String query = """
@@ -31,7 +59,7 @@ public class CarDAO {
 
         return executeQuery(pstmt);
     }
-    
+
     public ResultSet getCarsCount() throws SQLException {
         String query = """
                        SELECT count(*) FROM [Rent_A_Car].[dbo].[cars]
@@ -41,7 +69,7 @@ public class CarDAO {
 
         return executeQuery(pstmt);
     }
-    
+
     public ResultSet pagingCarsWithTitle(int index, String title) throws SQLException {
         String full_title = "%" + title + "%";
         int carsCountPerPage = 7;
@@ -64,7 +92,7 @@ public class CarDAO {
 
         return executeQuery(pstmt);
     }
-    
+
     public ResultSet pagingCars(int index) throws SQLException {
         int carsCountPerPage = 7;
 
@@ -84,7 +112,7 @@ public class CarDAO {
 
         return executeQuery(pstmt);
     }
-    
+
     public ResultSet getCarsForDashBoardByOrderUID(String orderUID) throws SQLException {
         String query = """
                            SELECT [orders_detailed_cars].[car_number_plate]
@@ -101,53 +129,49 @@ public class CarDAO {
 
         return executeQuery(pstmt);
     }
-    
-    public void setAvailableCars(ArrayList<Car> cars) throws SQLException {
+
+    public void setAvailableCar(String carNumberPlate) throws SQLException {
         String query = """
                        UPDATE [Rent_A_Car].[dbo].[cars]
                        SET [status] = ?
                        WHERE [car_number_plate] = ?
                        """;
-        for (Car car : cars) {
-            PreparedStatement pstmt = createPreparedStatement(query);
+        PreparedStatement pstmt = createPreparedStatement(query);
 
-            pstmt.setInt(1, CarStatus.AVAILABLE.getKey());
-            pstmt.setString(2, car.getCarNumberPlate());
+        pstmt.setInt(1, CarStatus.AVAILABLE.getKey());
+        pstmt.setString(2, carNumberPlate);
 
-            pstmt.executeUpdate();
-        }
+        pstmt.executeUpdate();
+
     }
-    
-    public void setBookedCars(ArrayList<Car> cars) throws SQLException {
+
+    public void setBookedCar(String carNumberPlate) throws SQLException {
         String query = """
                        UPDATE [Rent_A_Car].[dbo].[cars]
                        SET [status] = ?
                        WHERE [car_number_plate] = ?
                        """;
-        for (Car car : cars) {
-            PreparedStatement pstmt = createPreparedStatement(query);
+        PreparedStatement pstmt = createPreparedStatement(query);
 
-            pstmt.setInt(1, CarStatus.BOOKED.getKey());
-            pstmt.setString(2, car.getCarNumberPlate());
+        pstmt.setInt(1, CarStatus.BOOKED.getKey());
+        pstmt.setString(2, carNumberPlate);
 
-            pstmt.executeUpdate();
-        }
+        pstmt.executeUpdate();
+
     }
 
-    public void insertCarsByOrderUID(String orderUID, ArrayList<Car> cars) throws SQLException {
+    public void insertCarByOrderUID(String orderUID, String carNumberPlate) throws SQLException {
         String query = """
                        INSERT INTO [Rent_A_Car].[dbo].[orders_detailed_cars]
                        ([order_uid],[car_number_plate])
                        VALUES (?,?)
                        """;
-        for (Car car : cars) {
-            PreparedStatement pstmt = createPreparedStatement(query);
+        PreparedStatement pstmt = createPreparedStatement(query);
 
-            pstmt.setString(1, orderUID);
-            pstmt.setString(2, car.getCarNumberPlate());
+        pstmt.setString(1, orderUID);
+        pstmt.setString(2, carNumberPlate);
 
-            pstmt.executeUpdate();
-        }
+        pstmt.executeUpdate();
 
     }
 

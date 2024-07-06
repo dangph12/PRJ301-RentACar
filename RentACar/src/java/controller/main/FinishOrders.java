@@ -50,16 +50,17 @@ public class FinishOrders extends HttpServlet {
             String orderUID = Util.getInstance().generateUUID();
             Order order = createNewOrder(request, orderUID, userUID);
             orderInstance.insertOrderToDatabases(order);
-            
+
             Car carInstance = new Car();
             // for a single category
             String categoryUID = request.getParameter("selected-category-uid");
             String count = request.getParameter("car-count");
             int carCount = Integer.parseInt(count);
             ArrayList<Car> cars = carInstance.getAvailableCarsForOrder(categoryUID, carCount);
-            carInstance.setBookedCars(cars);
-            carInstance.insertCarsByOrderUID(order.getOrderUID(), cars); 
-            
+            for (Car car : cars) {
+                carInstance.setBookedCar(car.getCarNumberPlate());
+                carInstance.insertCarByOrderUID(order.getOrderUID(), car.getCarNumberPlate());
+            }
 
             Bill billInstance = new Bill();
             Bill bill = createNewBill(request, orderUID);
@@ -68,28 +69,28 @@ public class FinishOrders extends HttpServlet {
             Cookie ck = new Cookie("userUID", userUID);
             response.addCookie(ck);
             response.sendRedirect("view-orders");
-            
+
         } catch (Exception e) {
             System.out.println("");
         }
     }
-    
+
     public Bill createNewBill(HttpServletRequest request, String orderUID) {
-       String amount = request.getParameter("total-amount");
-       int totalAmount = Integer.parseInt(amount);
-       String method = request.getParameter("payment-method");
-       int paymentMethod = Integer.parseInt(method);
-       boolean paid = false;
-       
-       int defaultDaysToCancelBill = 7;
-       Date cancelledDate = Date.valueOf(LocalDate.now().plusDays(defaultDaysToCancelBill));
-       
-       Bill bill = new Bill(orderUID, totalAmount, paymentMethod, paid, cancelledDate);
-       return bill;
+        String amount = request.getParameter("total-amount");
+        int totalAmount = Integer.parseInt(amount);
+        String method = request.getParameter("payment-method");
+        int paymentMethod = Integer.parseInt(method);
+        boolean paid = false;
+
+        int defaultDaysToCancelBill = 7;
+        Date cancelledDate = Date.valueOf(LocalDate.now().plusDays(defaultDaysToCancelBill));
+
+        Bill bill = new Bill(orderUID, totalAmount, paymentMethod, paid, cancelledDate);
+        return bill;
     }
-    
+
     public Order createNewOrder(HttpServletRequest request, String orderUID, String userUID) {
-        
+
         String date = request.getParameter("received-at");
         Date receivedDate = Date.valueOf(date);
         String days = request.getParameter("rental-days");

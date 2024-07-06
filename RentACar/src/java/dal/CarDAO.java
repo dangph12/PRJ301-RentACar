@@ -18,6 +18,23 @@ import model.CarStatus;
  */
 public class CarDAO {
     
+    public ResultSet getCarsForDashBoardByOrderUID(String orderUID) throws SQLException {
+        String query = """
+                           SELECT [orders_detailed_cars].[car_number_plate]
+                           ,[status]
+                           ,[title]
+                           FROM [Rent_A_Car].[dbo].[orders_detailed_cars]
+                           INNER JOIN [Rent_A_Car].[dbo].[cars] ON [cars].[car_number_plate] = [orders_detailed_cars].[car_number_plate]
+                           INNER JOIN [Rent_A_Car].[dbo].[categories] ON [categories].category_uid = [cars].[category_uid] 
+                           WHERE [order_uid] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setString(1, orderUID);
+
+        return executeQuery(pstmt);
+    }
+    
     public void setAvailableCars(ArrayList<Car> cars) throws SQLException {
         String query = """
                        UPDATE [Rent_A_Car].[dbo].[cars]

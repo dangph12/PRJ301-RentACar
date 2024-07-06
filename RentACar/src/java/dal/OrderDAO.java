@@ -16,6 +16,71 @@ import model.OrderStatus;
  * @author admin
  */
 public class OrderDAO {
+    
+    public ResultSet getOrdersCountWithName(String name) throws SQLException {
+        String full_name = "%" + name + "%";
+        String query = """
+                       SELECT count(*) FROM [Rent_A_Car].[dbo].[orders]
+                       INNER JOIN [Rent_A_Car].[dbo].[users_information] ON [orders].user_uid = [users_information].user_uid
+                       WHERE full_name LIKE ?
+                       """;
+
+        PreparedStatement pstmt = createPreparedStatement(query);
+        pstmt.setString(1, full_name);
+
+        return executeQuery(pstmt);
+    }
+    
+    public ResultSet pagingOrdersWithName(int index, String name) throws SQLException {
+        int ordersCountPerPage = 7;
+        String full_name = "%" + name + "%";
+
+        String query = """
+                       SELECT [orders].order_uid, full_name, received_at, returned_at, status, is_paid
+                       FROM [Rent_A_Car].[dbo].[orders]
+                       INNER JOIN [Rent_A_Car].[dbo].[users_information] ON [orders].user_uid = [users_information].user_uid
+                       INNER JOIN [Rent_A_Car].[dbo].[bills] ON [orders].order_uid = [bills].order_uid
+                       WHERE full_name LIKE ?
+                       ORDER BY [orders].order_uid
+                       	OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setString(1, full_name);
+        pstmt.setInt(2, (index - 1) * ordersCountPerPage);
+        pstmt.setInt(3, ordersCountPerPage);
+
+        return executeQuery(pstmt);
+    }
+    
+    public ResultSet getOrdersCount() throws SQLException {
+        String query = """
+                       SELECT count(*) FROM [Rent_A_Car].[dbo].[orders]
+                       """;
+
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        return executeQuery(pstmt);
+    }
+    
+    public ResultSet pagingOrders(int index) throws SQLException {
+        int ordersCountPerPage = 7;
+
+        String query = """
+                       SELECT [orders].order_uid, full_name, received_at, returned_at, status, is_paid
+                       FROM [Rent_A_Car].[dbo].[orders]
+                       INNER JOIN [Rent_A_Car].[dbo].[users_information] ON [orders].user_uid = [users_information].user_uid
+                       INNER JOIN [Rent_A_Car].[dbo].[bills] ON [orders].order_uid = [bills].order_uid
+                       ORDER BY [orders].order_uid
+                       	OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setInt(1, (index - 1) * ordersCountPerPage);
+        pstmt.setInt(2, ordersCountPerPage);
+
+        return executeQuery(pstmt);
+    }
 
     public void cancelOrderByOrderUID(String orderUID) throws SQLException {
         String query = """

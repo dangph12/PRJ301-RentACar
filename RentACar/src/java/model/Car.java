@@ -15,6 +15,95 @@ import java.util.ArrayList;
  */
 public class Car {
     
+    public int getCarsCountWithTitle(String title) {
+        
+        int count = 0;
+        try {
+            ResultSet rs = CarDAO.getInstance().getCarsCountWithName(title);
+            while (rs.next()) {                
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return count;
+    }
+    
+    public int getCarsCount() {
+        
+        int count = 0;
+        try {
+            ResultSet rs = CarDAO.getInstance().getCarsCount();
+            while (rs.next()) {                
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return count;
+    }
+    
+    public ArrayList<Car> pagingCarsWithTitle(int index, String title) {
+        ArrayList<Car> cars = new ArrayList<>();
+        try {
+            ResultSet carsResultSet = CarDAO.getInstance().pagingCarsWithTitle(index, title);
+            while (carsResultSet.next()) {                
+                String carNumberPlate = carsResultSet.getString("car_number_plate");
+
+                int status = carsResultSet.getInt("status");
+                CarStatus carStatus = getCarStatusByKey(status);
+
+                String carTitle = carsResultSet.getString("title");
+                Car car = new Car(carNumberPlate, carTitle, carStatus);
+                cars.add(car);
+                
+            }
+        } catch (SQLException e) {
+            System.out.println("");
+        }
+        return cars;
+    }
+    
+    public ArrayList<Car> pagingCars(int index) {
+        ArrayList<Car> cars = new ArrayList<>();
+        try {
+            ResultSet carsResultSet = CarDAO.getInstance().pagingCars(index);
+            while (carsResultSet.next()) {                
+                String carNumberPlate = carsResultSet.getString("car_number_plate");
+
+                int status = carsResultSet.getInt("status");
+                CarStatus carStatus = getCarStatusByKey(status);
+
+                String title = carsResultSet.getString("title");
+                Car car = new Car(carNumberPlate, title, carStatus);
+                cars.add(car);
+                
+            }
+        } catch (SQLException e) {
+            System.out.println("");
+        }
+        return cars;
+    }
+    
+    public ArrayList<Car> getCarsForDashBoardByOrderUID(String orderUID) {
+        ArrayList<Car> cars = new ArrayList<>();
+        try {
+            ResultSet carsResultSet = CarDAO.getInstance().getCarsForDashBoardByOrderUID(orderUID);
+            while (carsResultSet.next()) {
+                String carNumberPlate = carsResultSet.getString("car_number_plate");
+
+                int status = carsResultSet.getInt("status");
+                CarStatus carStatus = getCarStatusByKey(status);
+
+                String title = carsResultSet.getString("title");
+                Car car = new Car(carNumberPlate, title, carStatus);
+                cars.add(car);
+            }
+        } catch (SQLException e) {
+        }
+        return cars;
+    }
+    
     public void setAvailableCars(ArrayList<Car> cars) {
         try {
             CarDAO.getInstance().setAvailableCars(cars);
@@ -173,5 +262,31 @@ public class Car {
         this.carNumberPlate = carNumberPlate;
         this.carStatus = carStatus;
         this.categoryUID = categoryUID;
+    }
+    
+    private String title;
+
+    /**
+     * Get the value of title
+     *
+     * @return the value of title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Set the value of title
+     *
+     * @param title new value of title
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public Car(String carNumberPlate, String title, CarStatus carStatus) {
+        this.carNumberPlate = carNumberPlate;
+        this.title = title;
+        this.carStatus = carStatus;
     }
 }

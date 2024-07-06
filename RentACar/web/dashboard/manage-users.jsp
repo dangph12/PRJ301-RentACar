@@ -5,7 +5,7 @@
 --%>
 
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -20,7 +20,7 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="css/style.css"/>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/style.css"/>
     </head>
     <body>
         <div class="container-xl">
@@ -35,7 +35,7 @@
                                 <form action="manage-users" method="GET">
                                     <div class="search-box">
                                         <i class="material-icons">&#xE8B6;</i>
-                                        <input type="text" name="name" class="form-control" placeholder="Search&hellip;" value="${requestScope.name}">
+                                        <input type="text" name="search" class="form-control" placeholder="Search&hellip;" value="${requestScope.search}">
                                     </div>
                                 </form>
                             </div>
@@ -94,11 +94,11 @@
                                 <li class="page-item">
                                     
                                     <c:choose>
-                                        <c:when test="${requestScope.name == null}">
+                                        <c:when test="${requestScope.search == null}">
                                             <a href="?page=${i}" class="page-link">${i}</a>
                                         </c:when>
                                         <c:otherwise>
-                                            <a href="?page=${i}&name=${requestScope.name}" class="page-link">${i}</a>
+                                            <a href="?page=${i}&search=${requestScope.search}" class="page-link">${i}</a>
                                         </c:otherwise>
                                     </c:choose>
                                 </li>
@@ -208,5 +208,5 @@
                 </div>
             </div>
         </div>
-        <script src="js/script.js"></script>
+        <script src="<%=request.getContextPath()%>/js/script.js"></script>
 </html>

@@ -16,10 +16,42 @@ import model.User;
  */
 public class UserDAO {
 
+    public void editUserByUserUID(User user) {
+
+        String query = """
+                       UPDATE [Rent_A_Car].[dbo].[users_information]
+                       SET [full_name] = ?, [address] = ?
+                       WHERE [user_uid] = ?
+                       """;
+        try {
+            PreparedStatement pstmt = createPreparedStatement(query);
+            pstmt.setString(1, user.getFullName());
+            pstmt.setString(2, user.getAddress());
+            pstmt.setString(3, user.getUserUID());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+        }
+
+        query = """
+                       UPDATE [Rent_A_Car].[dbo].[users_auth]
+                       SET [phone] = ?, [email] = ?
+                       WHERE [user_uid] = ?
+                       """;
+        try {
+            PreparedStatement pstmt = createPreparedStatement(query);
+            pstmt.setString(1, user.getPhone());
+            pstmt.setString(2, user.getEmail());
+            pstmt.setString(3, user.getUserUID());
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+        }
+
+    }
+
     public ResultSet getUsersCountWithName(String name) throws SQLException {
         String full_name = "%" + name + "%";
         String query = """
-                       SELECT count(*) FROM [Rent_A_Car].[dbo].[users]
+                       SELECT count(*) FROM [Rent_A_Car].[dbo].[users_information]
                        WHERE full_name LIKE ?
                        """;
 
@@ -35,10 +67,11 @@ public class UserDAO {
         String full_name = "%" + name + "%";
 
         String query = """
-                       SELECT * FROM [Rent_A_Car].[dbo].[users]
-                       WHERE full_name LIKE ?
-                       ORDER BY user_uid
-                       OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+                       SELECT [users_information].[user_uid], [full_name], [phone], [email], [address]
+                       	FROM [Rent_A_Car].[dbo].[users_auth], [Rent_A_Car].[dbo].[users_information]
+                       	WHERE [users_auth].[user_uid] = [users_information].[user_uid] AND [full_name] LIKE ?
+                       	ORDER BY [users_information].[user_uid]
+                       	OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                        """;
 
         PreparedStatement pstmt = createPreparedStatement(query);
@@ -52,7 +85,7 @@ public class UserDAO {
 
     public ResultSet getUsersCount() throws SQLException {
         String query = """
-                       SELECT count(*) FROM [Rent_A_Car].[dbo].[users]
+                       SELECT count(*) FROM [Rent_A_Car].[dbo].[users_auth]
                        """;
 
         PreparedStatement pstmt = createPreparedStatement(query);
@@ -64,9 +97,11 @@ public class UserDAO {
         int usersCountPerPage = 7;
 
         String query = """
-                       SELECT * FROM [Rent_A_Car].[dbo].[users]
-                       ORDER BY user_uid
-                       OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+                       SELECT [users_information].[user_uid], [full_name], [phone], [email], [address]
+                       	FROM [Rent_A_Car].[dbo].[users_auth], [Rent_A_Car].[dbo].[users_information]
+                       	WHERE [users_auth].[user_uid] = [users_information].[user_uid]
+                       	ORDER BY [users_information].[user_uid]
+                       	OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
 
@@ -111,109 +146,17 @@ public class UserDAO {
      *
      * @param userUID The userUID of the user to delete.
      */
-    public void deleteUserByUserUID(String userUID) {
-        String query = "DELETE FROM [Rent_A_Car].[dbo].[users] WHERE [user_uid] = ?";
+    public void deleteUserByUserUID(String userUID) throws SQLException {
+        String query = "DELETE FROM [Rent_A_Car].[dbo].[users_auth] WHERE [user_uid] = ?";
 
-        try (PreparedStatement pstmt = createPreparedStatement(query)) {
-            pstmt.setString(1, userUID);
-
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            //TODO: handle exception
-            System.out.println("ERROR: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Retrieves all user set from the database.
-     *
-     * @return The all user object retrieved from the database except password
-     * attribute, or null if there aren't any users.
-     */
-    public ResultSet getAllUsersExceptPassword() throws SQLException {
-        String query = """
-                       SELECT [user_uid]
-                             ,[username]
-                             ,[email]
-                         FROM [Rent_A_Car].[dbo].[users]""";
         PreparedStatement pstmt = createPreparedStatement(query);
-        return executeQuery(pstmt);
-    }
+        pstmt.setString(1, userUID);
+        pstmt.executeUpdate();
 
-    /**
-     * Retrieves a user set from the database by username.
-     *
-     * @param username The username of the user to retrieve.
-     * @return The User object retrieved from the database, or null if not
-     * found.
-     */
-    public ResultSet getUserByUsername(String username) throws SQLException {
-        String query = "Select * from user-auth";
-        PreparedStatement pstmt = createPreparedStatement(query);
-        return executeQuery(pstmt);
-
-    }
-
-    /**
-     * Retrieves a user set from the database by email.
-     *
-     * @param email The email of the user to retrieve.
-     * @return The User object retrieved from the database, or null if not
-     * found.
-     */
-    public ResultSet getUserByEmail(String email) {
-        String query = "SELECT * FROM [dbo].[user-auth] WHERE "
-                + "[email] = ? ";
-        try (PreparedStatement pstmt = createPreparedStatement(query)) {
-            pstmt.setString(1, email);
-            return executeQuery(pstmt);
-        } catch (SQLException e) {
-            //TODO: handle exception
-            System.out.println("ERROR: " + e.getMessage());
-            return null;
-        }
-    }
-
-    /**
-     * Checks if a username exist in the database
-     *
-     * @param username The username to check for existence
-     * @return true if the username exist, false otherwise.j
-     */
-    public boolean isExistUserName(String username) {
-        boolean flag = true;
-        try {
-            ResultSet rs = this.getUserByUsername(username);
-            if (rs.next()) {  // Mean have duplicate username
-                return flag;
-            }
-        } catch (SQLException e) {
-            //TODO: handle exception
-            System.out.println("ERROR: " + e.getMessage());
-        }
-        flag = false;
-        return flag;
-    }
-
-    /**
-     * Checks if an email exists in the database.
-     *
-     * @param email The email address to check for existence.
-     * @return true if the email exists, false otherwise.
-     */
-    public boolean isExistEmail(String email) {
-        boolean flag = true;
-        try {
-            ResultSet rs = this.getUserByEmail(email);
-            if (rs.next()) {  // Mean have duplicate email
-                return flag;
-            }
-        } catch (SQLException e) {
-            //TODO: handle exception
-            System.out.println("ERROR: " + e.getMessage());
-        }
-        flag = false;
-        return flag;
+        query = "DELETE FROM [Rent_A_Car].[dbo].[users_information] WHERE [user_uid] = ?";
+        pstmt = createPreparedStatement(query);
+        pstmt.setString(1, userUID);
+        pstmt.executeUpdate();
     }
 
     private static UserDAO instance;
@@ -253,26 +196,5 @@ public class UserDAO {
     }
 
     public UserDAO() {
-    }
-
-    public void editUserByUserUID(User user) {
-        String query = """
-                         UPDATE [Rent_A_Car].[dbo].[users]
-                         SET [full_name] = ?, [phone] = ?, [email] = ?, [address] = ?
-                         WHERE [user_uid] = ?
-                       """;
-        try (PreparedStatement pstmt = createPreparedStatement(query)) {
-
-            pstmt.setString(1, user.getFullName());
-            pstmt.setString(2, user.getPhone());
-            pstmt.setString(3, user.getEmail());
-            pstmt.setString(4, user.getAddress());
-            pstmt.setString(5, user.getUserUID());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            //TODO: handle exception
-            System.out.println("ERROR: " + e.getMessage());
-        }
-
     }
 }

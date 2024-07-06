@@ -43,13 +43,13 @@ public class ManageUsers extends HttpServlet {
             }
             int index = Integer.parseInt(page);
 
-            String name = request.getParameter("name");
-            if (name == null) {
+            String search = request.getParameter("search");
+            if (search == null) {
                 pagingUsers = user.pagingUsers(index);
                 allUsersCount = user.getUsersCount();
             } else {
-                pagingUsers = user.pagingUsersWithName(index, name);
-                allUsersCount = user.getUsersCountWithName(name);
+                pagingUsers = user.pagingUsersWithName(index, search);
+                allUsersCount = user.getUsersCountWithName(search);
             }
 
             int endPage = 0;
@@ -62,7 +62,7 @@ public class ManageUsers extends HttpServlet {
             request.setAttribute("pagingUsers", pagingUsers);
             request.setAttribute("pagingUsersCount", pagingUsers.size());
             request.setAttribute("allUsersCount", allUsersCount);
-            request.setAttribute("name", name);
+            request.setAttribute("search", search);
             request.setAttribute("endPage", endPage);
             request.getRequestDispatcher("manage-users.jsp").forward(request, response);
         } catch (Exception e) {

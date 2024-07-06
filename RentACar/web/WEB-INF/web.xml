@@ -44,21 +44,37 @@
         <servlet-name>ConfirmPayment</servlet-name>
         <servlet-class>controller.main.ConfirmPayment</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageOrders</servlet-name>
+        <servlet-class>controller.dashboard.orders.ManageOrders</servlet-class>
+        <init-param>
+            <param-name>page</param-name>
+            <param-value>1</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageCars</servlet-name>
+        <servlet-class>controller.dashboard.cars.ManageCars</servlet-class>
+        <init-param>
+            <param-name>page</param-name>
+            <param-value>1</param-value>
+        </init-param>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ManageUsers</servlet-name>
-        <url-pattern>/manage-users</url-pattern>
+        <url-pattern>/dashboard/manage-users</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteUsers</servlet-name>
-        <url-pattern>/delete-users</url-pattern>
+        <url-pattern>/dashboard/delete-users</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddUser</servlet-name>
-        <url-pattern>/add-user</url-pattern>
+        <url-pattern>/dashboard/add-user</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditUser</servlet-name>
-        <url-pattern>/edit-user</url-pattern>
+        <url-pattern>/dashboard/edit-user</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShowCars</servlet-name>
@@ -83,5 +99,13 @@
     <servlet-mapping>
         <servlet-name>ConfirmPayment</servlet-name>
         <url-pattern>/confirm-payment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageOrders</servlet-name>
+        <url-pattern>/dashboard/manage-orders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageCars</servlet-name>
+        <url-pattern>/dashboard/manage-cars</url-pattern>
     </servlet-mapping>
 </web-app>

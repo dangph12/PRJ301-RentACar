@@ -19,7 +19,7 @@ public class Car {
         
         int count = 0;
         try {
-            ResultSet rs = CarDAO.getInstance().getCarsCountWithName(title);
+            ResultSet rs = CarDAO.getInstance().getCarsCountWithTitle(title);
             while (rs.next()) {                
                 count = rs.getInt(1);
             }
@@ -140,6 +140,7 @@ public class Car {
                 cars.add(car);
             }
         } catch (SQLException e) {
+            System.out.println("");
         }
         return cars;
     }

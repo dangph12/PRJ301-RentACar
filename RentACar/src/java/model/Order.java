@@ -58,10 +58,10 @@ public class Order {
                 int status = rs.getInt("status");
                 OrderStatus orderStatus = getOrderStatusByKey(status);
                 
-                ArrayList<Car> cars = carInstance.getCarsForDashBoardByOrderUID(orderUID);
                 boolean paid = rs.getBoolean("is_paid");
                 
-                Order order = new Order(orderUID, receivedDate, returnedDate, orderStatus, cars, fullName, paid);
+                Order order = new Order(orderUID, receivedDate, returnedDate, orderStatus, fullName, paid);
+                orders.add(order);
                 
             }
         } catch (SQLException e) {
@@ -84,11 +84,10 @@ public class Order {
                 int status = rs.getInt("status");
                 OrderStatus orderStatus = getOrderStatusByKey(status);
                 
-                ArrayList<Car> cars = carInstance.getCarsForDashBoardByOrderUID(orderUID);
                 boolean paid = rs.getBoolean("is_paid");
                 
-                Order order = new Order(orderUID, receivedDate, returnedDate, orderStatus, cars, fullName, paid);
-                
+                Order order = new Order(orderUID, receivedDate, returnedDate, orderStatus, fullName, paid);
+                orders.add(order);
             }
         } catch (SQLException e) {
             System.out.println("");
@@ -125,6 +124,7 @@ public class Order {
 
             }
         } catch (SQLException e) {
+            System.out.println("");
         }
         return orders;
     }
@@ -352,12 +352,11 @@ public class Order {
         this.paid = paid;
     }
 
-    public Order(String orderUID, Date receivedDate, Date returnedDate, OrderStatus orderStatus, ArrayList<Car> cars, String fullName, boolean paid) {
+    public Order(String orderUID, Date receivedDate, Date returnedDate, OrderStatus orderStatus, String fullName, boolean paid) {
         this.orderUID = orderUID;
         this.receivedDate = receivedDate;
         this.returnedDate = returnedDate;
         this.orderStatus = orderStatus;
-        this.cars = cars;
         this.fullName = fullName;
         this.paid = paid;
     }

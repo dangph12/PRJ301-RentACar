@@ -100,8 +100,6 @@ public class OrderDAO {
         String query = """
                        SELECT [order_uid]
                              ,[user_uid]
-                             ,[category_uid]
-                             ,[car_count]
                              ,[received_at]
                              ,[returned_at]
                              ,[status]

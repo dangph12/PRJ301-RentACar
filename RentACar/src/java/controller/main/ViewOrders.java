@@ -36,6 +36,8 @@ public class ViewOrders extends HttpServlet {
             Cookie ck[] = request.getCookies();
             String userUID = ck[1].getValue();
             
+            userUID = "a01f1377-f114-41db-95c5-cefb8ac2f070";
+            
             Order orderInstance = new Order();
             ArrayList<Order> orders = orderInstance.getOrdersByUserUID(userUID);
             

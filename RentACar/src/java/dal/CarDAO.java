@@ -18,6 +18,73 @@ import model.CarStatus;
  */
 public class CarDAO {
     
+    public ResultSet getCarsCountWithTitle(String title) throws SQLException {
+        String full_title = "%" + title + "%";
+        String query = """
+                       SELECT count(*) FROM [Rent_A_Car].[dbo].[cars]
+                       INNER JOIN [Rent_A_Car].[dbo].[categories] ON [cars].category_uid = [categories].category_uid
+                        WHERE [title] LIKE ?
+                       """;
+
+        PreparedStatement pstmt = createPreparedStatement(query);
+        pstmt.setString(1, full_title);
+
+        return executeQuery(pstmt);
+    }
+    
+    public ResultSet getCarsCount() throws SQLException {
+        String query = """
+                       SELECT count(*) FROM [Rent_A_Car].[dbo].[cars]
+                       """;
+
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        return executeQuery(pstmt);
+    }
+    
+    public ResultSet pagingCarsWithTitle(int index, String title) throws SQLException {
+        String full_title = "%" + title + "%";
+        int carsCountPerPage = 7;
+
+        String query = """
+                       SELECT [car_number_plate]
+                             ,[title]
+                             ,[status]
+                         FROM [Rent_A_Car].[dbo].[cars]
+                         INNER JOIN [Rent_A_Car].[dbo].[categories] ON [cars].category_uid = [categories].category_uid
+                       WHERE [title] LIKE ?
+                       ORDER BY [car_number_plate]
+                       OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setString(1, full_title);
+        pstmt.setInt(2, (index - 1) * carsCountPerPage);
+        pstmt.setInt(3, carsCountPerPage);
+
+        return executeQuery(pstmt);
+    }
+    
+    public ResultSet pagingCars(int index) throws SQLException {
+        int carsCountPerPage = 7;
+
+        String query = """
+                       SELECT [car_number_plate]
+                             ,[title]
+                             ,[status]
+                         FROM [Rent_A_Car].[dbo].[cars]
+                         INNER JOIN [Rent_A_Car].[dbo].[categories] ON [cars].category_uid = [categories].category_uid
+                       ORDER BY [car_number_plate]
+                       OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setInt(1, (index - 1) * carsCountPerPage);
+        pstmt.setInt(2, carsCountPerPage);
+
+        return executeQuery(pstmt);
+    }
+    
     public ResultSet getCarsForDashBoardByOrderUID(String orderUID) throws SQLException {
         String query = """
                            SELECT [orders_detailed_cars].[car_number_plate]

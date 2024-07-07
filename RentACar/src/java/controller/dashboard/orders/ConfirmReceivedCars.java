@@ -41,6 +41,7 @@ public class ConfirmReceivedCars extends HttpServlet {
                     carInstance.setRunningCar(car.getCarNumberPlate());
                 }
             }
+            response.sendRedirect("manage-orders");
         } catch (Exception e) {
             
         }

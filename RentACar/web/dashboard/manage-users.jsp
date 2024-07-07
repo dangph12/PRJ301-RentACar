@@ -208,5 +208,5 @@
                 </div>
             </div>
         </div>
-        <script src="<%=request.getContextPath()%>/js/script.js"></script>
+        <script src="<%=request.getContextPath()%>/js/manage-users.js"></script>
 </html>

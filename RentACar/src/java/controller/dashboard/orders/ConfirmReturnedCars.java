@@ -41,6 +41,7 @@ public class ConfirmReturnedCars extends HttpServlet {
                     carInstance.setAvailableCar(car.getCarNumberPlate());
                 }
             }
+            response.sendRedirect("manage-orders");
         }
     } 
 

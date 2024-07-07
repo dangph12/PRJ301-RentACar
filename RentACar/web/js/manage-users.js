@@ -1,4 +1,3 @@
-var checkedValues = [];
 $(document).ready(function () {
   // Activate tooltip
   $('[data-toggle="tooltip"]').tooltip();
@@ -8,17 +7,10 @@ $(document).ready(function () {
     if (this.checked) {
       checkbox.each(function () {
         this.checked = true;
-        var value = $(this).val();
-        checkedValues.push(value);
       });
     } else {
       checkbox.each(function () {
         this.checked = false;
-        var value = $(this).val();
-        var index = checkedValues.indexOf(value);
-        if (index > -1) {
-          checkedValues.splice(index, 1);
-        }
       });
     }
   });
@@ -26,17 +18,6 @@ $(document).ready(function () {
   checkbox.click(function () {
     if (!this.checked) {
       $("#selectAll").prop("checked", false);
-      var value = $(this).val();
-      var index = checkedValues.indexOf(value);
-      if (index > -1) {
-        checkedValues.splice(index, 1);
-      }
-    } else {
-      var value = $(this).val();
-        checkedValues.push(value);
-        if (checkbox.length == checkbox.filter(":checked").length) {
-          $("#selectAll").prop("checked", true);
-        }
     }
   });
 });
@@ -55,11 +36,18 @@ $("ul.pagination a")
   .addClass("active");
 
 $("#deleteUserModal").on("show.bs.modal", function (event) {
-  var button = $(event.relatedTarget); // Button that triggered the modal
-  var userUID = button.data("useruid"); // Extract info from data-* attributes
-  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var button = $(event.relatedTarget); 
+  var userUID = button.data("useruid"); 
   var modal = $(this);
+
+  var checkedValues = [];
+  var checkbox = $('table tbody input[type="checkbox"]');
+  checkbox.each(function () {
+    if (this.checked) {
+      var value = $(this).val();
+      checkedValues.push(value);
+    }
+  });
 
   if (userUID != null) {
     modal.find('input[name="userUID"]').val(userUID);

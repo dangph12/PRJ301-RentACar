@@ -33,10 +33,7 @@ public class ViewOrders extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            Cookie ck[] = request.getCookies();
-            String userUID = ck[1].getValue();
-            
-            userUID = "a01f1377-f114-41db-95c5-cefb8ac2f070";
+            String userUID = request.getParameter("userUID");
             
             Order orderInstance = new Order();
             ArrayList<Order> orders = orderInstance.getOrdersByUserUID(userUID);

@@ -17,7 +17,7 @@ import model.Category;
  *
  * @author admin
  */
-public class Checkouts extends HttpServlet {
+public class Checkout extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,7 +38,7 @@ public class Checkouts extends HttpServlet {
             //request.getSession().setAttribute(categoryUID, selectedCategory);
 
             request.setAttribute("selectedCategory", selectedCategory);
-            request.getRequestDispatcher("checkouts.jsp").forward(request, response);
+            request.getRequestDispatcher("checkout.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println("");
         }

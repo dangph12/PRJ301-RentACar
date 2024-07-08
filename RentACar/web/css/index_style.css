@@ -1,7 +1,5 @@
 body{
-    background-image: linear-gradient(to top right,
-    #2A9D8F, #264653
-    );
+    background-color: #0d2f3c;
     min-height: 100vh;
     line-height: 20px;
     font-family: monospace;
@@ -15,9 +13,7 @@ body{
     transition: 0.5s;
 }
 .item .img{
-    background-image: linear-gradient(to top right,
-    #E9C46A, #F4A261
-    );
+    background-color: #e6ca86;
     height: 220px;
     padding:20px;
     display: flex;

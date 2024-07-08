@@ -25,8 +25,8 @@
         <servlet-class>controller.main.ShowCars</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Checkouts</servlet-name>
-        <servlet-class>controller.main.Checkouts</servlet-class>
+        <servlet-name>Checkout</servlet-name>
+        <servlet-class>controller.main.Checkout</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>FinishOrders</servlet-name>
@@ -97,8 +97,8 @@
         <url-pattern>/show-cars</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Checkouts</servlet-name>
-        <url-pattern>/checkouts</url-pattern>
+        <servlet-name>Checkout</servlet-name>
+        <url-pattern>/checkout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FinishOrders</servlet-name>

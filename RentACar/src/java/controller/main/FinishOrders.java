@@ -43,32 +43,35 @@ public class FinishOrders extends HttpServlet {
 
             User userInstance = new User();
             String userUID = Util.getInstance().generateUUID();
-            User user = createNewUser(request, userUID);
-            userInstance.insertUserToDatabases(user);
+//            User user = createNewUser(request, userUID);
+//            userInstance.insertUserToDatabases(user);
+//
+//            Order orderInstance = new Order();
+//            String orderUID = Util.getInstance().generateUUID();
+//            Order order = createNewOrder(request, orderUID, userUID);
+//            orderInstance.insertOrderToDatabases(order);
+//
+//            Car carInstance = new Car();
+//            // for a single category
+//            String categoryUID = request.getParameter("selected-category-uid");
+//            String count = request.getParameter("car-count");
+//            int carCount = Integer.parseInt(count);
+//            ArrayList<Car> cars = carInstance.getAvailableCarsForOrder(categoryUID, carCount);
+//            for (Car car : cars) {
+//                carInstance.setBookedCar(car.getCarNumberPlate());
+//                carInstance.insertCarByOrderUID(order.getOrderUID(), car.getCarNumberPlate());
+//            }
+//
+//            Bill billInstance = new Bill();
+//            Bill bill = createNewBill(request, orderUID);
+//            billInstance.insertBillToDatabases(bill);
+            
+            request.setAttribute("userUID", userUID);
+            request.getRequestDispatcher("view-orders").forward(request, response);
 
-            Order orderInstance = new Order();
-            String orderUID = Util.getInstance().generateUUID();
-            Order order = createNewOrder(request, orderUID, userUID);
-            orderInstance.insertOrderToDatabases(order);
-
-            Car carInstance = new Car();
-            // for a single category
-            String categoryUID = request.getParameter("selected-category-uid");
-            String count = request.getParameter("car-count");
-            int carCount = Integer.parseInt(count);
-            ArrayList<Car> cars = carInstance.getAvailableCarsForOrder(categoryUID, carCount);
-            for (Car car : cars) {
-                carInstance.setBookedCar(car.getCarNumberPlate());
-                carInstance.insertCarByOrderUID(order.getOrderUID(), car.getCarNumberPlate());
-            }
-
-            Bill billInstance = new Bill();
-            Bill bill = createNewBill(request, orderUID);
-            billInstance.insertBillToDatabases(bill);
-
-            Cookie ck = new Cookie("userUID", userUID);
-            response.addCookie(ck);
-            response.sendRedirect("view-orders");
+//            Cookie ck = new Cookie("userUID", userUID);
+//            response.addCookie(ck);
+//            response.sendRedirect("view-orders");
 
         } catch (Exception e) {
             System.out.println("");

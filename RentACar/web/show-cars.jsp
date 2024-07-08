@@ -42,7 +42,7 @@
                     <div class="row">
                     </c:if>
                     <div class="col-lg-4">
-                        <form action="checkouts" method="POST">
+                        <form action="checkout" method="POST">
                             <div class="item">
                                 <input type="hidden" name="category-uid" value="${category.categoryUID}" />
                                 <div class="img">

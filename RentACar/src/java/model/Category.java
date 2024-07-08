@@ -16,6 +16,7 @@ import java.sql.SQLException;
 public class Category {
 
     public ArrayList<Category> getAllCategories() {
+        Car carInstance = new Car();
         ArrayList<Category> allCategories = new ArrayList<>();
 
         try {
@@ -27,7 +28,8 @@ public class Category {
                 int numberOfSeats = categoryResultSet.getInt("number_of_seats");
                 int unitPrice = categoryResultSet.getInt("unit_price");
                 String image = categoryResultSet.getString("image");
-                Category category = new Category(categoryUID, title, description, numberOfSeats, unitPrice, image);
+                int availableCarCount = carInstance.getAvailableCarCountEachCategory(categoryUID);
+                Category category = new Category(categoryUID, title, description, numberOfSeats, unitPrice, image, availableCarCount);
                 allCategories.add(category);
             }
         } catch (SQLException e) {
@@ -188,6 +190,16 @@ public class Category {
     }
 
     public Category() {
+    }
+
+    public Category(String categoryUID, String title, String description, int numberOfSeats, int unitPrice, String image, int carCount) {
+        this.categoryUID = categoryUID;
+        this.title = title;
+        this.description = description;
+        this.numberOfSeats = numberOfSeats;
+        this.unitPrice = unitPrice;
+        this.image = image;
+        this.carCount = carCount;
     }
 
     public Category(String categoryUID, String title, String description, int numberOfSeats, int unitPrice, String image) {

@@ -13,7 +13,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
         <c:forEach var="order" items="${requestScope.orders}">
              <form action="cancel-order" method="POST">
                  <input type="hidden" name="order-uid" value="${order.orderUID}" />

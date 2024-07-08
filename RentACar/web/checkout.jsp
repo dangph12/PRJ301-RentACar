@@ -69,7 +69,7 @@
                                                             <span>${requestScope.selectedCategory.title}</span>
                                                         </td>
                                                         <td class="product-quantity">
-                                                            <span>Số lượng</span> <input type="number" name="car-count" min="1" max="30" value="1"/>
+                                                            Số lượng <input type="number" name="car-count" min="1" max="${requestScope.selectedCategory.carCount}" value="1"/>
                                                         </td>
                                                         <td class="product-price">
                                                             <span class="order-summary-emphasis">${requestScope.selectedCategory.unitPrice}₫</span>
@@ -104,7 +104,6 @@
                                                             <span
                                                                 class="payment-due-price"
                                                                 >
-                                                                66,000₫
                                                             </span>
                                                             <span
                                                                 class="checkout_version"

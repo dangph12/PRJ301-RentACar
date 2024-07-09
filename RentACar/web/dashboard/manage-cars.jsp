@@ -40,8 +40,8 @@
                                 </form>
                             </div>
                             <div class="col-sm-5">
-                                <button type="button" href="#setAvailableCars" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>setAvailableCars</span></button>	
-                                <button type="button" href="#setUnavailableCars" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>setUnavailableCars</span></button>	
+                                <button type="button" href="#setAvailableCars" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xe5ca;</i> <span>Set available cars</span></button>	
+                                <button type="button" href="#setUnavailableCars" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe5cd;</i> <span>Set unavailable cars</span></button>	
                             </div>
                         </div>
                     </div>
@@ -74,11 +74,11 @@
                                     <td>${car.carStatus.description}</td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <button type="button" href="#setAvailableCars" class="btn btn-mini delete" data-toggle="modal" data-carnumberplate="${car.carNumberPlate}">
-                                                <i class="material-icons text-danger" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                                            <button type="button" href="#setUnavailableCars" class="btn btn-mini" data-toggle="modal" data-carnumberplate="${car.carNumberPlate}">
+                                                <i class="material-icons text-danger" data-toggle="tooltip" title="Set unavailable cars">&#xe5cd;</i>
                                             </button>
-                                            <button type="button" href="#setUnavailableCars" class="btn btn-mini delete" data-toggle="modal" data-carnumberplate="${car.carNumberPlate}">
-                                                <i class="material-icons text-danger" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                                            <button type="button" href="#setAvailableCars" class="btn btn-mini" data-toggle="modal" data-carnumberplate="${car.carNumberPlate}">
+                                                <i class="material-icons text-success" data-toggle="tooltip" title="Set available cars">&#xe5ca;</i>
                                             </button>
                                         </div>
                                     </td>

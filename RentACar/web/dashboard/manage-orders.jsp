@@ -28,10 +28,10 @@
                 <div class="table-wrapper">
                     <div class="table-title">
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <h2>Manage <b>Orders</b></h2>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <form action="manage-orders" method="GET">
                                     <div class="search-box">
                                         <i class="material-icons">&#xE8B6;</i>
@@ -39,9 +39,10 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="col-sm-4">
-                                <button type="button" href="#confirmReturnedCarModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></button>
-                                <button type="button" href="#confirmReceivedCarModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></button>	
+                            <div class="col-sm-6">
+                                <button type="button" href="#confirmReceivedCarModal" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xe5d8;</i> <span>Customer received the car</span></button>	
+                                <button type="button" href="#confirmReturnedCarModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xe5db;</i> <span>Customer returned the car</span></button>
+                                
                             </div>
                         </div>
                     </div>
@@ -77,14 +78,14 @@
                                     <td>${order.receivedDate}</td>
                                     <td>${order.returnedDate}</td>
                                     <td>${order.orderStatus.description}</td>
-                                    <td>${order.bill.paid}</td>
+                                    <td>${order.bill.paid == true ? "Paid" : "Not paid"}</td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <button type="button" href="#confirmReturnedCarModal" class="btn btn-mini delete" data-toggle="modal" data-orderuid="${order.orderUID}">
-                                                <i class="material-icons text-danger" data-toggle="tooltip" title="Confirm">&#xE872;</i>
+                                            <button type="button" href="#confirmReturnedCarModal" class="btn btn-mini" data-toggle="modal" data-orderuid="${order.orderUID}">
+                                                <i class="material-icons text-success" data-toggle="tooltip" title="Customer returned the car">&#xe5db</i>
                                             </button>
-                                            <button type="button" href="#confirmReceivedCarModal" class="btn btn-mini delete" data-toggle="modal" data-orderuid="${order.orderUID}">
-                                                <i class="material-icons text-danger" data-toggle="tooltip" title="Confirm">&#xE872;</i>
+                                            <button type="button" href="#confirmReceivedCarModal" class="btn btn-mini" data-toggle="modal" data-orderuid="${order.orderUID}">
+                                                <i class="material-icons text-primary" data-toggle="tooltip" title="Customer received the car">&#xe5d8</i>
                                             </button>
                                         </div>
                                     </td>

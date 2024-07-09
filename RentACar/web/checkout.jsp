@@ -312,6 +312,36 @@
         </div>
       </form>
       <script>
+        document.getElementById("real-form").addEventListener("submit", function(event) {
+          // Get the form values
+          var fullname = document.getElementById("fullname").value;
+          var address = document.getElementById("address").value;
+          var email = document.getElementById("email").value;
+          var phone = document.getElementById("phone").value;
+          var receivedAt = document.getElementById("received-at").value;
+
+          var vietnameseNameRegex = /\b\S*[AĂÂÁẮẤÀẰẦẢẲẨÃẴẪẠẶẬĐEÊÉẾÈỀẺỂẼỄẸỆIÍÌỈĨỊOÔƠÓỐỚÒỒỜỎỔỞÕỖỠỌỘỢUƯÚỨÙỪỦỬŨỮỤỰYÝỲỶỸỴAĂÂÁẮẤÀẰẦẢẲẨÃẴẪẠẶẬĐEÊÉẾÈỀẺỂẼỄẸỆIÍÌỈĨỊOÔƠÓỐỚÒỒỜỎỔỞÕỖỠỌỘỢUƯÚỨÙỪỦỬŨỮỤỰYÝỲỶỸỴAĂÂÁẮẤÀẰẦẢẲẨÃẴẪẠẶẬĐEÊÉẾÈỀẺỂẼỄẸỆIÍÌỈĨỊOÔƠÓỐỚÒỒỜỎỔỞÕỖỠỌỘỢUƯÚỨÙỪỦỬŨỮỤỰYÝỲỶỸỴAĂÂÁẮẤÀẰẦẢẲẨÃẴẪẠẶẬĐEÊÉẾÈỀẺỂẼỄẸỆIÍÌỈĨỊOÔƠÓỐỚÒỒỜỎỔỞÕỖỠỌỘỢUƯÚỨÙỪỦỬŨỮỤỰYÝỲỶỸỴA-Z]+\S*\b/;
+          var checkName = fullname === "" && vietnameseNameRegex.test(fullname);
+
+          var checkAddress = address === "";
+
+          var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          var checkEmail = email === "" && emailRegex.test(email);
+
+          var phoneRegex = /^(0|\+84)\d{9}$/;
+          var checkPhone = phone === "" && phoneRegex.test(phone);
+
+          var checkReceivedAt = receivedAt === "" || new Date(receivedAt) > new Date();
+          console.log(checkReceivedAt);
+          debugger;
+
+          // Enable or disable the submit button based on field validation
+          if (checkName || checkAddress || checkEmail || checkPhone || checkReceivedAt) {
+            event.preventDefault();
+            alert("Vui lòng nhập đúng thông tin");
+          }
+        });
+
         setInterval(function () {
           var rentalDays = parseInt(
             document.getElementsByName("rental-days")[0].value

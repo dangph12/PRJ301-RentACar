@@ -102,6 +102,35 @@ public class Order {
         }
     }
 
+    public Order getOrderByOrderUID(String orderUID) {
+        User userInstance = new User();
+        Bill billInstance = new Bill();
+        Car carInstance = new Car();
+        Order order = null;
+        try {
+            ResultSet ordersByUserUID = OrderDAO.getInstance().getOrderByOrderUID(orderUID);
+            while (ordersByUserUID.next()) {
+                String userUID = ordersByUserUID.getString("user_uid");
+                User user = userInstance.getUserByUserUID(userUID);
+                
+                Date receivedDate = ordersByUserUID.getDate("received_at");
+                Date returnedDate = ordersByUserUID.getDate("returned_at");
+
+                int status = ordersByUserUID.getInt("status");
+                OrderStatus orderStatus = getOrderStatusByKey(status);
+
+                Date createdDate = ordersByUserUID.getDate("created_at");
+                ArrayList<Car> cars = carInstance.getCarsByOrderUID(orderUID);
+                Bill bill = billInstance.getBillByOrderUID(orderUID);
+
+                order = new Order(orderUID, receivedDate, returnedDate, orderStatus, createdDate, cars, user, bill);
+            }
+        } catch (SQLException e) {
+            System.out.println("");
+        }
+        return order;
+    }
+
     public ArrayList<Order> getOrdersByUserUID(String userUID) {
         Car carInstance = new Car();
         ArrayList<Order> orders = new ArrayList<>();

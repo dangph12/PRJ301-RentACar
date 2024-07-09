@@ -33,12 +33,14 @@ public class ViewOrders extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String userUID = (String) request.getAttribute("userUID");
+            //String orderUID = (String) request.getAttribute("orderUID");
+            
+            String orderUID = "2900650b-49e8-42cb-adfa-10148bca1b6b";
             
             Order orderInstance = new Order();
-            ArrayList<Order> orders = orderInstance.getOrdersByUserUID(userUID);
+            Order order = orderInstance.getOrderByOrderUID(orderUID);
             
-            request.setAttribute("orders", orders);
+            request.setAttribute("order", order);
             request.getRequestDispatcher("view-orders.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println("");

@@ -15,6 +15,20 @@ import model.User;
  * @author admin
  */
 public class UserDAO {
+    
+    public ResultSet getUserByUserUID(String userUID) throws SQLException {
+        String query = """
+                       SELECT [users_information].[user_uid], [full_name], [phone], [email], [address]
+                       FROM [Rent_A_Car].[dbo].[users_auth], [Rent_A_Car].[dbo].[users_information]
+                       WHERE [users_auth].[user_uid] = [users_information].[user_uid]
+                       AND [users_auth].[user_uid] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setString(1, userUID);
+
+        return executeQuery(pstmt);
+    }
 
     public void editUserByUserUID(User user) {
 

@@ -70,7 +70,7 @@
                                         </span>
                                     </td>
                                     <td>${car.carNumberPlate}</td>
-                                    <td>${car.title}</td>
+                                    <td>${car.category.title}</td>
                                     <td>${car.carStatus.description}</td>
                                     <td>
                                         <div class="btn-group" role="group">

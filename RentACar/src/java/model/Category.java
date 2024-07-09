@@ -37,11 +37,11 @@ public class Category {
         }
         return allCategories;
     }
-
-    public Category getCategoryWithAvailableCarCount(String categoryUID) {
+    
+    public Category getCategoryByCategoryUID(String categoryUID) {
         Category category = null;
         try {
-            ResultSet categoryResultSet = CategoryDAO.getInstance().getCategoryByUID(categoryUID);
+            ResultSet categoryResultSet = CategoryDAO.getInstance().getCategoryByCategoryUID(categoryUID);
             while (categoryResultSet.next()) {
                 String title = categoryResultSet.getString("title");
                 String description = categoryResultSet.getNString("description");
@@ -52,6 +52,11 @@ public class Category {
             }
         } catch (SQLException e) {
         }
+        return category;
+    }
+
+    public Category getCategoryWithAvailableCarCountByCategoryUID(String categoryUID) {
+        Category category = getCategoryByCategoryUID(categoryUID);
 
         Car carInstance = new Car();
         int availableCarCount = carInstance.getAvailableCarCountEachCategory(categoryUID);

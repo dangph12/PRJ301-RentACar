@@ -48,7 +48,7 @@ public class FinishOrders extends HttpServlet {
 
             Order orderInstance = new Order();
             String orderUID = Util.getInstance().generateUUID();
-            Order order = createNewOrder(request, orderUID, userUID);
+            Order order = createNewOrder(request, orderUID, user);
             orderInstance.insertOrderToDatabases(order);
 
             Car carInstance = new Car();
@@ -66,12 +66,12 @@ public class FinishOrders extends HttpServlet {
             Bill bill = createNewBill(request, orderUID);
             billInstance.insertBillToDatabases(bill);
             
-            request.setAttribute("userUID", userUID);
+            request.setAttribute("orderUID", orderUID);
+            Cookie ck = new Cookie("orderUID", orderUID);
+            response.addCookie(ck);
+
             request.getRequestDispatcher("view-orders").forward(request, response);
 
-//            Cookie ck = new Cookie("userUID", userUID);
-//            response.addCookie(ck);
-//            response.sendRedirect("view-orders");
 
         } catch (Exception e) {
             System.out.println("");
@@ -92,7 +92,7 @@ public class FinishOrders extends HttpServlet {
         return bill;
     }
 
-    public Order createNewOrder(HttpServletRequest request, String orderUID, String userUID) {
+    public Order createNewOrder(HttpServletRequest request, String orderUID, User user) {
 
         String date = request.getParameter("received-at");
         Date receivedDate = Date.valueOf(date);
@@ -101,8 +101,8 @@ public class FinishOrders extends HttpServlet {
         Date returnedDate = Date.valueOf(receivedDate.toLocalDate().plusDays(rentalDays));
         Date createdDate = Date.valueOf(LocalDate.now());
 
-        Order order = new Order(orderUID, userUID, receivedDate, returnedDate, OrderStatus.OPENED, createdDate);
-
+        Order order = new Order(orderUID, receivedDate, returnedDate, OrderStatus.OPENED, createdDate, user);
+        
         return order;
     }
 

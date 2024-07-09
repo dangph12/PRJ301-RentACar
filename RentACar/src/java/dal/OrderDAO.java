@@ -16,7 +16,7 @@ import model.OrderStatus;
  * @author admin
  */
 public class OrderDAO {
-    
+
     public ResultSet getOrdersCountWithName(String name) throws SQLException {
         String full_name = "%" + name + "%";
         String query = """
@@ -30,18 +30,23 @@ public class OrderDAO {
 
         return executeQuery(pstmt);
     }
-    
+
     public ResultSet pagingOrdersWithName(int index, String name) throws SQLException {
         int ordersCountPerPage = 7;
         String full_name = "%" + name + "%";
 
         String query = """
-                       SELECT [orders].order_uid, full_name, received_at, returned_at, status, is_paid
-                       FROM [Rent_A_Car].[dbo].[orders]
-                       INNER JOIN [Rent_A_Car].[dbo].[users_information] ON [orders].user_uid = [users_information].user_uid
-                       INNER JOIN [Rent_A_Car].[dbo].[bills] ON [orders].order_uid = [bills].order_uid
-                       WHERE full_name LIKE ?
-                       ORDER BY [orders].order_uid
+                        SELECT orders.[order_uid]
+                        ,orders.[user_uid]
+                        ,[received_at]
+                        ,[returned_at]
+                        ,[status]
+                        ,[created_at]
+                        FROM [Rent_A_Car].[dbo].[orders]
+                        INNER JOIN [Rent_A_Car].[dbo].[users_information] ON [orders].user_uid = [users_information].user_uid
+                        INNER JOIN [Rent_A_Car].[dbo].[bills] ON [orders].order_uid = [bills].order_uid
+                        WHERE full_name LIKE ?
+                        ORDER BY [orders].order_uid
                        	OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
@@ -52,7 +57,7 @@ public class OrderDAO {
 
         return executeQuery(pstmt);
     }
-    
+
     public ResultSet getOrdersCount() throws SQLException {
         String query = """
                        SELECT count(*) FROM [Rent_A_Car].[dbo].[orders]
@@ -62,17 +67,22 @@ public class OrderDAO {
 
         return executeQuery(pstmt);
     }
-    
+
     public ResultSet pagingOrders(int index) throws SQLException {
         int ordersCountPerPage = 7;
 
         String query = """
-                       SELECT [orders].order_uid, full_name, received_at, returned_at, status, is_paid
+                       SELECT orders.[order_uid]
+                       ,orders.[user_uid]
+                       ,[received_at]
+                       ,[returned_at]
+                       ,[status]
+                       ,[created_at]
                        FROM [Rent_A_Car].[dbo].[orders]
                        INNER JOIN [Rent_A_Car].[dbo].[users_information] ON [orders].user_uid = [users_information].user_uid
                        INNER JOIN [Rent_A_Car].[dbo].[bills] ON [orders].order_uid = [bills].order_uid
                        ORDER BY [orders].order_uid
-                       	OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+                       OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
                        """;
         PreparedStatement pstmt = createPreparedStatement(query);
 
@@ -84,7 +94,7 @@ public class OrderDAO {
 
     public void cancelOrderByOrderUID(String orderUID) throws SQLException {
         String query = """
-                       UPDATE [Rent_A_Car].[dbo].[orders]
+                        UPDATE [Rent_A_Car].[dbo].[orders]
                         SET [status] = ?
                         WHERE [order_uid] = ?
                        """;
@@ -94,6 +104,25 @@ public class OrderDAO {
         pstmt.setString(2, orderUID);
 
         pstmt.executeUpdate();
+    }
+
+    public ResultSet getOrderByOrderUID(String orderUID) throws SQLException {
+        String query = """
+                       SELECT [order_uid]
+                             ,[user_uid]
+                             ,[received_at]
+                             ,[returned_at]
+                             ,[status]
+                             ,[created_at]
+                         FROM [Rent_A_Car].[dbo].[orders]
+                       WHERE [order_uid] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setString(1, orderUID);
+
+        return executeQuery(pstmt);
+
     }
 
     public ResultSet getOrdersByUserUID(String userUID) throws SQLException {
@@ -125,7 +154,7 @@ public class OrderDAO {
         PreparedStatement pstmt = createPreparedStatement(query);
 
         pstmt.setString(1, order.getOrderUID());
-        pstmt.setString(2, order.getUserUID());
+        pstmt.setString(2, order.getUser().getUserUID());
         pstmt.setDate(3, order.getReceivedDate());
         pstmt.setDate(4, order.getReturnedDate());
         pstmt.setInt(5, order.getOrderStatus().getKey());

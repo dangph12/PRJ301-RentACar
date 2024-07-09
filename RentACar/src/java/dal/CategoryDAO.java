@@ -30,7 +30,7 @@ public class CategoryDAO {
         return executeQuery(pstmt);
     }
 
-    public ResultSet getCategoryByUID(String categoryUID) throws SQLException {
+    public ResultSet getCategoryByCategoryUID(String categoryUID) throws SQLException {
         String query = """
                        SELECT [category_uid]
                              ,[title]

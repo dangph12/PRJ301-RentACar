@@ -33,7 +33,7 @@ public class Checkout extends HttpServlet {
             Category category = new Category();
             
             String categoryUID = request.getParameter("category-uid");
-            Category selectedCategory = category.getCategoryWithAvailableCarCount(categoryUID);
+            Category selectedCategory = category.getCategoryWithAvailableCarCountByCategoryUID(categoryUID);
             
             //request.getSession().setAttribute(categoryUID, selectedCategory);
 

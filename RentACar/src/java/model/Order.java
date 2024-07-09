@@ -15,13 +15,13 @@ import java.util.ArrayList;
  * @author admin
  */
 public class Order {
-    
+
     public int getOrdersCountWithName(String name) {
-        
+
         int count = 0;
         try {
             ResultSet rs = OrderDAO.getInstance().getOrdersCountWithName(name);
-            while (rs.next()) {                
+            while (rs.next()) {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
@@ -29,13 +29,13 @@ public class Order {
         }
         return count;
     }
-    
+
     public int getOrdersCount() {
-        
+
         int count = 0;
         try {
             ResultSet rs = OrderDAO.getInstance().getOrdersCount();
-            while (rs.next()) {                
+            while (rs.next()) {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
@@ -43,50 +43,61 @@ public class Order {
         }
         return count;
     }
-    
+
     public ArrayList<Order> pagingOrdersWithName(int index, String name) {
+        User userInstance = new User();
+        Bill billInstance = new Bill();
         Car carInstance = new Car();
         ArrayList<Order> orders = new ArrayList<>();
         try {
             ResultSet rs = OrderDAO.getInstance().pagingOrdersWithName(index, name);
-            while (rs.next()) {                
+            while (rs.next()) {
                 String orderUID = rs.getString("order_uid");
-                String fullName = rs.getString("full_name");
+                String userUID = rs.getString("user_uid");
+                User user = userInstance.getUserByUserUID(userUID);
+                
                 Date receivedDate = rs.getDate("received_at");
                 Date returnedDate = rs.getDate("returned_at");
 
                 int status = rs.getInt("status");
                 OrderStatus orderStatus = getOrderStatusByKey(status);
-                
-                boolean paid = rs.getBoolean("is_paid");
-                
-                Order order = new Order(orderUID, receivedDate, returnedDate, orderStatus, fullName, paid);
+
+                Date createdDate = rs.getDate("created_at");
+                ArrayList<Car> cars = carInstance.getCarsByOrderUID(orderUID);
+                Bill bill = billInstance.getBillByOrderUID(orderUID);
+
+                Order order = new Order(orderUID, receivedDate, returnedDate, orderStatus, createdDate, cars, user, bill);
                 orders.add(order);
-                
             }
         } catch (SQLException e) {
             System.out.println("");
         }
         return orders;
     }
-    
+
     public ArrayList<Order> pagingOrders(int index) {
+        User userInstance = new User();
+        Bill billInstance = new Bill();
         Car carInstance = new Car();
         ArrayList<Order> orders = new ArrayList<>();
         try {
             ResultSet rs = OrderDAO.getInstance().pagingOrders(index);
-            while (rs.next()) {                
+            while (rs.next()) {
                 String orderUID = rs.getString("order_uid");
-                String fullName = rs.getString("full_name");
+                String userUID = rs.getString("user_uid");
+                User user = userInstance.getUserByUserUID(userUID);
+                
                 Date receivedDate = rs.getDate("received_at");
                 Date returnedDate = rs.getDate("returned_at");
 
                 int status = rs.getInt("status");
                 OrderStatus orderStatus = getOrderStatusByKey(status);
-                
-                boolean paid = rs.getBoolean("is_paid");
-                
-                Order order = new Order(orderUID, receivedDate, returnedDate, orderStatus, fullName, paid);
+
+                Date createdDate = rs.getDate("created_at");
+                ArrayList<Car> cars = carInstance.getCarsByOrderUID(orderUID);
+                Bill bill = billInstance.getBillByOrderUID(orderUID);
+
+                Order order = new Order(orderUID, receivedDate, returnedDate, orderStatus, createdDate, cars, user, bill);
                 orders.add(order);
             }
         } catch (SQLException e) {
@@ -132,7 +143,11 @@ public class Order {
     }
 
     public ArrayList<Order> getOrdersByUserUID(String userUID) {
+        User userInstance = new User();
+        User user = userInstance.getUserByUserUID(userUID);
+        
         Car carInstance = new Car();
+        Bill billInstance = new Bill();
         ArrayList<Order> orders = new ArrayList<>();
         try {
             ResultSet ordersByUserUID = OrderDAO.getInstance().getOrdersByUserUID(userUID);
@@ -146,9 +161,11 @@ public class Order {
                 OrderStatus orderStatus = getOrderStatusByKey(status);
 
                 Date createdDate = ordersByUserUID.getDate("created_at");
-                ArrayList<Car> cars = carInstance.getCarsByOrderUID(orderUID); // get car by orderuid;
-
-                Order order = new Order(orderUID, userUID, receivedDate, returnedDate, orderStatus, createdDate, cars);
+                ArrayList<Car> cars = carInstance.getCarsByOrderUID(orderUID);
+                Bill bill = billInstance.getBillByOrderUID(orderUID);
+                
+                Order order = new Order(orderUID, receivedDate, returnedDate, orderStatus, createdDate, cars, user, bill);
+                
                 orders.add(order);
 
             }
@@ -197,26 +214,6 @@ public class Order {
      */
     public void setOrderUID(String orderUID) {
         this.orderUID = orderUID;
-    }
-
-    private String userUID;
-
-    /**
-     * Get the value of userUID
-     *
-     * @return the value of userUID
-     */
-    public String getUserUID() {
-        return userUID;
-    }
-
-    /**
-     * Set the value of userUID
-     *
-     * @param userUID new value of userUID
-     */
-    public void setUserUID(String userUID) {
-        this.userUID = userUID;
     }
 
     private Date receivedDate;
@@ -318,22 +315,72 @@ public class Order {
     public void setCars(ArrayList<Car> cars) {
         this.cars = cars;
     }
+    
+    private User user;
+
+    /**
+     * Get the value of user
+     *
+     * @return the value of user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @param user new value of user
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+        private Bill bill;
+
+    /**
+     * Get the value of bill
+     *
+     * @return the value of bill
+     */
+    public Bill getBill() {
+        return bill;
+    }
+
+    /**
+     * Set the value of bill
+     *
+     * @param bill new value of bill
+     */
+    public void setBill(Bill bill) {
+        this.bill = bill;
+    }
+
 
     public Order() {
     }
 
-    public Order(String orderUID, String userUID, Date receivedDate, Date returnedDate, OrderStatus orderStatus, Date createdDate) {
+    public Order(String orderUID, Date receivedDate, Date returnedDate, OrderStatus orderStatus, Date createdDate, ArrayList<Car> cars, User user, Bill bill) {
         this.orderUID = orderUID;
-        this.userUID = userUID;
+        this.receivedDate = receivedDate;
+        this.returnedDate = returnedDate;
+        this.orderStatus = orderStatus;
+        this.createdDate = createdDate;
+        this.cars = cars;
+        this.user = user;
+        this.bill = bill;
+    }
+
+    public Order(String orderUID, Date receivedDate, Date returnedDate, OrderStatus orderStatus, Date createdDate) {
+        this.orderUID = orderUID;
         this.receivedDate = receivedDate;
         this.returnedDate = returnedDate;
         this.orderStatus = orderStatus;
         this.createdDate = createdDate;
     }
 
-    public Order(String orderUID, String userUID, Date receivedDate, Date returnedDate, OrderStatus orderStatus, Date createdDate, ArrayList<Car> cars) {
+    public Order(String orderUID, Date receivedDate, Date returnedDate, OrderStatus orderStatus, Date createdDate, ArrayList<Car> cars) {
         this.orderUID = orderUID;
-        this.userUID = userUID;
         this.receivedDate = receivedDate;
         this.returnedDate = returnedDate;
         this.orderStatus = orderStatus;
@@ -341,54 +388,13 @@ public class Order {
         this.cars = cars;
     }
 
-    private String fullName;
-
-    /**
-     * Get the value of fullName
-     *
-     * @return the value of fullName
-     */
-    public String getFullName() {
-        return fullName;
-    }
-
-    /**
-     * Set the value of fullName
-     *
-     * @param fullName new value of fullName
-     */
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    private boolean paid;
-
-    /**
-     * Get the value of paid
-     *
-     * @return the value of paid
-     */
-    public boolean isPaid() {
-        return paid;
-    }
-
-    /**
-     * Set the value of paid
-     *
-     * @param paid new value of paid
-     */
-    public void setPaid(boolean paid) {
-        this.paid = paid;
-    }
-
-    public Order(String orderUID, Date receivedDate, Date returnedDate, OrderStatus orderStatus, String fullName, boolean paid) {
+    public Order(String orderUID, Date receivedDate, Date returnedDate, OrderStatus orderStatus, Date createdDate, User user) {
         this.orderUID = orderUID;
         this.receivedDate = receivedDate;
         this.returnedDate = returnedDate;
         this.orderStatus = orderStatus;
-        this.fullName = fullName;
-        this.paid = paid;
+        this.createdDate = createdDate;
+        this.user = user;
     }
-
     
 }

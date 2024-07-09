@@ -7,12 +7,30 @@ package model;
 import dal.BillDAO;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 /**
  *
  * @author admin
  */
 public class Bill {
+    
+    public Bill getBillByOrderUID(String orderUID) {
+        Bill bill = null;
+        try {
+            ResultSet rs = BillDAO.getInstance().getBillByOrderUID(orderUID);
+            while (rs.next()) {                
+                int totalAmount = rs.getInt("total_amount");
+                int paymentMethod = rs.getInt("payment_method");
+                boolean paid = rs.getBoolean("is_paid");
+                Date cancelledDate = rs.getDate("cancelled_at");
+                bill = new Bill(orderUID, totalAmount, paymentMethod, paid, cancelledDate);
+            }
+        } catch (SQLException e) {
+            System.out.println("");
+        }
+        return bill;
+    }
     
     public void cancelBillByOrderUID(String orderUID) {
         try {

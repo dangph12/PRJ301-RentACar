@@ -41,6 +41,8 @@ public class EditUser extends HttpServlet {
             User user = new User(userUID, fullName, phone, email, address);
             UserDAO.getInstance().editUserByUserUID(user);
             response.sendRedirect("manage-users");
+        } catch (Exception e) {
+            
         }
     } 
 

@@ -76,7 +76,7 @@ public class CarDAO {
 
         String query = """
                        SELECT [car_number_plate]
-                             ,[title]
+                             ,[cars].category_uid
                              ,[status]
                          FROM [Rent_A_Car].[dbo].[cars]
                          INNER JOIN [Rent_A_Car].[dbo].[categories] ON [cars].category_uid = [categories].category_uid
@@ -98,7 +98,7 @@ public class CarDAO {
 
         String query = """
                        SELECT [car_number_plate]
-                             ,[title]
+                             ,[cars].category_uid
                              ,[status]
                          FROM [Rent_A_Car].[dbo].[cars]
                          INNER JOIN [Rent_A_Car].[dbo].[categories] ON [cars].category_uid = [categories].category_uid
@@ -109,23 +109,6 @@ public class CarDAO {
 
         pstmt.setInt(1, (index - 1) * carsCountPerPage);
         pstmt.setInt(2, carsCountPerPage);
-
-        return executeQuery(pstmt);
-    }
-
-    public ResultSet getCarsForDashBoardByOrderUID(String orderUID) throws SQLException {
-        String query = """
-                           SELECT [orders_detailed_cars].[car_number_plate]
-                           ,[status]
-                           ,[title]
-                           FROM [Rent_A_Car].[dbo].[orders_detailed_cars]
-                           INNER JOIN [Rent_A_Car].[dbo].[cars] ON [cars].[car_number_plate] = [orders_detailed_cars].[car_number_plate]
-                           INNER JOIN [Rent_A_Car].[dbo].[categories] ON [categories].category_uid = [cars].[category_uid] 
-                           WHERE [order_uid] = ?
-                       """;
-        PreparedStatement pstmt = createPreparedStatement(query);
-
-        pstmt.setString(1, orderUID);
 
         return executeQuery(pstmt);
     }

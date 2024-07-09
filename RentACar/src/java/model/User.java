@@ -15,6 +15,23 @@ import java.util.ArrayList;
  */
 public class User {
     
+    public User getUserByUserUID(String userUID) {
+        User user = null;
+        try {
+            ResultSet rs = UserDAO.getInstance().getUserByUserUID(userUID);
+             while (rs.next()) {                
+                String fullName = rs.getString("full_name");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                user = new User(userUID, fullName, phone, email, address);
+            }
+        } catch (SQLException e) {
+            System.out.println("");
+        }
+        return user;
+    }
+    
     public void insertUserToDatabases(User user) {
         try {
             UserDAO.getInstance().insertUserToDatabases(user);

@@ -16,6 +16,23 @@ import model.Bill;
  */
 public class BillDAO {
     
+    public ResultSet getBillByOrderUID(String orderUID) throws SQLException {
+        String query = """
+                       SELECT [order_uid]
+                             ,[total_amount]
+                             ,[payment_method]
+                             ,[is_paid]
+                             ,[cancelled_at]
+                         FROM [Rent_A_Car].[dbo].[bills]
+                       WHERE [order_uid] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setString(1, orderUID);
+
+        return executeQuery(pstmt);
+    }
+    
     public void cancelBillByOrderUID(String orderUID) throws SQLException {
         String query = """
                        UPDATE [Rent_A_Car].[dbo].[bills]
@@ -98,4 +115,6 @@ public class BillDAO {
 
     public BillDAO() {
     }
+
+    
 }

@@ -73,11 +73,11 @@
                                         </span>
                                     </td>
                                     <td>${order.orderUID}</td>
-                                    <td>${order.fullName}</td>
+                                    <td>${order.user.fullName}</td>
                                     <td>${order.receivedDate}</td>
                                     <td>${order.returnedDate}</td>
                                     <td>${order.orderStatus.description}</td>
-                                    <td>${order.paid}</td>
+                                    <td>${order.bill.paid}</td>
                                     <td>
                                         <div class="btn-group" role="group">
                                             <button type="button" href="#confirmReturnedCarModal" class="btn btn-mini delete" data-toggle="modal" data-orderuid="${order.orderUID}">

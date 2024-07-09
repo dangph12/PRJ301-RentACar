@@ -14,13 +14,13 @@ import java.util.ArrayList;
  * @author admin
  */
 public class Car {
-    
+
     public int getCarsCountWithTitle(String title) {
-        
+
         int count = 0;
         try {
             ResultSet rs = CarDAO.getInstance().getCarsCountWithTitle(title);
-            while (rs.next()) {                
+            while (rs.next()) {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
@@ -28,13 +28,13 @@ public class Car {
         }
         return count;
     }
-    
+
     public int getCarsCount() {
-        
+
         int count = 0;
         try {
             ResultSet rs = CarDAO.getInstance().getCarsCount();
-            while (rs.next()) {                
+            while (rs.next()) {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
@@ -42,96 +42,83 @@ public class Car {
         }
         return count;
     }
-    
+
     public ArrayList<Car> pagingCarsWithTitle(int index, String title) {
+        Category categoryInstance = new Category();
         ArrayList<Car> cars = new ArrayList<>();
         try {
             ResultSet carsResultSet = CarDAO.getInstance().pagingCarsWithTitle(index, title);
-            while (carsResultSet.next()) {                
-                String carNumberPlate = carsResultSet.getString("car_number_plate");
-
-                int status = carsResultSet.getInt("status");
-                CarStatus carStatus = getCarStatusByKey(status);
-
-                String carTitle = carsResultSet.getString("title");
-                Car car = new Car(carNumberPlate, carTitle, carStatus);
-                cars.add(car);
-                
-            }
-        } catch (SQLException e) {
-            System.out.println("");
-        }
-        return cars;
-    }
-    
-    public ArrayList<Car> pagingCars(int index) {
-        ArrayList<Car> cars = new ArrayList<>();
-        try {
-            ResultSet carsResultSet = CarDAO.getInstance().pagingCars(index);
-            while (carsResultSet.next()) {                
-                String carNumberPlate = carsResultSet.getString("car_number_plate");
-
-                int status = carsResultSet.getInt("status");
-                CarStatus carStatus = getCarStatusByKey(status);
-
-                String title = carsResultSet.getString("title");
-                Car car = new Car(carNumberPlate, title, carStatus);
-                cars.add(car);
-                
-            }
-        } catch (SQLException e) {
-            System.out.println("");
-        }
-        return cars;
-    }
-    
-    public ArrayList<Car> getCarsForDashBoardByOrderUID(String orderUID) {
-        ArrayList<Car> cars = new ArrayList<>();
-        try {
-            ResultSet carsResultSet = CarDAO.getInstance().getCarsForDashBoardByOrderUID(orderUID);
             while (carsResultSet.next()) {
                 String carNumberPlate = carsResultSet.getString("car_number_plate");
 
                 int status = carsResultSet.getInt("status");
                 CarStatus carStatus = getCarStatusByKey(status);
 
-                String title = carsResultSet.getString("title");
-                Car car = new Car(carNumberPlate, title, carStatus);
+                String categoryUID = carsResultSet.getString("category_uid");
+                Category category = categoryInstance.getCategoryByCategoryUID(categoryUID);
+
+                Car car = new Car(carNumberPlate, carStatus, category);
                 cars.add(car);
+
             }
         } catch (SQLException e) {
+            System.out.println("");
         }
         return cars;
     }
-    
+
+    public ArrayList<Car> pagingCars(int index) {
+        Category categoryInstance = new Category();
+        ArrayList<Car> cars = new ArrayList<>();
+        try {
+            ResultSet carsResultSet = CarDAO.getInstance().pagingCars(index);
+            while (carsResultSet.next()) {
+                String carNumberPlate = carsResultSet.getString("car_number_plate");
+
+                int status = carsResultSet.getInt("status");
+                CarStatus carStatus = getCarStatusByKey(status);
+
+                String categoryUID = carsResultSet.getString("category_uid");
+                Category category = categoryInstance.getCategoryByCategoryUID(categoryUID);
+
+                Car car = new Car(carNumberPlate, carStatus, category);
+                cars.add(car);
+
+            }
+        } catch (SQLException e) {
+            System.out.println("");
+        }
+        return cars;
+    }
+
     public void setUnavailableCar(String carNumberPlate) {
         try {
             CarDAO.getInstance().setUnavailableCar(carNumberPlate);
         } catch (SQLException e) {
         }
     }
-    
+
     public void setRunningCar(String carNumberPlate) {
         try {
             CarDAO.getInstance().setRunningCar(carNumberPlate);
         } catch (SQLException e) {
         }
     }
-    
+
     public void setAvailableCar(String carNumberPlate) {
         try {
             CarDAO.getInstance().setAvailableCar(carNumberPlate);
         } catch (SQLException e) {
         }
     }
-    
+
     public void setBookedCar(String carNumberPlate) {
         try {
             CarDAO.getInstance().setBookedCar(carNumberPlate);
         } catch (SQLException e) {
         }
     }
-    
+
     public void insertCarByOrderUID(String orderUID, String carNumberPlate) {
         try {
             CarDAO.getInstance().insertCarByOrderUID(orderUID, carNumberPlate);
@@ -140,6 +127,7 @@ public class Car {
     }
 
     public ArrayList<Car> getCarsByOrderUID(String orderUID) {
+        Category categoryInstance = new Category();
         ArrayList<Car> cars = new ArrayList<>();
         try {
             ResultSet carsResultSet = CarDAO.getInstance().getCarsByOrderUID(orderUID);
@@ -150,7 +138,9 @@ public class Car {
                 CarStatus carStatus = getCarStatusByKey(status);
 
                 String categoryUID = carsResultSet.getString("category_uid");
-                Car car = new Car(carNumberPlate, carStatus, categoryUID);
+                Category category = categoryInstance.getCategoryByCategoryUID(categoryUID);
+
+                Car car = new Car(carNumberPlate, carStatus, category);
                 cars.add(car);
             }
         } catch (SQLException e) {
@@ -175,13 +165,16 @@ public class Car {
     }
 
     public ArrayList<Car> getAvailableCarsForOrder(String categoryUID, int carCount) {
+        Category categoryInstance = new Category();
+        Category category = categoryInstance.getCategoryByCategoryUID(categoryUID);
+
         ArrayList<Car> availableCars = new ArrayList<>();
         try {
             ResultSet availableCarsEachCategory = CarDAO.getInstance().getAvailableCarsEachCategory(categoryUID, carCount);
             while (availableCarsEachCategory.next()) {
                 String carNumberPlate = availableCarsEachCategory.getString("car_number_plate");
                 CarStatus carStatus = CarStatus.AVAILABLE;
-                Car car = new Car(carNumberPlate, carStatus, categoryUID);
+                Car car = new Car(carNumberPlate, carStatus, category);
                 availableCars.add(car);
             }
         } catch (SQLException e) {
@@ -250,58 +243,22 @@ public class Car {
         this.carStatus = carStatus;
     }
 
-    private String categoryUID;
+    private Category category;
 
-    /**
-     * Get the value of categoryUID
-     *
-     * @return the value of categoryUID
-     */
-    public String getCategoryUID() {
-        return categoryUID;
+    public Category getCategory() {
+        return category;
     }
 
-    /**
-     * Set the value of categoryUID
-     *
-     * @param categoryUID new value of categoryUID
-     */
-    public void setCategoryUID(String categoryUID) {
-        this.categoryUID = categoryUID;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Car() {
     }
 
-    public Car(String carNumberPlate, CarStatus carStatus, String categoryUID) {
+    public Car(String carNumberPlate, CarStatus carStatus, Category category) {
         this.carNumberPlate = carNumberPlate;
         this.carStatus = carStatus;
-        this.categoryUID = categoryUID;
-    }
-    
-    private String title;
-
-    /**
-     * Get the value of title
-     *
-     * @return the value of title
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * Set the value of title
-     *
-     * @param title new value of title
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    
-    public Car(String carNumberPlate, String title, CarStatus carStatus) {
-        this.carNumberPlate = carNumberPlate;
-        this.title = title;
-        this.carStatus = carStatus;
+        this.category = category;
     }
 }

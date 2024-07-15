@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class User {
     
-    public User getUserByUserUID(String userUID) {
+    public User getUserByUserUID(String userUID) throws Exception {
         User user = null;
         try {
             ResultSet rs = UserDAO.getInstance().getUserByUserUID(userUID);
@@ -27,20 +27,20 @@ public class User {
                 user = new User(userUID, fullName, phone, email, address);
             }
         } catch (SQLException e) {
-            System.out.println("");
+            throw e;
         }
         return user;
     }
     
-    public void insertUserToDatabases(User user) {
+    public void insertUserToDatabases(User user) throws Exception {
         try {
             UserDAO.getInstance().insertUserToDatabases(user);
         } catch (SQLException e) {
-            System.out.println("");
+            throw e;
         }
     }
     
-    public int getUsersCountWithName(String name) {
+    public int getUsersCountWithName(String name) throws Exception {
         int count = 0;
         try {
             ResultSet rs = UserDAO.getInstance().getUsersCountWithName(name);
@@ -48,12 +48,12 @@ public class User {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw e;
         }
         return count;
     }
     
-    public ArrayList<User> pagingUsersWithName(int index, String name) {
+    public ArrayList<User> pagingUsersWithName(int index, String name) throws Exception {
         ArrayList<User> allUsers = new ArrayList<>();
         
         try {
@@ -68,12 +68,12 @@ public class User {
                 allUsers.add(user);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw e;
         }
         return allUsers;
     }
     
-    public int getUsersCount() {
+    public int getUsersCount() throws Exception {
         
         int count = 0;
         try {
@@ -82,12 +82,12 @@ public class User {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw e;
         }
         return count;
     }
     
-    public ArrayList<User> pagingUsers(int index) {
+    public ArrayList<User> pagingUsers(int index) throws Exception {
         ArrayList<User> allUsers = new ArrayList<>();
         
         try {
@@ -102,7 +102,7 @@ public class User {
                 allUsers.add(user);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw e;
         }
         return allUsers;
     }
@@ -219,8 +219,5 @@ public class User {
     }
 
     public static void main(String[] args) {
-        User user = new User();
-            ArrayList<User> pagingUsers = user.pagingUsersWithName(1, "23");
-            int allUsersCount = user.getUsersCountWithName("23");
     }
 }

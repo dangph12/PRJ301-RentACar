@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class Order {
 
-    public int getOrdersCountWithName(String name) {
+    public int getOrdersCountWithName(String name) throws Exception {
 
         int count = 0;
         try {
@@ -25,12 +25,12 @@ public class Order {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw e;
         }
         return count;
     }
 
-    public int getOrdersCount() {
+    public int getOrdersCount() throws Exception {
 
         int count = 0;
         try {
@@ -39,12 +39,12 @@ public class Order {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw e;
         }
         return count;
     }
 
-    public ArrayList<Order> pagingOrdersWithName(int index, String name) {
+    public ArrayList<Order> pagingOrdersWithName(int index, String name) throws Exception {
         User userInstance = new User();
         Bill billInstance = new Bill();
         Car carInstance = new Car();
@@ -70,12 +70,12 @@ public class Order {
                 orders.add(order);
             }
         } catch (SQLException e) {
-            System.out.println("");
+            throw e;
         }
         return orders;
     }
 
-    public ArrayList<Order> pagingOrders(int index) {
+    public ArrayList<Order> pagingOrders(int index) throws Exception {
         User userInstance = new User();
         Bill billInstance = new Bill();
         Car carInstance = new Car();
@@ -101,19 +101,20 @@ public class Order {
                 orders.add(order);
             }
         } catch (SQLException e) {
-            System.out.println("");
+            throw e;
         }
         return orders;
     }
 
-    public void cancelOrderByOrderUID(String orderUID) {
+    public void cancelOrderByOrderUID(String orderUID) throws Exception {
         try {
             OrderDAO.getInstance().cancelOrderByOrderUID(orderUID);
         } catch (SQLException e) {
+            throw e;
         }
     }
 
-    public Order getOrderByOrderUID(String orderUID) {
+    public Order getOrderByOrderUID(String orderUID) throws Exception {
         User userInstance = new User();
         Bill billInstance = new Bill();
         Car carInstance = new Car();
@@ -137,12 +138,12 @@ public class Order {
                 order = new Order(orderUID, receivedDate, returnedDate, orderStatus, createdDate, cars, user, bill);
             }
         } catch (SQLException e) {
-            System.out.println("");
+            throw e;
         }
         return order;
     }
 
-    public ArrayList<Order> getOrdersByUserUID(String userUID) {
+    public ArrayList<Order> getOrdersByUserUID(String userUID) throws Exception{
         User userInstance = new User();
         User user = userInstance.getUserByUserUID(userUID);
         
@@ -170,7 +171,7 @@ public class Order {
 
             }
         } catch (SQLException e) {
-            System.out.println("");
+            throw e;
         }
         return orders;
     }
@@ -188,11 +189,11 @@ public class Order {
         };
     }
 
-    public void insertOrderToDatabases(Order order) {
+    public void insertOrderToDatabases(Order order) throws Exception {
         try {
             OrderDAO.getInstance().insertOrderToDatabases(order);
         } catch (SQLException e) {
-            System.out.println("");
+            throw e;
         }
     }
 

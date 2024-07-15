@@ -5,7 +5,6 @@
 package controller.main;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,14 +28,19 @@ public class ConfirmPayment extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try {
             String orderUID = request.getParameter("order-uid");
             
             Bill billInstance = new Bill();
             billInstance.confirmPaymentByOrderUID(orderUID);
             
-            response.sendRedirect("view-orders");
+            response.sendRedirect("view-order");
+        } catch (Exception e) {
+            String error = e.getMessage();
+            request.setAttribute("error", error);
+            String backPage = "view-order";
+            request.setAttribute("backPage", backPage);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 

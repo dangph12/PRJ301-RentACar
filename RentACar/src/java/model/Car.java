@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class Car {
 
-    public int getCarsCountWithTitle(String title) {
+    public int getCarsCountWithTitle(String title) throws Exception {
 
         int count = 0;
         try {
@@ -24,12 +24,12 @@ public class Car {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw e;
         }
         return count;
     }
 
-    public int getCarsCount() {
+    public int getCarsCount() throws Exception {
 
         int count = 0;
         try {
@@ -38,12 +38,12 @@ public class Car {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw e;
         }
         return count;
     }
 
-    public ArrayList<Car> pagingCarsWithTitle(int index, String title) {
+    public ArrayList<Car> pagingCarsWithTitle(int index, String title) throws Exception {
         Category categoryInstance = new Category();
         ArrayList<Car> cars = new ArrayList<>();
         try {
@@ -59,15 +59,14 @@ public class Car {
 
                 Car car = new Car(carNumberPlate, carStatus, category);
                 cars.add(car);
-
             }
-        } catch (SQLException e) {
-            System.out.println("");
+        } catch (Exception e) {
+            throw e;
         }
         return cars;
     }
 
-    public ArrayList<Car> pagingCars(int index) {
+    public ArrayList<Car> pagingCars(int index) throws Exception {
         Category categoryInstance = new Category();
         ArrayList<Car> cars = new ArrayList<>();
         try {
@@ -86,47 +85,52 @@ public class Car {
 
             }
         } catch (SQLException e) {
-            System.out.println("");
+            throw e;
         }
         return cars;
     }
 
-    public void setUnavailableCar(String carNumberPlate) {
+    public void setUnavailableCar(String carNumberPlate) throws Exception {
         try {
             CarDAO.getInstance().setUnavailableCar(carNumberPlate);
         } catch (SQLException e) {
+            throw e;
         }
     }
 
-    public void setRunningCar(String carNumberPlate) {
+    public void setRunningCar(String carNumberPlate) throws Exception {
         try {
             CarDAO.getInstance().setRunningCar(carNumberPlate);
         } catch (SQLException e) {
+            throw e;
         }
     }
 
-    public void setAvailableCar(String carNumberPlate) {
+    public void setAvailableCar(String carNumberPlate) throws Exception {
         try {
             CarDAO.getInstance().setAvailableCar(carNumberPlate);
         } catch (SQLException e) {
+            throw e;
         }
     }
 
-    public void setBookedCar(String carNumberPlate) {
+    public void setBookedCar(String carNumberPlate) throws Exception {
         try {
             CarDAO.getInstance().setBookedCar(carNumberPlate);
         } catch (SQLException e) {
+            throw e;
         }
     }
 
-    public void insertCarByOrderUID(String orderUID, String carNumberPlate) {
+    public void insertCarByOrderUID(String orderUID, String carNumberPlate) throws Exception {
         try {
             CarDAO.getInstance().insertCarByOrderUID(orderUID, carNumberPlate);
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            throw e;
         }
     }
 
-    public ArrayList<Car> getCarsByOrderUID(String orderUID) {
+    public ArrayList<Car> getCarsByOrderUID(String orderUID) throws Exception {
         Category categoryInstance = new Category();
         ArrayList<Car> cars = new ArrayList<>();
         try {
@@ -144,7 +148,7 @@ public class Car {
                 cars.add(car);
             }
         } catch (SQLException e) {
-            System.out.println("");
+            throw e;
         }
         return cars;
     }
@@ -164,12 +168,12 @@ public class Car {
         };
     }
 
-    public ArrayList<Car> getAvailableCarsForOrder(String categoryUID, int carCount) {
+    public ArrayList<Car> getAvailableCarsForOrder(String categoryUID, int carCount) throws Exception {
         Category categoryInstance = new Category();
-        Category category = categoryInstance.getCategoryByCategoryUID(categoryUID);
-
         ArrayList<Car> availableCars = new ArrayList<>();
+        
         try {
+            Category category = categoryInstance.getCategoryByCategoryUID(categoryUID);
             ResultSet availableCarsEachCategory = CarDAO.getInstance().getAvailableCarsEachCategory(categoryUID, carCount);
             while (availableCarsEachCategory.next()) {
                 String carNumberPlate = availableCarsEachCategory.getString("car_number_plate");
@@ -177,30 +181,23 @@ public class Car {
                 Car car = new Car(carNumberPlate, carStatus, category);
                 availableCars.add(car);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            throw e;
         }
         return availableCars;
     }
 
-    public int getAvailableCarCountEachCategory(String categoryUID) {
+    public int getAvailableCarCountEachCategory(String categoryUID) throws Exception {
         int availableCarCount = 0;
         try {
             ResultSet availableCarCountEachCategory = CarDAO.getInstance().getAvailableCarCountEachCategory(categoryUID);
             while (availableCarCountEachCategory.next()) {
                 availableCarCount = availableCarCountEachCategory.getInt("car_count");
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            throw e;
         }
         return availableCarCount;
-    }
-
-    public CarStatus getStatusByKey(int key) {
-        for (CarStatus status : CarStatus.values()) {
-            if (status.getKey() == key) {
-                return status;
-            }
-        }
-        return CarStatus.INVALID;
     }
 
     private String carNumberPlate;

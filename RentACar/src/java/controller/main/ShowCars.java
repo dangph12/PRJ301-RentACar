@@ -5,7 +5,6 @@
 package controller.main;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,19 +29,37 @@ public class ShowCars extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            Category category = new Category();
+        try {
+            Category categoryInstance = new Category();
             
-            ArrayList<Category> categories = category.getAllCategories();
-            request.setAttribute("categories", categories);
+            ArrayList<Category> categories = categoryInstance.getAllCategories();
+            ArrayList<Category> activeCategories = new ArrayList<>();
+            ArrayList<Category> inactiveCategories = new ArrayList<>();
+            for (Category category : categories) {
+                if (category.getCarCount() > 0) {
+                    activeCategories.add(category);
+                } else {
+                    inactiveCategories.add(category);
+                }
+            }
+            
+            if (activeCategories.size() == 0) {
+                throw new Exception("Hết xe");
+            }
+            
+            request.setAttribute("activeCategories", activeCategories);
+            request.setAttribute("inactiveCategories", inactiveCategories);
 
             int itemsPerRow = 3;
             request.setAttribute("itemsPerRow", itemsPerRow);
             
             request.getRequestDispatcher("show-cars.jsp").forward(request, response);
         } catch (Exception e) {
-            System.out.println("");
+            String error = e.getMessage();
+            request.setAttribute("error", error);
+            String backPage = "show-cars";
+            request.setAttribute("backPage", backPage);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 

@@ -19,7 +19,7 @@
       />
     </head>
     <body style="">
-      <form id="real-form" action="finish-orders" method="POST">
+      <form id="real-form" action="finish-order" method="POST">
         <div class="content">
           <div class="wrap">
             <div class="sidebar">
@@ -331,8 +331,13 @@
           var phoneRegex = /^(0|\+84)\d{9}$/;
           var checkPhone = phone === "" && phoneRegex.test(phone);
 
-          var checkReceivedAt = receivedAt === "" || new Date(receivedAt) > new Date();
-          console.log(checkReceivedAt);
+          var today = new Date();
+          var year = today.getFullYear();
+          var mes = today.getMonth() + 1;
+          var dia = today.getDate();
+          var fecha = mes + "-" + dia + "-" + year;
+          var checkReceivedAt = receivedAt === "" || new Date(receivedAt) <= new Date(fecha);
+          
           debugger;
 
           // Enable or disable the submit button based on field validation

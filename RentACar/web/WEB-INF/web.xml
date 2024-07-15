@@ -29,12 +29,12 @@
         <servlet-class>controller.main.Checkout</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>FinishOrders</servlet-name>
-        <servlet-class>controller.main.FinishOrders</servlet-class>
+        <servlet-name>FinishOrder</servlet-name>
+        <servlet-class>controller.main.FinishOrder</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ViewOrders</servlet-name>
-        <servlet-class>controller.main.ViewOrders</servlet-class>
+        <servlet-name>ViewOrder</servlet-name>
+        <servlet-class>controller.main.ViewOrder</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CancelOrder</servlet-name>
@@ -101,12 +101,12 @@
         <url-pattern>/checkout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>FinishOrders</servlet-name>
-        <url-pattern>/finish-orders</url-pattern>
+        <servlet-name>FinishOrder</servlet-name>
+        <url-pattern>/finish-order</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ViewOrders</servlet-name>
-        <url-pattern>/view-orders</url-pattern>
+        <servlet-name>ViewOrder</servlet-name>
+        <url-pattern>/view-order</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CancelOrder</servlet-name>
@@ -140,4 +140,8 @@
         <servlet-name>SetUnavailableCars</servlet-name>
         <url-pattern>/dashboard/set-unavailable-cars</url-pattern>
     </servlet-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error.jsp</location>
+    </error-page>
 </web-app>

@@ -6,20 +6,18 @@
 package controller.main;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import model.Order;
 
 /**
  *
  * @author admin
  */
-public class ViewOrders extends HttpServlet {
+public class ViewOrder extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -30,20 +28,30 @@ public class ViewOrders extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try {
             
-            //String orderUID = (String) request.getAttribute("orderUID");
+            String orderUID = (String) request.getAttribute("orderUID");
             
-            String orderUID = "2900650b-49e8-42cb-adfa-10148bca1b6b";
+            Cookie ck[] = request.getCookies();
+            if (orderUID == null) {
+                orderUID = ck[1].getValue();
+            }
             
+            if (orderUID == null) {
+                throw new Exception("Không có đơn");
+            }
+                        
             Order orderInstance = new Order();
             Order order = orderInstance.getOrderByOrderUID(orderUID);
             
             request.setAttribute("order", order);
-            request.getRequestDispatcher("view-orders.jsp").forward(request, response);
+            request.getRequestDispatcher("view-order.jsp").forward(request, response);
         } catch (Exception e) {
-            System.out.println("");
+            String error = e.getMessage();
+            request.setAttribute("error", error);
+            String backPage = "show-cars";
+            request.setAttribute("backPage", backPage);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     } 
 

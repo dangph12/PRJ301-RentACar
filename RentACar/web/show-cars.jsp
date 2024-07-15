@@ -37,7 +37,7 @@
     <body>
         <div class="container">
             <c:set var="i" value="0"/>
-            <c:forEach var="category" items="${requestScope.categories}">
+            <c:forEach var="category" items="${requestScope.activeCategories}">
                 <c:if test="${i%3 == 0}">
                     <div class="row">
                     </c:if>
@@ -56,6 +56,34 @@
                                     <div class="number-of-seats">Số ghế: ${category.numberOfSeats}</div>
                                     <div class="price">${category.unitPrice} VND/xe/ngày</div>
                                     <button type="submit" class="add">Đặt xe ngay</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>  
+                    <c:if test="${i%3 == 2}">
+                    </div>
+                </c:if>
+                <c:set var="i" value="${i+1}"/>
+            </c:forEach>
+            <c:forEach var="category" items="${requestScope.inactiveCategories}">
+                <c:if test="${i%3 == 0}">
+                    <div class="row">
+                    </c:if>
+                    <div class="col-lg-4">
+                        <form action="checkout" method="POST">
+                            <div class="item">
+                                <input type="hidden" name="category-uid" value="${category.categoryUID}" />
+                                <div class="img">
+                                    <img src="${category.image}" alt="${category.title}" />
+                                </div>
+                                <div class="content">
+                                    <div class="title">${category.title}</div>
+                                    <div class="des">
+                                        ${category.description}  
+                                    </div>
+                                    <div class="number-of-seats">Số ghế: ${category.numberOfSeats}</div>
+                                    <div class="price">${category.unitPrice} VND/xe/ngày</div>
+                                    <button type="submit" class="add btn btn-secondary disabled" disabled>Hết xe</button>
                                 </div>
                             </div>
                         </form>

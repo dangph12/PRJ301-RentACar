@@ -5,7 +5,6 @@
 package controller.main;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
@@ -16,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import model.Bill;
 import model.Car;
+import model.Category;
 import model.Order;
 import model.OrderStatus;
 import model.User;
@@ -25,7 +25,7 @@ import util.Util;
  *
  * @author admin
  */
-public class FinishOrders extends HttpServlet {
+public class FinishOrder extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,8 +38,10 @@ public class FinishOrders extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try {
+            Category category = new Category();
+            String categoryUID = request.getParameter("selected-category-uid");
+            Category selectedCategory = category.getCategoryWithAvailableCarCountByCategoryUID(categoryUID);
 
             User userInstance = new User();
             String userUID = Util.getInstance().generateUUID();
@@ -53,7 +55,7 @@ public class FinishOrders extends HttpServlet {
 
             Car carInstance = new Car();
             // for a single category
-            String categoryUID = request.getParameter("selected-category-uid");
+            
             String count = request.getParameter("car-count");
             int carCount = Integer.parseInt(count);
             ArrayList<Car> cars = carInstance.getAvailableCarsForOrder(categoryUID, carCount);
@@ -70,11 +72,13 @@ public class FinishOrders extends HttpServlet {
             Cookie ck = new Cookie("orderUID", orderUID);
             response.addCookie(ck);
 
-            request.getRequestDispatcher("view-orders").forward(request, response);
-
-
+            response.sendRedirect("view-order");
         } catch (Exception e) {
-            System.out.println("");
+            String error = e.getMessage();
+            request.setAttribute("error", error);
+            String backPage = "show-cars";
+            request.setAttribute("backPage", backPage);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 

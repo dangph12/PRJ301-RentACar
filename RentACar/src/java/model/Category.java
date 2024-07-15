@@ -15,7 +15,7 @@ import java.sql.SQLException;
  */
 public class Category {
 
-    public ArrayList<Category> getAllCategories() {
+    public ArrayList<Category> getAllCategories() throws Exception {
         Car carInstance = new Car();
         ArrayList<Category> allCategories = new ArrayList<>();
 
@@ -32,13 +32,18 @@ public class Category {
                 Category category = new Category(categoryUID, title, description, numberOfSeats, unitPrice, image, availableCarCount);
                 allCategories.add(category);
             }
+
+            if (allCategories.size() == 0) {
+                throw new Exception("Không tồn tại xe.");
+            }
+
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw e;
         }
         return allCategories;
     }
-    
-    public Category getCategoryByCategoryUID(String categoryUID) {
+
+    public Category getCategoryByCategoryUID(String categoryUID) throws Exception {
         Category category = null;
         try {
             ResultSet categoryResultSet = CategoryDAO.getInstance().getCategoryByCategoryUID(categoryUID);
@@ -51,16 +56,23 @@ public class Category {
                 category = new Category(categoryUID, title, description, numberOfSeats, unitPrice, image);
             }
         } catch (SQLException e) {
+            throw e;
         }
         return category;
     }
 
-    public Category getCategoryWithAvailableCarCountByCategoryUID(String categoryUID) {
+    public Category getCategoryWithAvailableCarCountByCategoryUID(String categoryUID) throws Exception {
         Category category = getCategoryByCategoryUID(categoryUID);
-
         Car carInstance = new Car();
-        int availableCarCount = carInstance.getAvailableCarCountEachCategory(categoryUID);
-        category.setCarCount(availableCarCount);
+        try {
+            int availableCarCount = carInstance.getAvailableCarCountEachCategory(categoryUID);
+            if (availableCarCount == 0) {
+                throw new Exception("Hết xe loại " + category.getTitle());
+            }
+            category.setCarCount(availableCarCount);
+        } catch (Exception e) {
+            throw e;
+        }
         return category;
     }
 
@@ -217,8 +229,5 @@ public class Category {
     }
 
     public static void main(String[] args) {
-        Category category = new Category();
-        ArrayList<Category> categories = category.getAllCategories();
     }
-
 }

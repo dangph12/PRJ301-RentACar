@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Car;
 
 /**
@@ -42,6 +44,8 @@ public class ConfirmReturnedCars extends HttpServlet {
                 }
             }
             response.sendRedirect("manage-orders");
+        } catch (Exception ex) {
+            Logger.getLogger(ConfirmReturnedCars.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
 

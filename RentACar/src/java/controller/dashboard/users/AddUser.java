@@ -11,6 +11,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.User;
 import util.Util;
 
@@ -42,6 +44,8 @@ public class AddUser extends HttpServlet {
             userInstance.insertUserToDatabases(user);
             
             response.sendRedirect("manage-users");
+        } catch (Exception ex) {
+            Logger.getLogger(AddUser.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
 

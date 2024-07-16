@@ -49,7 +49,7 @@ public class FinishOrder extends HttpServlet {
             userInstance.insertUserToDatabases(user);
 
             Order orderInstance = new Order();
-            String orderUID = Util.getInstance().generateUUID();
+            String orderUID = Util.getInstance().generateUUID().trim();
             Order order = createNewOrder(request, orderUID, user);
             orderInstance.insertOrderToDatabases(order);
 

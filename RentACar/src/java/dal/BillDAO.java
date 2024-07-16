@@ -16,6 +16,18 @@ import model.Bill;
  */
 public class BillDAO {
     
+    public void deleteBillByOrderUID(String orderUID) throws SQLException {
+        String query = """
+                       Delete from [Rent_A_Car].[dbo].[bills]
+                       WHERE [order_uid] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setString(1, orderUID);
+
+        pstmt.executeUpdate();
+    }
+    
     public ResultSet getBillByOrderUID(String orderUID) throws SQLException {
         String query = """
                        SELECT [order_uid]

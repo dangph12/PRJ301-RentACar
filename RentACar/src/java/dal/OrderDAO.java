@@ -17,6 +17,37 @@ import model.OrderStatus;
  */
 public class OrderDAO {
 
+    public void deleteOrderByOrderUID(String orderUID) throws SQLException {
+        String query = """
+                       Delete from [Rent_A_Car].[dbo].[orders]
+                        WHERE [order_uid] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setString(1, orderUID);
+
+        pstmt.executeUpdate();
+    }
+
+    public String getOrderUIDsByUserUID(String userUID) throws SQLException {
+        String query = """
+                       SELECT [order_uid]
+                         FROM [Rent_A_Car].[dbo].[orders]
+                       WHERE [user_uid] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setString(1, userUID);
+
+        ResultSet rs = executeQuery(pstmt);
+        String result = "";
+        while (rs.next()) {
+            String orderUID = rs.getString("order_uid");
+            result = result.concat(orderUID + ",");
+        }
+        return result;
+    }
+
     public ResultSet getOrdersCountWithName(String name) throws SQLException {
         String full_name = "%" + name + "%";
         String query = """

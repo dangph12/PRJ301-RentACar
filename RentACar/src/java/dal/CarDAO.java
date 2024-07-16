@@ -15,6 +15,19 @@ import model.CarStatus;
  * @author admin
  */
 public class CarDAO {
+    
+    public void deleteCarByOrderUID(String orderUID) throws SQLException {
+        String query = """
+                       Delete from [Rent_A_Car].[dbo].[orders_detailed_cars]
+                        WHERE [order_uid] = ?
+                       """;
+        PreparedStatement pstmt = createPreparedStatement(query);
+
+        pstmt.setString(1, orderUID);
+
+        pstmt.executeUpdate();
+
+    }
 
     public void setRunningCar(String carNumberPlate) throws SQLException {
         String query = """

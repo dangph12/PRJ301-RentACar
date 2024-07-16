@@ -4,9 +4,11 @@
  */
 package controller.dashboard.users;
 
+import dal.BillDAO;
+import dal.CarDAO;
+import dal.OrderDAO;
 import dal.UserDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,13 +31,22 @@ public class DeleteUsers extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-
-            String userUID = request.getParameter("userUID");
-            String[] userUIDs = userUID.split(",");
-            for (String string : userUIDs) {
-                UserDAO.getInstance().deleteUserByUserUID(string);
+        try {
+            String userUIDStr = request.getParameter("userUID");
+            String[] userUIDs = userUIDStr.split(",");
+            for (String userUID : userUIDs) {
+                String orderUIDStr = OrderDAO.getInstance().getOrderUIDsByUserUID(userUID);
+                if (!orderUIDStr.isBlank()) {
+                    String[] orderUIDs = orderUIDStr.split(",");
+                    for (String orderUID : orderUIDs) {
+                        BillDAO.getInstance().deleteBillByOrderUID(orderUID);
+                        CarDAO.getInstance().deleteCarByOrderUID(orderUID);
+                        OrderDAO.getInstance().deleteOrderByOrderUID(orderUID);
+                    }
+                    UserDAO.getInstance().deleteUserByUserUID(userUID);
+                } else {
+                    UserDAO.getInstance().deleteUserByUserUID(userUID);
+                }
             }
             response.sendRedirect("manage-users");
         } catch (Exception e) {

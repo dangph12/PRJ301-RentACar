@@ -29,12 +29,11 @@
                             <div class="card-header p-4">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <p class="text-muted mb-2"> Order ID <span class="fw-bold text-body">${requestScope.order.orderUID}</span></p>
-                                        <p class="text-muted mb-0"> Place On <span class="fw-bold text-body">${requestScope.order.createdDate}</span> </p>
+                                        <p class="text-muted mb-2"> Mã đơn hàng <span class="fw-bold text-body">${requestScope.order.orderUID}</span></p>
+                                        <p class="text-muted mb-0"> Ngày đặt xe <span class="fw-bold text-body">${requestScope.order.createdDate}</span> </p>
+                                        <p class="text-muted mb-0"> Tình trạng đơn đặt xe <span class="fw-bold text-body">${requestScope.order.orderStatus.description}</span> </p>
+                                         <p class="text-muted mb-0"> Tình trạng thanh toán <span class="fw-bold text-body">${requestScope.order.bill.paid ? "Đã thanh toán" : "Chưa thanh toán"}</span> </p>
                                     </div>
-                                    <div>
-                <h6 class="mb-0">${requestScope.order.bill.totalAmount}</h6>
-              </div>
                                 </div>
                             </div>
                             <c:forEach var="car" items="${requestScope.order.cars}">
@@ -43,8 +42,8 @@
                                         <div class="flex-fill">
                                             <h5 class="bold">${car.category.title}</h5>
                                             <p class="text-muted">BKS: ${car.carNumberPlate}</p>
-                                            <h4 class="mb-3">${car.category.unitPrice} đ <span class="small text-muted"> via (COD) </span></h4>
-                                            
+                                            <h4 class="mb-3">${car.category.unitPrice} đ</h4>
+
                                         </div>
                                         <div>
                                             <img class="align-self-center img-fluid" src="${car.category.image}" width="250">
@@ -56,9 +55,9 @@
                             <div class="card-footer p-4">
                                 <div class="d-flex justify-content-between">
                                     <div class="border-start h-100"></div>
-                                    <h5 class="fw-normal mb-0"><a href="cancel-order?order-uid=${order.orderUID}">Cancel</a></h5>
+                                    <h5 class="fw-normal mb-0"><a class="text-danger" href="cancel-order?order-uid=${order.orderUID}">Huỷ đơn</a></h5>
                                     <div class="border-start h-100"></div>
-                                    <h5 class="fw-normal mb-0"><a href="confirm-payment?order-uid=${order.orderUID}">Pre-pay</a></h5>
+                                    <h5 class="fw-normal mb-0"><a href="confirm-payment?order-uid=${order.orderUID}">Xác nhận thanh toán</a></h5>
                                     <div class="border-start h-100"></div>
                                 </div>
                             </div>

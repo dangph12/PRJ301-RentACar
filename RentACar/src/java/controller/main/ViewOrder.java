@@ -36,13 +36,13 @@ public class ViewOrder extends HttpServlet {
             if (orderUID == null) {
                 orderUID = ck[1].getValue();
             }
-            
-            if (orderUID == null) {
-                throw new Exception("Không có đơn");
-            }
-                        
+                                    
             Order orderInstance = new Order();
             Order order = orderInstance.getOrderByOrderUID(orderUID);
+            if (order == null) {
+                throw new Exception("Không có đơn");
+            }
+            
             
             request.setAttribute("order", order);
             request.getRequestDispatcher("view-order.jsp").forward(request, response);

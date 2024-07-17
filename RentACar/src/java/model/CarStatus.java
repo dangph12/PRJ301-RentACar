@@ -9,7 +9,7 @@ package model;
  * @author admin
  */
 public enum CarStatus {
-    UNAVAILABLE(0, "Not available"), AVAILABLE(1, "Avaiable"), RUNNING(2, "Running"), BOOKED(3, "Booked"),INVALID(-1, "Invalid status");
+    UNAVAILABLE(0, "Không có sẵn"), AVAILABLE(1, "Có sẵn"), RUNNING(2, "Đang chạy"), BOOKED(3, "Đã đặt"),INVALID(-1, "Invalid status");
     
     private int key;
 

@@ -32,7 +32,7 @@ public class CancelOrder extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String orderUID = request.getParameter("order-uid");
+            String orderUID = request.getParameter("order-uid").trim();
             
             Order orderInstance = new Order();
             orderInstance.cancelOrderByOrderUID(orderUID);

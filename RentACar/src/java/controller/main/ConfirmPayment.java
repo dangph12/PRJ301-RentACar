@@ -29,7 +29,7 @@ public class ConfirmPayment extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String orderUID = request.getParameter("order-uid");
+            String orderUID = request.getParameter("order-uid").trim();
             
             Bill billInstance = new Bill();
             billInstance.confirmPaymentByOrderUID(orderUID);

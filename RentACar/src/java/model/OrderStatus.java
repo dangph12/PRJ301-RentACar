@@ -9,7 +9,7 @@ package model;
  * @author admin
  */
 public enum OrderStatus {
-    CANCELLED(0, "Cancelled"), OPENED(1, "Open"), CLOSED(2, "Closed"), INVALID(3, "Invalid order's status");
+    CANCELLED(0, "Đã huỷ"), OPENED(1, "Đang thực hiện"), CLOSED(2, "Đã hoàn thành"), INVALID(3, "Invalid order's status");
     private int key;
 
     /**
